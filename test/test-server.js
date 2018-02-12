@@ -15,7 +15,7 @@ chai.use(chaiHttp);
 //         expect(res).to.have.status(200);
 //     })
 // })
-describe('index page', function () {
+describe('recognition page', function () {
     it('should exist', function () {
       return chai.request(app)
         .get('/')

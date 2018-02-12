@@ -1,2 +1,9 @@
 language: node_js
 node_js: node
+deploy:
+  provider: heroku
+  api_key:
+    secure: hOkuxRpP6+VRtEIuD6SeXrd0b7P/lubx4AVIzgo67KYSzfx/OjzNMvYqzirCBGy5YkNwgQE+Ur7JRxdwrSzuT1CsYIqipzVzspxkD2n3hjnVNmfNOngekcvWT+soOU5ZQgNQrGdFTQw5HwGzDdvhOXU6b0NrURYluh2u0pe/zaScFdrOYubFpo0xrqpaoLIbP8D8EBsJAF7kaKNdFZI1Ox/a/0ARiIxS4DNyiFzmldNSOD9kr5YzR8Wv8dy5w7LR9d4ptDJ0t/TsIVqV+k/0XPUTrzIaNEJm6jMQxcIcv+/zxphCLUfzoZ0m0vfX+VUKHlNEhHTDsnaT5bq8vaLisfKwZQRZjjIqqbciPp/XeueexZUMLWociMKieZhcaTTP4vc5381+cIhx21a2152qz8FFrqqcOZ9a0ooVxHwfGl8LRwaxDlRXfg+L3uRW1/Wo5TDFFFJC+YSTHeJ3g7B0svdmG1gw4kNbsrn/QAYYAgFqlDA+Uq4UBnAghiWYdRBGuKnJOeqzpQxAxSiUtrjrLZ/nHFs1z+lBU8j/d9CiQq+fNuIc9Cy+7UlsZ1V7duG5oezluyH9FHtfmKiC9eZPD+AhN14dePlceK+/B0niJywnt/kUkpRdOsMxT4a/BbJxaKniLy9C5RlFNTrCgUPUNrKgNQM+huX5fKk1QTvwb/E=
+  app: recognition
+  on: https://agile-depths-57496.herokuapp.com/
+    repo: mwpaddock1/recognition
