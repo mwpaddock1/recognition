@@ -1,3 +1,112 @@
-p {
-    color: red;
+body {
+    font-size: 8px;
+    background-image: url("./images/white-934556_1920.jpg");
+    box-sizing: border-box;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
+
+img.logo {
+    height: 5rem;
+    width: 2.5rem;
+    padding-top: 1rem;
+    padding-left: 2rem;
+    padding-right: 0.5%;
+    
+    display: inline-flex;
+}
+
+.logo-text {
+    color: #ffde2d;
+    display: inline-flex;
+    font-size: 1.5rem;
+    text-align: center;
+    margin-top: 2rem;
+}
+
+header {
+    background-color: #0c91F0;
+}
+
+.program-name {
+    color: #0c91F0;
+    font-size: 1.5rem;
+    font-weight: bold;
+    text-align: center;
+    padding-left: 5%;
+    padding-right: 5%;
+}
+
+.program-description {
+    color: #0c91F0;
+    font-size: 1rem;
+    margin: 5%;
+    padding: 2%;
+    text-align: center;
+}
+img.feedback {
+    width: 100%;
+    margin-top: 3rem;
+    margin-bottom: 0;
+    border: 2px solid #0c91F0;
+    box-sizing: border-box;
+}
+button {
+    background-color: #4BA66A;
+  color: white;
+  font-size: 1rem;
+ width: 35%;
+  padding: 10px 15px;
+  margin: 15px;
+  text-align: center;
+  border-radius: 7px;
+  align-items: center;
+  cursor: pointer;
+  display: inline-flex;
+  }
+
+.buttons {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    margin-top: 2rem;
+}
+.form-container {
+    max-width: 600px;
+    background-color: #FFF9AD;
+    border: 2px solid #0c91F0;
+    margin: auto;
+}
+/*For non-mobile devices*/
+
+@media only screen and (min-width: 640px){
+    img.logo {
+        padding-left: 5rem;
+    }
+    img.feedback {
+        width:80%;
+        border-radius: 3%;
+        
+        margin-left: auto;
+        margin-right: auto;
+        display: block;
+    }
+    .program-description {
+        padding: 0;
+        margin: 0;
+    }
+    button {
+        width: 12%;
+    }
+    .logo-text {
+        font-size: 2rem;
+    }
+    .program-name {
+        font-size: 2.5rem;
+    }
+    .program-description {
+        font-size: 1.5rem;
+    }
 }
