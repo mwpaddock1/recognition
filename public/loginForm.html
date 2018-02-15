@@ -6,8 +6,8 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>login</title>
   <meta name="author" content="name">
-  <meta name="description" content="description here">
-  <meta name="keywords" content="keywords,here">
+  <meta name="description" content="login form">
+  <meta name="keywords" content="login">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.css">
   <link rel="stylesheet" href="./style.css" type="text/css">
 </head>
@@ -17,24 +17,35 @@
     <img class="logo" src=./images/LLicon.png alt="FizzBuzz logo">
     </image>
     <h3 class="logo-text"> Fizz Buzz</h3>
+    <button class="log-in">
+<h3>Sign In</h3>
+    </button>
   </header>
   
   <h2 class="program-name">Fizz Buzz Employee-to-Employee Recognition Program</h2>
   <section class="js-form-container form-container">
-  <form name="login-form" class="js-login-form">
+  <form name="login-form" class="js-login-form" class="login-form">
       <fieldset>
           <legend>
             <h1>Login</h1>
           </legend>
-          <section class ="employee-info">
-
+          
+          <section class="log-in-info">
+              <input type="text" name="email" id="email" class="js-email" placeholder="jdemo@fizzbuzz.com" title="email" required/><br><label for="email" class="input-label">Email</label><br><br>
+              <input type="text" name="password" id="password" class="js-password" placeholder="secretstring!123" title="password"required/><br><label for="password" class="input-label">Password</label>
           </section>
                    
       </fieldset>
-      <button class="sign-up-button">
-
-      </button>
-
+      <button class="sign-in-button">
+            <h3>Sign In</h3>
+                  </button>
+                  <button class="cancel">
+                    <h3>Cancel</h3>  
+                  </button>
+                  <button class="forgot-password">
+            <h3>Forgot password?</h3>
+                  </button>
+      
   </form>
 </section>
 

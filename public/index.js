@@ -35,7 +35,7 @@ const MOCK_DATA = {
 };
                                                                                    
 function getEmployees(callbackFn) {
-    setTimeout(function(){ callbackFn(MOCK_DATA)}, 100);
+    setTimeout(function(){callbackFn(MOCK_DATA)}, 100);
 }
 
 // this function stays the same when we connect
@@ -43,7 +43,7 @@ function getEmployees(callbackFn) {
 function displayEmployees(data) {
     let currentEmployee = 0;  
     for (index in data.employees) {
-       $('#employeeList').append(`${data.employees[currentEmployee].lastName}`);        
+       $('#employee-list').append(`${data.employees[currentEmployee].lastName}`);        
     currentEmployee++;
       ;
     }

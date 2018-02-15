@@ -37,7 +37,16 @@ header {
     padding-left: 5%;
     padding-right: 5%;
 }
-
+input {
+    width: 75%;
+    height:25px;
+}
+.input-label{
+    font-size: 1rem;
+}
+/* .login-form {
+    font-size: 1rem;
+} */
 .program-description {
     color: #0c91F0;
     font-size: 1rem;
@@ -51,6 +60,23 @@ img.feedback {
     margin-bottom: 0;
     border: 2px solid #0c91F0;
     box-sizing: border-box;
+}
+.employee-container {
+    background-color: #F2F2F2;
+    padding: 10px;
+    width: 90%;
+    display: flex;
+    justify-content: space-between;
+}
+#employee-list {
+    background-color: #E0E0E0;
+    width: 60%;
+    display: inline-flex;
+}
+.leaderboard {
+    background-color: #E6F1C8;
+    width: 35%;
+    display: inline-flex;
 }
 button {
     background-color: #4BA66A;

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Sign Up</title>
+  <meta name="author" content="name">
+  <meta name="description" content="Sign Up Form">
+  <meta name="keywords" content="Sign Up">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.css">
+  <link rel="stylesheet" href="./style.css" type="text/css">
+</head>
+
+<body>
+  <header>
+    <img class="logo" src=./images/LLicon.png alt="FizzBuzz logo">
+    </image>
+    <h3 class="logo-text"> Fizz Buzz</h3>
+    <button class="log-in">
+       <h3>Log In</h3>
+    </button>
+  </header>
+
+  <h2 class="program-name">Fizz Buzz Employee-to-Employee Recognition Program</h2>
+  <section class="js-form-container form-container">
+    <form name="sign-up-form" class="js-sign-up-form">
+      <fieldset>
+        <legend>
+          <h1>Sign Up</h1>
+        </legend>
+        <section class="employee-info">
+          <input type="text" name="last-name" id="last-name" class="js-last-name" placeholder="Demo" title="last-name" required/>
+          <br>
+          <label for="last-name" class="input-label">Last Name</label><br>
+          <input type="text" name="first-name" id="first-name" class="js-first-name" placeholder="Joseph" title="first-name" required/>
+          <br>
+          <label for="first-name" class="input-label">First Name</label>
+        </section>
+        <section class="log-in-info">
+          <input type="text" name="email" id="email" class="js-email" placeholder="jdemo@fizzbuzz.com" title="email" required/>
+          <br>
+          <label for="email" class="input-label">Email</label>
+          <br>
+          <input type="text" name="password" id="password" class="js-password" placeholder="secretstring!123" title="password" required/>
+          <br>
+          <label for="password" class="input-label">Create Password</label><br>
+          <input type="text" name="retype-password" id="retype-password" class="js-retype-password" placeholder="secretstring!123"
+            title="retype-password" required/>
+          <br>
+          <label for="retype-password" class="input-label">Retype Password</label>
+        </section>
+
+      </fieldset>
+      <button class="sign-up-button">
+        <h3>Sign Up</h3>
+      </button>
+      <button class="cancel">
+        <h3>Cancel</h3>
+      </button>
+
+
+    </form>
+  </section>
+
+
+
+
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+  <script src="./index.js"></script>
+</body>
+
+</html>
