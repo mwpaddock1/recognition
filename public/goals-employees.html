@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Goals and Employee Status</title>
+    <meta name="author" content="name">
+    <meta name="description" content="description here">
+    <meta name="keywords" content="keywords,here">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.css">
+    <link rel="stylesheet" href="./style.css" type="text/css">
+</head>
+<body>
+    <header>
+        <img class="logo" src=./images/LLicon.png alt="FizzBuzz logo">
+        </image>
+        <h2> Fizz Buzz</h2>
+    </header>
+    <section class="goals" role="region">
+        <h1>Fizz Buzz 2018 Corporate Goals</h1>
+        <div class="innovation goal">
+            <button class="ellipse button-innovation">Ideas</button>
+            <div class="goal-detail innovation-detail">
+                <h2>Increase profitability by $1MM through internal innovation</h2>
+            </div>
+        </div>
+        <div class="sales goal">
+            <button class="ellipse button-sales">Sales</button>
+            <div class="goal-detail sales-detail">
+                <h2>Increase revenue by $1.5MM due to increased sales</h2>
+            </div>
+        </div>
+        <div class="service goal">
+            <button class="ellipse button-service">Service</button>
+            <div class="goal-detail service-detail">
+                <h2>Every employee donate 2 hours per week to community service</h2>
+            </div>
+        </div>
+
+        <div class="costs goal">
+            <button class="ellipse button-costs">Costs</button>
+            <div class="goal-detail costs-detail">
+                <h2>Decrease costs by $250,000 through vendor sourcing</h2>
+            </div>
+        </div>
+
+    </section>
+    <section class="employee-container" role="region">
+
+        <section id="employee-list">
+            <h1>Click on an employee name to send points or view previously received recognition</h1>
+            <div class="title-boxes">
+                <div class="last-name-box-title  name-title-box">
+                    <h2>Last Name</h2>
+                </div>
+                <div class="first-name-box-title name-title-box">
+                    <h2>First Name</h2>
+                </div>
+                <div class="points-received-box-title points-title-box">
+                    <h2>Points Rec'd</h2>
+                </div>
+                <div class="points-given-box-title points-title-box">
+                    <h2>Points Given</h2>
+                </div>
+                <div class="points-remaining-box-title points-title-box">
+                    <h2>PPR</h2>
+                </div>
+            </div>
+            <div class="employee-boxes">
+                <div class="last-name-box  name-box" id="js-last-name">
+                </div>
+                <div class="first-name-box name-box" id="js-first-name">
+                </div>
+                <div class="points-received-box points-box" id="js-points-received">
+                </div>
+                <div class="points-given-box points-box" id="js-points-given">
+                </div>
+                <div class="points-remaining-box points-box" id="js-points-remaining">
+                </div>
+            </div>
+        </section>
+
+        <section class="points">
+            <div class="points-received-description" id="js-points-received-description">
+                <div class="points-given-description" id="js-points-given-description">
+                </div>
+        </section>
+
+
+    </section>
+    </section>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    <script src="./index.js"></script>
+</body>
+
+</html>
