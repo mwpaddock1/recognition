@@ -14,41 +14,44 @@
 
 <body>
   <header>
-    <img class="logo" src=./images/LLicon.png alt="FizzBuzz logo">
-    </image>
-    <h3 class="logo-text"> Fizz Buzz</h3>
-    <button class="log-in">
-       <h3>Log In</h3>
-    </button>
+    <div class="logo-banner">
+      <img class="logo" src=./images/FizzBuzzSVG.svg alt="FizzBuzz logo">
+
+      <button class="log-in-button banner-button">
+        Log In
+      </button>
+    </div>
   </header>
 
   <h2 class="program-name">Fizz Buzz Employee-to-Employee Recognition Program</h2>
   <section class="js-form-container form-container">
     <form name="sign-up-form" class="js-sign-up-form">
-      <fieldset>
-        <legend>
+      <fieldset class="fieldset-form">
+        <legend class=sign-up>
           <h1>Sign Up</h1>
         </legend>
         <section class="employee-info">
+            <label for="last-name" class="input-label">Last Name</label><br>
           <input type="text" name="last-name" id="last-name" class="js-last-name" placeholder="Demo" title="last-name" required/>
           <br>
-          <label for="last-name" class="input-label">Last Name</label><br>
+          <label for="first-name" class="input-label">First Name</label><br>
           <input type="text" name="first-name" id="first-name" class="js-first-name" placeholder="Joseph" title="first-name" required/>
-          <br>
-          <label for="first-name" class="input-label">First Name</label>
+                   
         </section>
         <section class="log-in-info">
+            <label for="email" class="input-label">Email</label>
+            <br>
           <input type="text" name="email" id="email" class="js-email" placeholder="jdemo@fizzbuzz.com" title="email" required/>
           <br>
-          <label for="email" class="input-label">Email</label>
+          <label for="password" class="input-label">Create Password</label>
           <br>
           <input type="text" name="password" id="password" class="js-password" placeholder="secretstring!123" title="password" required/>
           <br>
-          <label for="password" class="input-label">Create Password</label><br>
+          <label for="retype-password" class="input-label">Retype Password</label><br>
           <input type="text" name="retype-password" id="retype-password" class="js-retype-password" placeholder="secretstring!123"
             title="retype-password" required/>
-          <br>
-          <label for="retype-password" class="input-label">Retype Password</label>
+         
+          
         </section>
 
       </fieldset>

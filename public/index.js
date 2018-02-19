@@ -54,7 +54,9 @@ function displayEmployees(data) {
     for (let currentEmployee =0; currentEmployee < data.employees.length; currentEmployee++) {
        $('#js-last-name').append(`<h2>${data.employees[currentEmployee].lastName}</h2>`);        
        $('#js-first-name').append(`<h2>${data.employees[currentEmployee].firstName}</h2>`);        
-       $('#js-points-received').append(`<h2>${data.employees[currentEmployee].pointsReceived}</h2>`); $('#js-points-given').append(`<h2>${data.employees[currentEmployee].pointsGiven}</h2>`);       $('#js-points-remaining').append(`<h2>${data.employees[currentEmployee].pointsRemaining}</h2>`);
+       $('#js-points-received').append(`<h2>${data.employees[currentEmployee].pointsReceived}</h2>`);
+       $('#js-points-given').append(`<h2>${data.employees[currentEmployee].pointsGiven}</h2>`);   
+       $('#js-points-remaining').append(`<h2>${data.employees[currentEmployee].pointsRemaining}</h2>`);
      
     }
 }

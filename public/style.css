@@ -5,29 +5,37 @@ body {
     background-size: cover;
     background-repeat: no-repeat;
     background-attachment: fixed;
+    
 }
 
 img.logo {
-    height: 5rem;
-    width: 2.5rem;
-    padding-top: 1rem;
+    
+    width: 150px;
+    padding-top: 32px;
     padding-left: 2rem;
     padding-right: 0.5%;
     display: inline-flex;
+    justify-content: space-between;
 }
-
-.logo-text {
-    color: #ffde2d;
-    display: inline-flex;
-    font-size: 1.5rem;
-    text-align: center;
-    margin-top: 2rem;
+ h1 {
+     color: #0c91f0;
+ }
+ h3 {
+     vertical-align: middle;
+ }  
+.banner-button {
+    margin-right: 100px;
 }
 
 header {
     background-color: #0c91F0;
+    width: 100%;
 }
 
+button.log-in-button, button.sign-up-button, button.cancel-button, button.forgot-password-button {
+    width: 150px;
+    height: 50px;
+}
 .program-name {
     color: #0c91F0;
     font-size: 1.5rem;
@@ -36,16 +44,24 @@ header {
     padding-left: 5%;
     padding-right: 5%;
 }
-
+.fieldset {
+    margin: 0 auto;
+}
 input {
     width: 75%;
-    height: 25px;
+    height: 35px; 
+   margin: 0 0 7px 35px;
 }
 
-.input-label {
-    font-size: 1rem;
+ .input-label {
+    font-size: 16px;
+    padding: 0 0 75px 15px;
+    margin-left: 35px; 
+} 
+::placeholder {
+    font-size: 16px;
+    padding-left: 16px;
 }
-
 .program-description {
     color: #0c91F0;
     font-size: 1rem;
@@ -53,10 +69,17 @@ input {
     padding: 2%;
     text-align: center;
 }
-
+.sign-up h1 {
+    text-align: center;
+    color: #0c91f0;
+}
+legend {
+    margin: 0 auto;
+    font-size: 16px;
+}
 img.feedback {
     width: 100%;
-    margin-top: 3rem;
+    margin-tp: 3rem;
     margin-bottom: 0;
     border: 2px solid #0c91F0;
     box-sizing: border-box;
@@ -64,8 +87,7 @@ img.feedback {
 
 .employee-container {
     width: 100%;
-    display: block;
-    justify-content: space-around;
+   
 }
 
 #employee-list {
@@ -73,7 +95,10 @@ img.feedback {
     width: 100%;
     text-align: center;
     padding: 5px;
-}
+    margin: auto;
+    border: 5px solid #f2f2f2;
+    }
+
 
 .title-boxes {
     display: inline-flex;
@@ -102,15 +127,27 @@ img.feedback {
     text-align: center;
     display: inline-flex;
 }
-
-.goals {
-    display: block;
-    width: 98%;
-    text-align: center;
+p {
+    font-size: 20px;
 }
-.goals h1 {
+.goals, .employee-container{
+    display: block;
+    width: 100%;
+    text-align: center;
+    margin: auto;
+    padding: 40px;
+  
+}
+.goals h1, .employee-container h1 {
     font-size: 2rem;
     text-align: center;
+}
+.goals {
+    background-color: #F2F2F2;
+    border: 5px solid #E0E0E0;
+    /* margin: 20px 3px 10px 3px; */
+    box-sizing: border-box;
+    margin: 20px auto;
 }
 .goal {
     display: flex;
@@ -130,7 +167,6 @@ button.ellipse {
 }
 .goal-detail {
     border: 1px solid #4BA66A;
-    width: 60%;
     padding: 5px;
     margin: 2px 2px 2px 1px;
     border-radius: 4px;
@@ -148,15 +184,6 @@ button.ellipse {
     background-color: #4BA66A;
 
 }
-/* .name-box .points-box {
-    margin: 10px;
-} */
-
-.leaderboard {
-    background-color: #E6F1C8;
-    width: 90%;
-    display: flex;
-}
 
 button {
     background-color: #4BA66A;
@@ -169,7 +196,6 @@ button {
     border-radius: 7px;
     align-items: center;
     cursor: pointer;
-    /* display: inline-flex; */
 }
 
 .buttons {
@@ -209,27 +235,29 @@ button {
         padding: 0;
         margin: 0;
     }
-    /* button {
-        width: 12%;
-    } */
+    
     .logo-text {
         font-size: 2rem;
     }
+    input, .input-label{
+        margin-left: 75px;
+    } 
+    
     .program-name {
         font-size: 2.5rem;
     }
     .program-description {
         font-size: 1.5rem;
     }
-    /* .leaderboard {
-        width: 35%;
-        margin: 25px; */
+    
     #employee-list, .goals {
-        width: 70%
+        width: 45%;
+        padding: 40px;
     }
+   
     .points-title-box,
     .points-box {
-        background-color: #FFF9AD;
+       
         width: 20%;
         margin: 5px;
     }
@@ -244,5 +272,6 @@ button {
     .goal {
         width: 40%;
         display: inline-flex;
+        padding: 25px;
     }
 }
