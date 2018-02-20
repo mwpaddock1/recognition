@@ -7,29 +7,37 @@ body {
     background-attachment: fixed;
     
 }
-
+.logo-banner {
+    display: flex;
+    justify-content: space-between;
+    align-content: center;
+    align-items: center;
+}
 img.logo {
     
     width: 150px;
-    padding-top: 32px;
+    padding-top: 5px;
     padding-left: 2rem;
     padding-right: 0.5%;
     display: inline-flex;
     justify-content: space-between;
 }
  h1 {
-     color: #0c91f0;
+     color: #0a74bf;
  }
  h3 {
      vertical-align: middle;
  }  
 .banner-button {
-    margin-right: 100px;
+    margin-right: 25px;
+    width: 150px;
+    height: 50px;
 }
 
 header {
     background-color: #0c91F0;
     width: 100%;
+    
 }
 
 button.log-in-button, button.sign-up-button, button.cancel-button, button.forgot-password-button {
@@ -85,26 +93,21 @@ img.feedback {
     box-sizing: border-box;
 }
 
-.employee-container {
-    width: 100%;
-   
-}
-
 #employee-list {
     background-color: #E0E0E0;
     width: 100%;
     text-align: center;
-    padding: 5px;
+     padding: 5px;
     margin: auto;
     border: 5px solid #f2f2f2;
     }
 
 
-.title-boxes {
+.title-boxes, .employee-boxes {
     display: inline-flex;
     text-align: center;
     width: 100%;
-}
+   }
 
 .points-title-box,
 .points-box {
@@ -122,32 +125,28 @@ img.feedback {
     padding-left: 5px;
 }
 
-.employee-boxes {
-    width: 100%;
-    text-align: center;
-    display: inline-flex;
-}
 p {
     font-size: 20px;
 }
-.goals, .employee-container{
+.goals, #employee-list, .individual-info {
     display: block;
     width: 100%;
     text-align: center;
-    margin: auto;
-    padding: 40px;
-  
+    margin: 20px auto;
+    box-sizing: border-box;
+    
+    /* padding: 40px;   */
 }
 .goals h1, .employee-container h1 {
     font-size: 2rem;
     text-align: center;
 }
-.goals {
+
+.goals, .individual-info{
     background-color: #F2F2F2;
     border: 5px solid #E0E0E0;
-    /* margin: 20px 3px 10px 3px; */
-    box-sizing: border-box;
-    margin: 20px auto;
+    
+    /* margin: 20px auto; */
 }
 .goal {
     display: flex;
@@ -155,12 +154,12 @@ p {
 }
 .ellipse {
     border: 1px solid #4BA66A;
-    /* height: 50px;
-    width: 142px; */
     border-radius: 50%;
     text-align: center;
     font-weight: bold;
     color: black;
+    font-size: 16px;
+    width: 150px;
 }
 button.ellipse {
     margin: 0 0 5px 5px;
@@ -182,9 +181,26 @@ button.ellipse {
 }
 .button-service, .service-detail {
     background-color: #4BA66A;
-
 }
-
+.button-add-points {
+    background-color:#FFDE2D;
+}
+.description {
+    padding-left: 25px;
+    font-size: 16px;
+}
+.points {
+    display: flex;
+    padding-bottom: 20px;
+}
+.points-received {
+    margin: auto;
+}
+.points-section {
+    margin-bottom: 20px;
+    border: 5px solid #e0e0e0;
+    padding-bottom: 20px;
+}
 button {
     background-color: #4BA66A;
     color: white;
@@ -214,15 +230,19 @@ button {
     margin: auto;
 }
 
-.leaderboard {
-    display: none;
-}
+
 
 /*For non-mobile devices*/
 
 @media only screen and (min-width: 640px) {
     img.logo {
         padding-left: 5rem;
+    }
+    .main {
+        display: flex;
+    }
+    .banner-button {
+        margin-right: 150px;
     }
     img.feedback {
         width: 80%;
@@ -234,6 +254,7 @@ button {
     .program-description {
         padding: 0;
         margin: 0;
+        font-size: 1.5rem;
     }
     
     .logo-text {
@@ -246,13 +267,10 @@ button {
     .program-name {
         font-size: 2.5rem;
     }
-    .program-description {
-        font-size: 1.5rem;
-    }
     
-    #employee-list, .goals {
-        width: 45%;
-        padding: 40px;
+    #employee-list, .goals, .individual-info {
+        width: 60%;
+        padding: 20px;
     }
    
     .points-title-box,
@@ -260,6 +278,10 @@ button {
        
         width: 20%;
         margin: 5px;
+    }
+    #employee-list {
+        font-size: 16px;
+        width: 95%;
     }
     .name-title-box,
     .name-box {
@@ -270,8 +292,19 @@ button {
         padding-left: 50px;
     }
     .goal {
-        width: 40%;
+        width: 90%;
         display: inline-flex;
         padding: 25px;
     }
+    .goals {
+        width: 90%;
+    }
+    .goal-container {
+        width: 25%;
+    }
+    .employee-container, .individual-info-container {
+        width: 75%;
+        
+    }
+   
 }
