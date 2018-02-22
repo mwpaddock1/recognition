@@ -33,7 +33,6 @@ img.logo {
  }
 .banner-button {
     margin-right: 25px;
-    /* width: 150px; */
     height: 50px;
 }
 
@@ -176,16 +175,24 @@ p {
     font-weight: bold;
     color: black;
     font-size: 16px;
-    width: 150px;
+    width: 100px;
+    flex-grow: 0;
+    flex-shrink: 0;
+    padding: 5% 0;
 }
 button.ellipse {
     margin: 10px 0 5px 5px;
+}
+.button-add-points, .button-add-to-existing-points {
+    border-radius: 10%;
+    padding: 2% 2%;
 }
 .goal-detail {
     border: 1px solid #4BA66A;
     padding: 5px;
     margin: 2px 2px 2px 1px;
     border-radius: 4px;
+    max-width: 300px;
 }
 .button-innovation, .innovation-detail {
     background-color: #E6F1C8;
@@ -208,7 +215,7 @@ button.ellipse {
     font-size: 16px;
 }
 .points {
-    display: flex;
+    /* display: flex; */
     padding-bottom: 20px;
     margin: auto;
 }
@@ -224,8 +231,8 @@ button.ellipse {
 button {
     background-color: #4BA66A;
     color: white;
-    font-size: 1rem;    
-    margin: 15px;
+    font-size: 16px;    
+    margin: 16px;
     text-align: center;
     border-radius: 7px;
     align-items: center;
@@ -257,16 +264,25 @@ button {
     }
     .main {
         display: flex;
+        /* align-items: center; */
+        justify-content: center;
     }
-    .banner-button {
+    /* .banner-button {
         margin-right: 150px;
+    } */
+    .buttons {
+        width: 25%
     }
-    img.feedback {
+    /* img.feedback {
         width: 80%;
         border-radius: 3%;
-        margin-left: auto;
+        margin-left:     auto;
         margin-right: auto;
         display: block;
+    } */
+    .ellipse {
+        /* width: 100px; */
+        padding: 2% 2%;
     }
     .program-description {
         padding: 0;
@@ -311,9 +327,9 @@ button {
         padding-left: 50px;
     }
     .goal {
-        width: 90%;
+        width: 95%;
         display: inline-flex;
-        padding: 25px;
+        /* padding: 25px; */
     }
     .goals {
         width: 90%;
@@ -322,8 +338,7 @@ button {
         width: 25%;
     }
     .employee-container, .individual-info-container {
-        width: 75%;
-        
+        width: 70%;
     }
    
 }
