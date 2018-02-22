@@ -27,26 +27,33 @@
             <section class="goals" role="region">
                 <h1>Fizz Buzz 2018 Corporate Goals</h1>
                 <div class="innovation goal">
-                    <button class="ellipse button-innovation">Ideas</button>
+                    <div class="ellipse innovation-ellipse">
+                        <h2>Ideas</h2>
+                    </div>
                     <div class="goal-detail innovation-detail">
                         <h2>Increase profitability by $1MM through internal innovation</h2>
                     </div>
                 </div>
                 <div class="sales goal">
-                    <button class="ellipse button-sales">Sales</button>
+                    <div class="ellipse sales-ellipse">
+                        <h2>Sales</h2>
+                    </div>
                     <div class="goal-detail sales-detail">
                         <h2>Increase revenue by $1.5MM due to increased sales</h2>
                     </div>
                 </div>
                 <div class="service goal">
-                    <button class="ellipse button-service">Service</button>
+                    <div class="ellipse service-ellipse">
+                        <h2>Service</h2>
+                    </div>
                     <div class="goal-detail service-detail">
                         <h2>Every employee donate 2 hours per week to community service</h2>
                     </div>
                 </div>
-
                 <div class="costs goal">
-                    <button class="ellipse button-costs">Costs</button>
+                    <div class="ellipse costs-ellipse">
+                        <h2>Costs</h2>
+                    </div>
                     <div class="goal-detail costs-detail">
                         <h2>Decrease costs by $250,000 through vendor sourcing</h2>
                     </div>
@@ -70,10 +77,12 @@
                                 <legend>
 
                                 </legend>
-                                <label for="employee-action" class="input-label"><h2>For what action would you like to award points?</h2></label>
-    
-                                    <input type="text" name="employee-action" class="employee-action js-employee-action" placeholder="ex. sourced a new paper vendor"
-                                        title="employee-action" required>
+                                <label for="employee-action" class="input-label">
+                                    <h2>For what action would you like to award points?</h2>
+                                </label>
+
+                                <input type="text" name="employee-action" class="employee-action js-employee-action" placeholder="ex. sourced a new paper vendor"
+                                    title="employee-action" required>
                                 <h2>Which Fizz Buzz Corporate goal was supported?</h2>
                                 <select name="goal" id="goal-dropdown">
                                     <option value=""></option>
@@ -84,22 +93,18 @@
                                 </select>
 
                                 <h2> How many points would you like to give for this action?</h2>
-                                 <select name="points" id="points-dropdown">
+                                <select name="points" id="points-dropdown">
                                     <option value=""></option>
                                     <option value="5">5</option>
                                     <option value="10">10</option>
                                     <option value="15">15</option>
                                     <option value="20">20</option>
                                     <option value="25">25</option>
-                                    </select>
-                                    <br>
-                                
-                                <label for="goal-support" class="input-label">
-                                    <h2>How did this action support the Fizz Buzz Corporate Goals?</h2>
-                                </label>
+                                </select>
+                                <br>
 
-                                <input type="text" name="goal-support" class="goal-support js-goal-support" placeholder="ex. saved money on paper purchases"
-                                    title="goal-support">
+                                <label for="goal-support" class="input-label">
+
                             </fieldset>
                         </form>
                         <button class="ellipse button-add-to-existing-points">Add the points!</button>

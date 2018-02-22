@@ -150,9 +150,7 @@ p {
     text-align: center;
     margin: 20px auto;
     box-sizing: border-box;
-    
-    /* padding: 40px;   */
-}
+   }
 .goals h1, .employee-container h1 {
     font-size: 2rem;
     text-align: center;
@@ -162,7 +160,6 @@ p {
     background-color: #F2F2F2;
     border: 5px solid #E0E0E0;
     
-    /* margin: 20px auto; */
 }
 .goal {
     display: flex;
@@ -174,11 +171,12 @@ p {
     text-align: center;
     font-weight: bold;
     color: black;
-    font-size: 16px;
+    font-size: 12px;
     width: 100px;
     flex-grow: 0;
     flex-shrink: 0;
     padding: 5% 0;
+    vertical-align: middle;
 }
 button.ellipse {
     margin: 10px 0 5px 5px;
@@ -194,16 +192,16 @@ button.ellipse {
     border-radius: 4px;
     max-width: 300px;
 }
-.button-innovation, .innovation-detail {
+.innovation-ellipse, .innovation-detail {
     background-color: #E6F1C8;
 }
-.button-sales, .sales-detail{
+.sales-ellipse, .sales-detail{
     background-color: #0c91F0;
 }
-.button-costs, .costs-detail {
+.costs-ellipse, .costs-detail {
     background-color:#FFF9AD;  
 }
-.button-service, .service-detail {
+.service-ellipse, .service-detail {
     background-color: #4BA66A;
 }
 .button-add-points, .button-add-to-existing-points {
@@ -215,9 +213,10 @@ button.ellipse {
     font-size: 16px;
 }
 .points {
-    /* display: flex; */
+    display: flex;
     padding-bottom: 20px;
-    margin: auto;
+    /* margin: auto; */
+    padding-left: 10%;
 }
 .points-received {
     margin: auto;
@@ -237,8 +236,12 @@ button {
     border-radius: 7px;
     align-items: center;
     cursor: pointer;
+    transition-duration: 0.4s;
 }
-
+button:hover {
+    background-color: #FFF9AD;
+    color: black;
+}
 .buttons {
     width: 100%;
     display: flex;
@@ -253,7 +256,10 @@ button {
     border-radius: 3px;
     margin: auto;
 }
+#js-last-name h2:hover {
+    background-color: #E6F1C8;
 
+}
 
 
 /*For non-mobile devices*/
@@ -281,7 +287,7 @@ button {
         display: block;
     } */
     .ellipse {
-        /* width: 100px; */
+        width: 100px;
         padding: 2% 2%;
     }
     .program-description {
