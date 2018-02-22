@@ -57,41 +57,57 @@
 
         <section class="individual-info-container individual-info container">
             <h1 class="employee">Joseph Foo</h1>
+
             <section class="points-received points-section">
-                <h1>Points received</h1>
+
                 <div class="round1 received points">
-                    <button class="ellipse button-costs">Costs</button>
+
                     <div class="points-from description" id="js-points-from-description">
-                        <h2>5 points from Mary Bar for sourcing a new paper vendor!</h2>
+
+
+                        <form>
+                            <fieldset>
+                                <legend>
+
+                                </legend>
+                                <label for="employee-action" class="input-label"><h2>For what action would you like to award points?</h2></label>
+    
+                                    <input type="text" name="employee-action" class="employee-action js-employee-action" placeholder="ex. sourced a new paper vendor"
+                                        title="employee-action" required>
+                                <h2>Which Fizz Buzz Corporate goal was supported?</h2>
+                                <select name="goal" id="goal-dropdown">
+                                    <option value=""></option>
+                                    <option value="Ideas">Ideas</option>
+                                    <option value="Sales">Sales</option>
+                                    <option value="Service">Service</option>
+                                    <option value="Costs">Costs</option>
+                                </select>
+
+                                <h2> How many points would you like to give for this action?</h2>
+                                 <select name="points" id="points-dropdown">
+                                    <option value=""></option>
+                                    <option value="5">5</option>
+                                    <option value="10">10</option>
+                                    <option value="15">15</option>
+                                    <option value="20">20</option>
+                                    <option value="25">25</option>
+                                    </select>
+                                    <br>
+                                
+                                <label for="goal-support" class="input-label">
+                                    <h2>How did this action support the Fizz Buzz Corporate Goals?</h2>
+                                </label>
+
+                                <input type="text" name="goal-support" class="goal-support js-goal-support" placeholder="ex. saved money on paper purchases"
+                                    title="goal-support">
+                            </fieldset>
+                        </form>
+                        <button class="ellipse button-add-to-existing-points">Add the points!</button>
                     </div>
                 </div>
-                <button class="ellipse button-add-points">Add to these points</button>
-            </section>
-            <section class="points-given points-section">
-                <h1>Points given</h1>
-                <div class="round1 given points">
-                    <button class="ellipse button-sales">Sales</button>
-
-                    <div class="points-given description" id="js-points-given-description">
-                        <h2>10 points to John Worker for closing the bizzbang deal!</h2>
-                    </div>
-                </div>
-                <button class="ellipse button-add-points">Add to these points</button>
 
             </section>
-            <section class="new-points points-section">
-                <h1>Give points for a new action</h1>
-                <button class="ellipse button-add-points">Add points for a new action!</button>
-            </section>
-
         </section>
     </section>
 
-
-    </section>
-    </section>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
-    <!-- <script src="./index.js"></script> -->
-</body>
-
-</html>
