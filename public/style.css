@@ -61,6 +61,8 @@ input {
     width: 75%;
     height: 35px; 
    margin: 0 0 7px 35px;
+   font-size: 16px;
+   padding-left: 10px;
 }
 input.employee-action, input.goal-support {
     width: 100%;

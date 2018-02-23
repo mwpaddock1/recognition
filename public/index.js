@@ -1,3 +1,5 @@
+
+
 const MOCK_DATA = {
     employees: [{
             lastName: "Foo",
@@ -50,21 +52,66 @@ function getEmployees(callbackFn) {
     }, 100);
 }
 
-
-
-
 // this function stays the same when we connect
 // to real API later
- function displayEmployees(data) {
+function displayEmployees(data) {
     for (let currentEmployee = 0; currentEmployee < data.employees.length; currentEmployee++) {
-      $('#js-last-name').append(`<h2>${data.employees[currentEmployee].lastName}</h2>`);
-      $('#js-first-name').append(`<h2>${data.employees[currentEmployee].firstName}</h2>`);
-      $('#js-points-received').append(`<h2>${data.employees[currentEmployee].pointsReceived}</h2>`);
-      $('#js-points-given').append(`<h2>${data.employees[currentEmployee].pointsGiven}</h2>`);
-      $('#js-points-remaining').append(`<h2>${data.employees[currentEmployee].pointsRemaining}</h2>`);
+        $('#js-last-name').append(`<h2>${data.employees[currentEmployee].lastName}</h2>`);
+        $('#js-first-name').append(`<h2>${data.employees[currentEmployee].firstName}</h2>`);
+        $('#js-points-received').append(`<h2>${data.employees[currentEmployee].pointsReceived}</h2>`);
+        $('#js-points-given').append(`<h2>${data.employees[currentEmployee].pointsGiven}</h2>`);
+        $('#js-points-remaining').append(`<h2>${data.employees[currentEmployee].pointsRemaining}</h2>`);
+    }
+}
 
-     }
- }
+$("form").submit(function (event) {
+    event.preventDefault();
+    //get the form inputs and place them into an array
+    let inputArray =
+        $(event.currentTarget).serializeArray();
+
+    console.log(inputArray);
+
+    //reformat the array
+    let reformattedArray = inputArray.map(item => {
+        let rObj = {};
+         console.log(item);
+         rObj[item.name] = item.value;
+         return rObj;
+    })
+    
+    console.log(reformattedArray);
+
+});
+
+
+
+
+//data.employees.push(userArray);
+
+
+
+// function handleForm() {
+//     const signUpForm = $("form[name=sign-up-form]");
+//     signUpForm.on("submit", function (e) {
+//         e.preventDefault();
+//         const userLastName = $("input[name=last-name");
+//         const userFirstName = $("input[name=first-name");
+//         const userEmailAddress = $("input[name=emai]");
+
+//         const lastName = userLastName.val();
+//         const firstName = userFirstName.val();
+//         const emailAddress = userEmailAddress.val();
+//         const pointsGiven = 0;
+//         const pointsReceived = 0;
+//         const pointsRemaining = 100;
+
+//         const userLastName = $("");
+//         const userFirstName = $("");
+//         const userEmailAddress = $("");
+//     });
+// }
+// handleForm();
 
 // this function can stay the same even when we
 // are connecting to real API
