@@ -65,52 +65,45 @@
         <section class="individual-info-container individual-info container">
             <h1 class="employee">Joseph Foo</h1>
 
-            <section class="points-received points-section">
+            <section class="add-points-section">
+                <form class="add-points-form">
+                    <fieldset>
+                        <legend>
 
-                <div class="round1 received points">
+                        </legend>
+                        <label for="employee-action" class="input-label" id="js-reason">
+                            <h2>For what action would you like to award points?</h2>
+                        </label>
+                        <input type="text" name="employee-action" class="employee-action js-employee-action" placeholder="ex. sourced a new paper vendor"
+                            title="employee-action" required>
 
-                    <div class="points-from description" id="js-points-from-description">
-
-
-                        <form>
-                            <fieldset>
-                                <legend>
-
-                                </legend>
-                                <label for="employee-action" class="input-label" id="js-reason">
-                                    <h2>For what action would you like to award points?</h2>
-                                </label>
-
-                                <input type="text" name="employee-action" class="employee-action js-employee-action" placeholder="ex. sourced a new paper vendor"
-                                    title="employee-action" required>
-                                <h2>Which Fizz Buzz Corporate goal was supported?</h2>
-                                <select name="goal" id="goal-dropdown">
-                                    <option value=""></option>
-                                    <option value="Ideas">Ideas</option>
-                                    <option value="Sales">Sales</option>
-                                    <option value="Service">Service</option>
-                                    <option value="Costs">Costs</option>
-                                </select>
-
-                                <h2> How many points would you like to give for this action?</h2>
-                                <select name="points" id="points-dropdown">
-                                    <option value=""></option>
-                                    <option value="5">5</option>
-                                    <option value="10">10</option>
-                                    <option value="15">15</option>
-                                    <option value="20">20</option>
-                                    <option value="25">25</option>
-                                </select>
-                                <br>
-
-                                <label for="goal-support" class="input-label">
-
-                            </fieldset>
-                        </form>
-                        <button class="ellipse button-add-to-existing-points">Add the points!</button>
-                    </div>
-                </div>
-
+                        <label for="goal-dropdown" class="input-label">
+                            <h2>Which Fizz Buzz corporate goal was supported?</h2>
+                        </label>
+                        <select name="goal" id="goal-dropdown">
+                            <option value=""></option>
+                            <option value="Ideas">Ideas</option>
+                            <option value="Sales">Sales</option>
+                            <option value="Service">Service</option>
+                            <option value="Costs">Costs</option>
+                        </select>
+                        
+                        <label for="points-dropdown" class="input-label">
+                            <h2> How many points would you like to give for this action?</h2>
+                        </label>
+                        <select name="points" id="points-dropdown">
+                            <option value=""></option>
+                            <option value="5">5</option>
+                            <option value="10">10</option>
+                            <option value="15">15</option>
+                            <option value="20">20</option>
+                            <option value="25">25</option>
+                        </select>
+                        <br>
+                        <label for="goal-support" class="input-label">
+                    </fieldset>
+                </form>
+                <button id="js-button-add-points" class="add-points-button">Add the points!</button>
             </section>
         </section>
     </section>

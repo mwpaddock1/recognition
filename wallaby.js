@@ -1,6 +1,6 @@
 module.exports = () => {
     return {
-        files: ['server.js','public/index.html', 'public/index.js'],
+        files: ['public/index.html', 'public/index.js', 'server.js'],
         tests: ['test/**/*.js'],
         testFramework: 'mocha',
         env: {type: 'node',

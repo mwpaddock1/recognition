@@ -1,5 +1,3 @@
-
-
 const MOCK_DATA = {
     employees: [{
             lastName: "Foo",
@@ -55,6 +53,7 @@ function getEmployees(callbackFn) {
 // this function stays the same when we connect
 // to real API later
 function displayEmployees(data) {
+
     for (let currentEmployee = 0; currentEmployee < data.employees.length; currentEmployee++) {
         $('#js-last-name').append(`<h2>${data.employees[currentEmployee].lastName}</h2>`);
         $('#js-first-name').append(`<h2>${data.employees[currentEmployee].firstName}</h2>`);
@@ -70,17 +69,19 @@ $("form").submit(function (event) {
     let inputArray =
         $(event.currentTarget).serializeArray();
 
-    console.log(inputArray);
-
     //reformat the array
     let reformattedArray = inputArray.map(item => {
         let rObj = {};
-         console.log(item);
-         rObj[item.name] = item.value;
-         return rObj;
+        console.log(item);
+        rObj[item.name] = item.value;
+        return rObj;
     })
-    
+
     console.log(reformattedArray);
+
+    const reducingFunction = (obj1, obj2) =>
+        Object.assign(obj1, obj2);
+    console.log(reformattedArray.reduce(reducingFunction));
 
 });
 
