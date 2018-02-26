@@ -82,7 +82,7 @@ $("form").submit(function (event) {
     const reducingFunction = (obj1, obj2) =>
         Object.assign(obj1, obj2);
     console.log(reformattedArray.reduce(reducingFunction));
-
+// data.employees.push(reducingFunction);
 });
 
 
