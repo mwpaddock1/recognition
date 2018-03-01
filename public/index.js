@@ -81,38 +81,63 @@ $("form").submit(function (event) {
 
     const reducingFunction = (obj1, obj2) =>
         Object.assign(obj1, obj2);
+    let newEmployee = (reformattedArray.reduce(reducingFunction));
+
     console.log(reformattedArray.reduce(reducingFunction));
-// data.employees.push(reducingFunction);
+
+    //do not do the following here as it is too specific to the mock data:  
+    // MOCK_DATA.employees.push(newUser)= put it in a add function;
+
 });
+//}
+
+
+function addNewEmployee(newEmployee) {
+    return new Promise((resolve, reject) => {
+     MOCK_DATA.employees.push(newEmployee);
+     resolve();
+    })
+}
+
+
+function getAllEmployees() {
+    return new Promise((resolve, reject)=> {
+        resolve(MOCK_DATA.employees);
+    });
+}
+
+function myApplication() {
+    //Add an employee
+    addNewEmployee ({
+        firstName: 'Tony',
+        lastName:'Perkins',
+    })
+    .then(getAllEmployees)
+    .then((getAndDisplayEmployees) => {
+        //do something with the employees
+    });
+
+}
+$('#employee-list').click(function (event) {
+    console.log("employee has been selected-sending to individual employee page")
+    //hide and display correct elements in here when the htmls are combined
+})
+
+$('.js-new-points.button').click(function (event) {
+    console.log("sending to addpoints section")
+})
+
+$('.js-add-points-button.button').click(function (event) {
+    console.log("adding the points");
+
+    // for giver and recipient:
+    //update the points
+    //display the goal and the reason
+    //then, return to employee-list
+})
 
 
 
-
-//data.employees.push(userArray);
-
-
-
-// function handleForm() {
-//     const signUpForm = $("form[name=sign-up-form]");
-//     signUpForm.on("submit", function (e) {
-//         e.preventDefault();
-//         const userLastName = $("input[name=last-name");
-//         const userFirstName = $("input[name=first-name");
-//         const userEmailAddress = $("input[name=emai]");
-
-//         const lastName = userLastName.val();
-//         const firstName = userFirstName.val();
-//         const emailAddress = userEmailAddress.val();
-//         const pointsGiven = 0;
-//         const pointsReceived = 0;
-//         const pointsRemaining = 100;
-
-//         const userLastName = $("");
-//         const userFirstName = $("");
-//         const userEmailAddress = $("");
-//     });
-// }
-// handleForm();
 
 // this function can stay the same even when we
 // are connecting to real API

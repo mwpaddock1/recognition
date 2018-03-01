@@ -52,6 +52,9 @@ button.forgot-password-button,
 button.add-points-button {
     width: auto;
     height: 50px;
+    /* text-align: center; */
+    /* align-items: center; */
+    /* margin: auto; */
 }
 
 .program-name {
@@ -301,10 +304,10 @@ button:hover {
 }
 
 .buttons {
-    width: 100%;
+    /* width: 100%; */
     display: flex;
     justify-content: center;
-    text-align: center;
+    /* text-align: center; */
 }
 
 .form-container {
@@ -334,7 +337,7 @@ button:hover {
         margin-right: 150px;
     } */
     .buttons {
-        width: 25%
+        /* width: 25% */
     }
     /* img.feedback {
         width: 80%;
