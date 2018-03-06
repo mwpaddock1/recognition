@@ -30,7 +30,9 @@ h1 {
 h3 {
     vertical-align: middle;
 }
-
+.cancel-button {
+    display: none;
+}
 .employee {
     font-size: 30px;
 }
@@ -43,6 +45,7 @@ h3 {
 header {
     background-color: #0c91F0;
     width: 100%;
+    height: 125px;
 }
 
 button.log-in-button,

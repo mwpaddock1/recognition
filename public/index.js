@@ -52,18 +52,18 @@ function getEmployees(callbackFn) {
 
 // this function stays the same when we connect
 // to real API later
-function displayEmployees(data) {
+function displayEmployees(employees) {
 
-    for (let currentEmployee = 0; currentEmployee < data.employees.length; currentEmployee++) {
-        $('#js-last-name').append(`<h2>${data.employees[currentEmployee].lastName}</h2>`);
-        $('#js-first-name').append(`<h2>${data.employees[currentEmployee].firstName}</h2>`);
-        $('#js-points-received').append(`<h2>${data.employees[currentEmployee].pointsReceived}</h2>`);
-        $('#js-points-given').append(`<h2>${data.employees[currentEmployee].pointsGiven}</h2>`);
-        $('#js-points-remaining').append(`<h2>${data.employees[currentEmployee].pointsRemaining}</h2>`);
+    for (let currentEmployee = 0; currentEmployee < employees.length; currentEmployee++) {
+        $('#js-last-name').append(`<h2>${employees[currentEmployee].lastName}</h2>`);
+        $('#js-first-name').append(`<h2>${employees[currentEmployee].firstName}</h2>`);
+        $('#js-points-received').append(`<h2>${employees[currentEmployee].pointsReceived}</h2>`);
+        $('#js-points-given').append(`<h2>${employees[currentEmployee].pointsGiven}</h2>`);
+        $('#js-points-remaining').append(`<h2>${employees[currentEmployee].pointsRemaining}</h2>`);
     }
 }
 
-$("form").submit(function (event) {
+$("form[name=sign-up-form]").submit(function (event) {
     event.preventDefault();
     //get the form inputs and place them into an array
     let inputArray =
@@ -84,40 +84,38 @@ $("form").submit(function (event) {
     let newEmployee = (reformattedArray.reduce(reducingFunction));
 
     console.log(reformattedArray.reduce(reducingFunction));
-
-    //do not do the following here as it is too specific to the mock data:  
-    // MOCK_DATA.employees.push(newUser)= put it in a add function;
-
+    addNewEmployee(newEmployee)
+        .then(getAllEmployees)
+        .then(displayEmployees);
 });
-//}
 
-
-function addNewEmployee(newEmployee) {
+function addNewEmployee(employeeData) {
     return new Promise((resolve, reject) => {
-     MOCK_DATA.employees.push(newEmployee);
-     resolve();
+        MOCK_DATA.employees.push(employeeData);
+        resolve();
+        debugger
     })
 }
 
-
 function getAllEmployees() {
-    return new Promise((resolve, reject)=> {
+    return new Promise((resolve, reject) => {
         resolve(MOCK_DATA.employees);
     });
 }
 
 function myApplication() {
-    //Add an employee
-    addNewEmployee ({
-        firstName: 'Tony',
-        lastName:'Perkins',
-    })
-    .then(getAllEmployees)
-    .then((getAndDisplayEmployees) => {
-        //do something with the employees
-    });
-
+    // //Add an employee
+    // addNewEmployee({
+    //         firstName: 'Tony',
+    //         lastName: 'Perkins',
+    //     })
+    //     .then(getAllEmployees)
+    //     .then(displayEmployees);
 }
+
+
+
+
 $('#employee-list').click(function (event) {
     console.log("employee has been selected-sending to individual employee page")
     //hide and display correct elements in here when the htmls are combined
@@ -146,5 +144,5 @@ function getAndDisplayEmployees() {
 }
 
 $(function () {
-    getAndDisplayEmployees();
+    myApplication();
 });

@@ -15,12 +15,25 @@ chai.use(chaiHttp);
 //         expect(res).to.have.status(200);
 //     })
 // })
-describe('recognition page', function () {
+describe('employee list page', function () {
     it('should exist', function () {
       return chai.request(app)
         .get('/')
         .then(function (res) {
+          //so subsequetn .then blocks can access the response object
+          res=_res;
           res.should.have.status(200);
+          
         });
     });
   });
+
+  it('should return employees with the right fields', function() {
+    //strategy: get back all employees and ensure they have the expected keys
+    let resEmployee;
+    return chai.request(app)
+    .get('/employee-list')
+    .then(function(res) {
+      expect(res).to.be.json;
+    })
+  })
