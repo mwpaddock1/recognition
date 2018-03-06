@@ -55,6 +55,7 @@ function getEmployees(callbackFn) {
 function displayEmployees(employees) {
 
     for (let currentEmployee = 0; currentEmployee < employees.length; currentEmployee++) {
+
         $('#js-last-name').append(`<h2>${employees[currentEmployee].lastName}</h2>`);
         $('#js-first-name').append(`<h2>${employees[currentEmployee].firstName}</h2>`);
         $('#js-points-received').append(`<h2>${employees[currentEmployee].pointsReceived}</h2>`);
@@ -82,7 +83,9 @@ $("form[name=sign-up-form]").submit(function (event) {
     const reducingFunction = (obj1, obj2) =>
         Object.assign(obj1, obj2);
     let newEmployee = (reformattedArray.reduce(reducingFunction));
+    let loggedInEmployee = (`${newEmployee.firstName} ${newEmployee.lastName}`);
 
+    $('#js-logged-in-employee').append(`You are logged in as ${loggedInEmployee}`);
     console.log(reformattedArray.reduce(reducingFunction));
     addNewEmployee(newEmployee)
         .then(getAllEmployees)
@@ -93,7 +96,6 @@ function addNewEmployee(employeeData) {
     return new Promise((resolve, reject) => {
         MOCK_DATA.employees.push(employeeData);
         resolve();
-        debugger
     })
 }
 

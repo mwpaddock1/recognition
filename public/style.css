@@ -36,7 +36,11 @@ h3 {
 .employee {
     font-size: 30px;
 }
-
+.logged-in-employee {
+    text-align: center;
+    color: #f2f2f2
+   
+}
 .banner-button {
     margin-right: 25px;
     height: 50px;
