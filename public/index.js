@@ -107,85 +107,95 @@ function addNewEmployee(employeeData) {
         resolve();
     })
 }
-$("form[name=login-form").submit(function (event) {
-    event.preventDefault();
-    //use the email address to find the logged-in-employee and then list on the screen
-    const employeeEmail = $('input[name=email]');
-    const loggedInEmployeeEmail = employeeEmail.val();
-    //the loggedInEmployeeEmail is correct at this point
-   debugger
-    function findEmployee(employees) {
-        getMockData();
-        debugger
-        for (let currentEmployee = 0; currentEmployee <MOCK_DATA.employees.length; currentEmployee++) {
-            console.log(`${employees[currentEmployee].emailAddress}`);
-        
-            if ((employees[currentEmployee].emailAddress) == (loggedInEmployeeEmail)) {
-                let loggedInEmployee = (`${employees[currentEmployee].firstName} ${employees[currentEmployee].lastName}`)
-debugger
-                $('#js-logged-in-employee').append(`You are logged in as ${loggedInEmployee}`);
-            }
 
-            // else ( error message)
-        }
-    }
-    findEmployee();
-});
-
-
-function getAllEmployees() {
+function login(emailAddress, password) {
     return new Promise((resolve, reject) => {
         let MOCK_DATA = getMockData();
-        resolve(MOCK_DATA.employees);
-    });
+            function userFind(user) {                
+            return (user.emailAddress === emailAddress && user.password === password)
+        }        
+        let loggedInUser = MOCK_DATA.employees.find(userFind);       
+        if (!loggedInUser) {
+            reject()
+        } else {
+            resolve(loggedInUser); 
+            $('#js-logged-in-employee').append(`You are logged in as ${loggedInUser.firstName} ${loggedInUser.lastName}`);
+            
+            getAllEmployees(MOCK_DATA) 
+              debugger        
+            displayEmployees(MOCK_DATA.employees); 
+            debugger
+        }        
+    })
 }
+$("form[name=login-form").submit(function (event) {
+            event.preventDefault();
+          
+            //use the email address to find the logged-in-employee and then list on the screen
+            const employeeEmail = $('input[name=email]');
+            const loggedInEmployeeEmail = employeeEmail.val();
+            const employeePassword = $('input[name=password]');
+            const loggedInEmployeePassword = employeePassword.val();
+            login(loggedInEmployeeEmail, loggedInEmployeePassword)
+                .then(loggedInUser => {
+                                          
+                    }).catch(err => {
+                        console.log('error');                
+            });
+        });
+        function getAllEmployees() {
+            return new Promise((resolve, reject) => {
+                let MOCK_DATA = getMockData();
+                resolve(MOCK_DATA.employees);
+            });
+        }
 
-function myApplication() {
-    // //Add an employee
-    // addNewEmployee({
-    //         firstName: 'Tony',
-    //         lastName: 'Perkins',
-    //     })
-    //     .then(getAllEmployees)
-    //     .then(displayEmployees);
-}
-
-
-
-
-$('#js-last-name').click(function (event) {
-    console.log("employee has been selected-sending to individual employee page")
-    //hide and display correct elements in here when the htmls are combined
-
-
-    $('.employee').append($(event.currentTarget).text());
-    debugger
-
-
-})
-
-$('.js-new-points').click(function (event) {
-    console.log("sending to addpoints section")
-})
-
-$('#js-add-points-button').click(function (event) {
-    console.log("adding the points");
-
-    // for giver and recipient:
-    //update the points
-    //display the goal and the reason
-    //then, return to employee-list
-})
+        function myApplication() {
+            // //Add an employee
+            // addNewEmployee({
+            //         firstName: 'Tony',
+            //         lastName: 'Perkins',
+            //     })
+            //     .then(getAllEmployees)
+            //     .then(displayEmployees);
+        }
 
 
 
 
-// this function can stay the same even when we
-// are connecting to real API
-function getAndDisplayEmployees() {
-    getEmployees(displayEmployees);
-}
+        $('#js-last-name').click(function (event) {
+            console.log("employee has been selected-sending to individual employee page")
+            //hide and display correct elements in here when the htmls are combined
 
-$(function () {
-    myApplication();
-});
+
+            $('.employee').append($(event.currentTarget).text());
+            debugger
+
+
+        })
+
+        $('.js-new-points').click(function (event) {
+            console.log("sending to addpoints section")
+        })
+
+        $('#js-add-points-button').click(function (event) {
+            console.log("adding the points");
+
+            // for giver and recipient:
+            //update the points
+            //display the goal and the reason
+            //then, return to employee-list
+        })
+
+
+
+
+        // this function can stay the same even when we
+        // are connecting to real API
+       , function getAndDisplayEmployees() {
+            getEmployees(displayEmployees);
+        }
+
+       , $(function () {
+            myApplication();
+        });
