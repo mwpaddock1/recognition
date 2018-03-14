@@ -30,17 +30,20 @@ h1 {
 h3 {
     vertical-align: middle;
 }
+
 .cancel-button {
     display: none;
 }
+
 .employee {
     font-size: 30px;
 }
+
 .logged-in-employee {
     text-align: center;
     color: #f2f2f2
-   
 }
+
 .banner-button {
     margin-right: 25px;
     height: 50px;
@@ -52,13 +55,16 @@ header {
     height: 125px;
 }
 
+button.banner-button,
 button.log-in-button,
 button.sign-up-button,
+button.sign-in-button,
 button.cancel-button,
 button.forgot-password-button,
 button.add-points-button {
     width: auto;
     height: 50px;
+    /* box-sizing: border-box; */
     /* text-align: center; */
     /* align-items: center; */
     /* margin: auto; */
@@ -75,7 +81,7 @@ button.add-points-button {
 
 fieldset {
     margin: 0 auto;
-    padding-left: 10px; 
+    padding-left: 10px;
     text-align: left;
 }
 
@@ -134,14 +140,14 @@ legend {
 
 img.thumbs-up {
     width: 20%;
-    margin-top: 5%;
-    margin-bottom: 0;
+    margin: 40px;
     box-sizing: border-box;
-    margin-left: 35%;
 }
 
 .thumbs-up-image {
-    margin: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 #employee-list {
@@ -155,25 +161,13 @@ img.thumbs-up {
 
 .title-boxes,
 .employee-boxes {
-    display: inline-flex;
-    text-align: center;
     width: 100%;
-}
-
-.points-title-box,
-.points-box {
-    background-color: #FFF9AD;
-    width: 20%;
-    margin: 2px;
-}
-
-.name-title-box,
-.name-box {
-    background-color: #FFF9AD;
-    width: 30%;
-    margin: 2px;
-    text-align: left;
-    padding-left: 5px;
+    /* box-sizing:border-box; */
+    border: 2px solid red;
+    /* text-align: center; */
+    /* margin: auto; */
+    /* display: flex; */
+    justify-content: space-evenly;
 }
 
 p {
@@ -187,7 +181,8 @@ p {
     width: 100%;
     text-align: center;
     margin: 20px auto;
-    box-sizing: border-box;
+    border: 2px solid blue;
+    /* box-sizing: border-box; */
 }
 
 .goals h1,
@@ -218,14 +213,15 @@ p {
     flex-grow: 0;
     flex-shrink: 0;
     padding: 5% 0;
-    vertical-align: middle;
+    /* vertical-align: middle; */
+    width: 250px;
 }
 
 button.ellipse {
     margin: 10px 0 5px 5px;
 }
 
-.button-add-points,
+.button-give-points,
     {
     border-radius: 10%;
     padding: 2% 2%;
@@ -292,9 +288,9 @@ button {
     color: white;
     font-size: 16px;
     margin: 16px;
+    padding: 0 16px 16px 16px;
     text-align: center;
     border-radius: 7px;
-    align-items: center;
     cursor: pointer;
     transition-duration: 0.4s;
 }
@@ -311,10 +307,8 @@ button:hover {
 }
 
 .buttons {
-    /* width: 100%; */
     display: flex;
     justify-content: center;
-    /* text-align: center; */
 }
 
 .form-container {
@@ -325,8 +319,42 @@ button:hover {
     margin: auto;
 }
 
-#js-last-name h2:hover {
+.current-employee h2 {
+    display: inline;
+}
+
+.current-employee {
+    width: 100%;
+}
+
+#js-last-name,
+#js-first-name,
+#js-points-received,
+#js-points-given,
+#js-points-remaining,
+.title-box {
+    /* width: 10%; */
+    display: inline-flex;
+    /* justify-content: space-between; */
+    text-align: center;
+}
+
+h2#js-last-name.employee-box:hover {
     background-color: #E6F1C8;
+    cursor: pointer;
+}
+.title-box {
+    background-color: #FFF9AD;
+}
+.employee-box {
+    background-color: #F2f2f2;
+}
+.title-box,
+.employee-box {
+    margin: 5px;
+    /* padding-left: 50px; */
+    padding: 0 50px;
+    box-sizing: border-box;
 }
 
 /*For non-mobile devices*/
@@ -340,19 +368,6 @@ button:hover {
         /* align-items: center; */
         justify-content: center;
     }
-    /* .banner-button {
-        margin-right: 150px;
-    } */
-    .buttons {
-        /* width: 25% */
-    }
-    /* img.feedback {
-        width: 80%;
-        border-radius: 3%;
-        margin-left:     auto;
-        margin-right: auto;
-        display: block;
-    } */
     .ellipse {
         width: 100px;
         padding: 2% 2%;
@@ -372,32 +387,21 @@ button:hover {
     .program-name {
         font-size: 2.5rem;
     }
-    img.thumbs-up {
-        margin-left: 32%;
-    }
     #employee-list,
     .goals,
     .individual-info {
         width: 60%;
         padding: 20px;
     }
-    .points-title-box,
-    .points-box {
-        width: 20%;
-        margin: 5px;
+    #js-last-name, #js-first-name, #js-points-received, #js-points-given, #js-points-remaining, .title-box {
+        width: 15%;
+        /* display: inline-block; */
     }
     #employee-list {
         font-size: 16px;
         width: 95%;
     }
-    .name-title-box,
-    .name-box {
-        background-color: #FFF9AD;
-        width: 30%;
-        margin: 5px;
-        text-align: left;
-        padding-left: 50px;
-    }
+    
     .goal {
         width: 95%;
         display: inline-flex;
@@ -411,7 +415,7 @@ button:hover {
     }
     .employee-container,
     .individual-info-container {
-        width: 70%;
+        width: 75%;
     }
     fieldset {
         padding-left: 50px;
