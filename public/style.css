@@ -167,7 +167,7 @@ img.thumbs-up {
     /* text-align: center; */
     /* margin: auto; */
     /* display: flex; */
-    justify-content: space-evenly;
+    /* justify-content: space-evenly; */
 }
 
 p {
@@ -322,24 +322,12 @@ button:hover {
 .current-employee h2 {
     display: inline;
 }
-
+ 
 .current-employee {
     width: 100%;
 }
 
-#js-last-name,
-#js-first-name,
-#js-points-received,
-#js-points-given,
-#js-points-remaining,
-.title-box {
-    /* width: 10%; */
-    display: inline-flex;
-    /* justify-content: space-between; */
-    text-align: center;
-}
-
-h2#js-last-name.employee-box:hover {
+h2.js-last-name.employee-box:hover {
     background-color: #E6F1C8;
     cursor: pointer;
 }
@@ -349,12 +337,12 @@ h2#js-last-name.employee-box:hover {
 .employee-box {
     background-color: #F2f2f2;
 }
-.title-box,
-.employee-box {
+.title-box, h2.employee-box {
     margin: 5px;
-    /* padding-left: 50px; */
     padding: 0 50px;
     box-sizing: border-box;
+    display: inline-flex;
+    text-align: center;
 }
 
 /*For non-mobile devices*/
@@ -393,8 +381,8 @@ h2#js-last-name.employee-box:hover {
         width: 60%;
         padding: 20px;
     }
-    #js-last-name, #js-first-name, #js-points-received, #js-points-given, #js-points-remaining, .title-box {
-        width: 15%;
+     .title-box, h2.employee-box {
+        width: 200px;
         /* display: inline-block; */
     }
     #employee-list {

@@ -52,45 +52,51 @@
 
 // this function stays the same when we connect
 // to real API later
-function displayEmployees(employees) {
-    for (let currentEmployee = 0; currentEmployee < employees.length; currentEmployee++) {
+let globalEmployees;
+let tranxLog;
+
+function displayEmployees(globalEmployees) {
+    for (let currentEmployee = 0; currentEmployee < globalEmployees.length; currentEmployee++) {
         const empInfoHTML = (
-            ` <div class = "current-employee" data-email="${employees[currentEmployee].emailAddress}">
-                    <h2 class = "js-last-name employee-box"> ${employees[currentEmployee].lastName}</h2>
-                    <h2 class = "js-first-name mployee-box"> ${employees[currentEmployee].firstName}</h2>
-                    <h2 class = "js-points-received employee-box"> ${employees[currentEmployee].pointsReceived}</h2>
-                    <h2 class = "js-points-given employee-box"> ${employees[currentEmployee].pointsGiven}</h2>
-                    <h2 class = "js-points-remainingemployee-box"> ${employees[currentEmployee].pointsRemaining}</h2>                    
+            ` <div class = "current-employee" data-email="${globalEmployees[currentEmployee].emailAddress}">
+                    <h2 class = "js-last-name employee-box"> ${globalEmployees[currentEmployee].lastName}</h2>
+                    <h2 class = "js-first-name employee-box"> ${globalEmployees[currentEmployee].firstName}</h2>
+                    <h2 class = "js-points-received employee-box"> ${globalEmployees[currentEmployee].pointsReceived}</h2>
+                    <h2 class = "js-points-given employee-box"> ${globalEmployees[currentEmployee].pointsGiven}</h2>
+                    <h2 class = "js-points-remaining employee-box"> ${globalEmployees[currentEmployee].pointsRemaining}</h2>                    
               </div>
             `
         )
         $('row.employee-boxes').append(empInfoHTML);
     }
     $('.current-employee').click(function (event) {
-        console.log($(event.currentTarget).data('email'));
+        let selectedEmployeeEmail = ($(event.currentTarget).data('email'));
         console.log("sending to individual-employee addpoints section");
-        //display employee name and current recognition status -given&received- along with ellipses and totals
+        let selectedEmployee = globalEmployees.filter(globalEmployee => selectedEmployeeEmail === globalEmployee.emailAddress);
+        console.log(selectedEmployee);
+        return selectedEmployee;
     });
 }
-let globalEmployees;
+
 $("form[name=sign-up-form]").submit(function (event) {
     event.preventDefault();
     //get the form inputs and place them into an array
     let inputArray =
         $(event.currentTarget).serializeArray();
-    //reformat the array
+
     let reformattedArray = inputArray.map(item => {
         let rObj = {};
         console.log(item);
         rObj[item.name] = item.value;
         return rObj;
-    })
+    });
     const reducingFunction = (obj1, obj2) =>
         Object.assign(obj1, obj2);
     let newEmployee = (reformattedArray.reduce(reducingFunction));
-    let loggedInEmployee = (`${newEmployee.firstName} ${newEmployee.lastName}`);
 
-    $('#js-logged-in-employee').append(`You are logged in as ${loggedInEmployee}`);
+    let loggedInEmployee = (`${newEmployee.firstName} ${newEmployee.lastName}`);
+debugger
+    $('.js-logged-in-employee').append(`You are logged in as ${loggedInEmployee}`);
     console.log(reformattedArray.reduce(reducingFunction));
     addNewEmployee(newEmployee)
         .then(getAllEmployees)
@@ -98,43 +104,55 @@ $("form[name=sign-up-form]").submit(function (event) {
             globalEmployees = employeesGet;
             return globalEmployees;
         })
-
         .then(displayEmployees);
+    console.log('here');
+    console.log(globalEmployees);
 });
 //login existing employee
 function login(emailAddress, password) {
     return new Promise((resolve, reject) => {
         let MOCK_DATA = getMockData();
-
-        function userFind(user) {
-            return (user.emailAddress === emailAddress && user.password === password)
-        }
-        let loggedInUser = MOCK_DATA.employees.find(userFind);
-        if (!loggedInUser) {
-            reject()
-        } else {
-            resolve()
-            $('#js-logged-in-employee').append(`You are logged in as ${loggedInUser.firstName} ${loggedInUser.lastName}`);
-            getAllEmployees(MOCK_DATA);
-            displayEmployees(MOCK_DATA.employees);
-        }
+        getAllEmployees(MOCK_DATA);
+        resolve();
     })
 }
 $("form[name=login-form]").submit(function (event) {
     event.preventDefault();
-    //use the email address to find the logged-in-employee and then list on the screen
     const employeeEmail = $('input[name=email]');
     const loggedInEmployeeEmail = employeeEmail.val();
     const employeePassword = $('input[name=login-password]');
     const loggedInEmployeePassword = employeePassword.val();
 
     login(loggedInEmployeeEmail, loggedInEmployeePassword)
+        .then(getAllEmployees)
+        .then((employeesGet) => {
+            globalEmployees = employeesGet;
+            return globalEmployees;
+        })
+        .then(displayEmployees);
+    console.log(globalEmployees);
 
+    function userFind(user) {
+        return (user.emailAddress === loggedInEmployeeEmail && user.password === loggedInEmployeePassword)
+    }
+    let loggedInUser = globalEmployees.filter(globalEmployee => loggedInEmployeeEmail === globalEmployee.emailAddress);
+    console.log(loggedInUser);
+    return loggedInUser
+
+
+    if (!loggedInUser) {
+        console.log('rejected');
+    } else {
+        $('#js-logged-in-employee').append(`You are logged in as ${loggedInUser.firstName} ${loggedInUser.lastName}`);
+    }
+
+    login(loggedInEmployeeEmail, loggedInEmployeePassword)
         .then(loggedInUser => {})
+
         .catch(err => {
             console.log('error');
         });
-});
+})
 
 function getMockData() {
     let MOCK_DATA_STRING = localStorage.getItem('MOCK_DATA');
@@ -148,9 +166,12 @@ function setMockData(MOCK_DATA) {
 }
 //add new employee and login 
 function addNewEmployee(employeeData) {
+    employeeData.pointsGiven = 0;
+    employeeData.pointsReceived = 0;
+    employeeData.pointsRemaining = 100;
     return new Promise((resolve, reject) => {
         let MOCK_DATA = getMockData();
-        //also give the new employee points
+        //also give the new empl
         MOCK_DATA.employees.push(employeeData);
         setMockData(MOCK_DATA);
         resolve();
@@ -163,11 +184,9 @@ function getAllEmployees() {
         resolve(MOCK_DATA.employees);
     });
 }
-
-
 $('.button-give-points').click(function (event) {
     console.log("going to assign points page");
-})
+});
 
 $("form[name=add-points-form]").submit(function (event) {
     event.preventDefault();
@@ -191,4 +210,4 @@ $("form[name=add-points-form]").submit(function (event) {
 
 // function getAndDisplayEmployees() {
 //     getEmployees(displayEmployees);
-// }
+//}
