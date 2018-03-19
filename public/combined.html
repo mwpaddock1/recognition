@@ -89,7 +89,7 @@
                 <section class="log-in-info">
                     <input type="text" name="email" class="js-email" placeholder="jdemo@fizzbuzz.com" title="email" required/>
                     <br>
-                    <label for="email" class="input-label">Email</label>
+                    <label for="email" class="input-label" data-email>Email</label>
                     <br>
                     <br>
                     <input type="text" name="login-password" class="js-login-password" placeholder="secretstring!123" title="login-password" required/>
@@ -168,13 +168,13 @@
                     </div>
                 </row>
                 <row class="employee-boxes">
-                    <!--use JS to populeate-->
+                    <!--use JS to populate-->
                 </row>
             </section>
         </section>
     </section>
     <section class="individual-info-container individual-info container">
-        <h1 class="employee"></h1>
+        <h1 id="employee"></h1>
         <section class="points-received points-section">
             <h1>Points received</h1>
             <div class="round1 received points">
@@ -193,7 +193,6 @@
                 <div class="ellipse sales-ellipse">
                     <h2>Sales</h2>
                 </div>
-
                 <div class="points-given description js-points-given-description">
                     <h2>10 points to John Worker for closing the Bizzbang deal!</h2>
                 </div>
