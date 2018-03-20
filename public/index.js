@@ -43,7 +43,7 @@
 //         }
 //     ]
 
-// }));
+// // }));
 // console.log(JSON.stringify({
 //     transactions: [{
 //             lastName: "Foo",
@@ -68,7 +68,7 @@
 //         }
 
 //     ]
-// }));
+//  }));
 
 // function getEmployees(callbackFn) {
 //     setTimeout(function () {
@@ -79,7 +79,7 @@
 // this function stays the same when we connect
 // to real API later
 let globalEmployees;
-let tranxLog;
+let globalTransactions;
 let user;
 
 
@@ -100,7 +100,7 @@ $("form[name=sign-up-form]").submit(function (event) {
 
     let newEmployee = (reformattedArray.reduce(reducingFunction));
     let user = newEmployee;
-    
+
     $('.js-logged-in-employee').append(`You are logged in as ${user.firstName} ${user.lastName}`);
     console.log(reformattedArray.reduce(reducingFunction));
     addNewEmployee(newEmployee)
@@ -120,8 +120,6 @@ $("form[name=login-form]").submit(function (event) {
     const loggedInEmployeePassword = employeePassword.val();
     console.log(loggedInEmployeeEmail);
 
-
-
     getAllEmployees()
         .then((employeesGet) => {
             globalEmployees = employeesGet;
@@ -129,12 +127,10 @@ $("form[name=login-form]").submit(function (event) {
             function getUser() {
                 for (let i = 0; i < globalEmployees.length; i++) {
                     let userEmail = globalEmployees[i].emailAddress;
-                    debugger
-                    if (userEmail === loggedInEmployeeEmail) {
+                    let userPassword = globalEmployees[i].password;
+                    if (userEmail === loggedInEmployeeEmail && userPassword === loggedInEmployeePassword) {
                         let user = globalEmployees[i];
-                        
                         $('.js-logged-in-employee').append(`You are logged in as ${user.firstName} ${user.lastName}`);
-
                         console.log(user);
                     } else {
                         console.log('no match');
@@ -142,8 +138,6 @@ $("form[name=login-form]").submit(function (event) {
                 }
             }
             getUser();
-            
-
             return globalEmployees
         })
 
@@ -243,30 +237,75 @@ $("form[name=add-points-form]").submit(function (event) {
     console.log(reason);
     console.log(goal);
     console.log(points);
-    // function getAllTranx () {
+    let newTransaction = 
+    {
+                    // lastName: selectedIndividual.lastName,
+                    firstName: "Mary",
+                    emailAddress: "mbar@fizzbuzz.com",
+                    // pointsFromLastName: $(user.lastName),
+                    pointsFromFirstName: "John",
+                    goal: goal,
+                    points: points,
+                    reason:  reason
+        
+                }
+        
+    addNewTranx(newTransaction)
+        .then(getAllTranx)
+        .then((transactionsGet) => {
+            globalTransactions = transactionsGet;
+            return globalTransactions;
+        })
+        .then(displayTranx)
+});
 
-    // }
+function addNewTranx(tranxData) {
+    return new Promise((resolve, reject) => {
+        let TRANX_DATA = getTranxData();
+        //also include the new employee
+        TRANX_DATA.transactions.push(tranxData);
+        setTranxData(TRANX_DATA);
+        resolve();
+    })
+}
 
-    // function displayTranx() {
-    //     for (let currentEmployee = 0; currentEmployee < globalEmployees.length; currentEmployee++) {
-    //         const tranxInfoHTML = (
-    //             ` <div class = "current-employee" data-email="${globalEmployees[currentEmployee].emailAddress}">
-    //                             <h2 class = "js-last-name employee-box"> ${globalEmployees[currentEmployee].lastName}</h2>
-    //                             <h2 class = "js-first-name employee-box"> ${globalEmployees[currentEmployee].firstName}</h2>
-    //                             <h2 class = "js-points-received employee-box"> ${globalEmployees[currentEmployee].pointsReceived}</h2>
-    //                             <h2 class = "js-points-given employee-box"> ${globalEmployees[currentEmployee].pointsGiven}</h2>
-    //                             <h2 class = "js-points-remaining employee-box"> ${globalEmployees[currentEmployee].pointsRemaining}</h2>                    
-    //                       </div>
-    //                     `
-    //         )
-    
-    //         $('row.employee-boxes').append(empInfoHTML);
-    
-    //     }
+function getTranxData() {
+    let TRANX_DATA_STRING = localStorage.getItem('TRANX_DATA');
+    let TRANX_DATA = JSON.parse(TRANX_DATA_STRING);
+    return TRANX_DATA;
+}
+
+function setTranxData(TRANX_DATA) {
+    let TRANX_DATA_STRING = JSON.stringify(TRANX_DATA);
+    localStorage.setItem('TRANX_DATA', TRANX_DATA_STRING);
+}
+
+function getAllTranx() {
+    return new Promise((resolve, reject) => {
+        let TRANX_DATA = getTranxData();
+        resolve(TRANX_DATA.transactions);
+    })
+}
+
+function displayTranx() {
+    for (let currentTranx = 0; currentTranx < globalTransactions.length; currentTranx++) {
+        const tranxInfoHTML = (
+            ` <div class = "current-transaction">
+                <h2>Points Given: ${globalTransactions[currentTranx].points}</h2>
+                <h2>Corporate Goal: ${globalTransactions[currentTranx].goal}</h2>
+                <h2>Description: ${globalTransactions[currentTranx].reason}</h2> 
+                <br>                      
+              </div>
+            `
+        )
+
+        $('section.js-transaction-log').append(tranxInfoHTML);
+
+    }
     // for giver and recipient:
     //update the points, goal and reason
     //then, return to updated employee-list
-});
+}
 
 // this function can stay the same even when we
 // are connecting to real API
