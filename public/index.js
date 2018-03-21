@@ -46,22 +46,24 @@
 // // }));
 // console.log(JSON.stringify({
 //     transactions: [{
-//             lastName: "Foo",
-//             firstName: "Joseph",
-//             emailAddress: "jfofo@fizzbuzz.com",
-//             pointsFromLastName: "Bar",
-//             pointsFromFirstName: "Mary",
-//             corpGoal: "costs",
+//             recipientLastName: "Foo",
+//             recipientFirstName: "Joseph",
+//             recipientEmailAddress: "jfoo@fizzbuzz.com",
+//             senderLastName: "Bar",
+//             senderFirstName: "Mary",
+//             senderEmailAddress: "mbar@fizzbuzz.com",
+//             goal: "costs",
 //             points: 5,
 //             reason: "sourced a new paper vendor"
 //         },
 //         {
-//             lastName: "Bar",
-//             firstName: "Mary",
-//             emailAddress: "mbar@fizzbuzz.com",
-//             pointsFromLastName: "Staff",
-//             pointsFromFirstName: "John",
-//             corpGoal: "service",
+//             recipientLastName: "Bar",
+//             recipientFirstName: "Mary",
+//             recipientEmailAddress: "mbar@fizzbuzz.com",
+//             senderLastName: "Staff",
+//             senderFirstName: "John",
+//             senderEmailAddress: "jstaff@fizzbuzz.com",
+//             goal: "service",
 //             points: 10,
 //             reason: "served dinner at the homeless shelter"
 
@@ -81,14 +83,11 @@
 let globalEmployees;
 let globalTransactions;
 let user;
-
-
 $("form[name=sign-up-form]").submit(function (event) {
     event.preventDefault();
     //get the form inputs and place them into an array
     let inputArray =
         $(event.currentTarget).serializeArray();
-
     let reformattedArray = inputArray.map(item => {
         let rObj = {};
         console.log(item);
@@ -99,7 +98,7 @@ $("form[name=sign-up-form]").submit(function (event) {
         Object.assign(obj1, obj2);
 
     let newEmployee = (reformattedArray.reduce(reducingFunction));
-    let user = newEmployee;
+    user = newEmployee;
 
     $('.js-logged-in-employee').append(`You are logged in as ${user.firstName} ${user.lastName}`);
     console.log(reformattedArray.reduce(reducingFunction));
@@ -129,7 +128,7 @@ $("form[name=login-form]").submit(function (event) {
                     let userEmail = globalEmployees[i].emailAddress;
                     let userPassword = globalEmployees[i].password;
                     if (userEmail === loggedInEmployeeEmail && userPassword === loggedInEmployeePassword) {
-                        let user = globalEmployees[i];
+                        user = globalEmployees[i];
                         $('.js-logged-in-employee').append(`You are logged in as ${user.firstName} ${user.lastName}`);
                         console.log(user);
                     } else {
@@ -157,6 +156,7 @@ function addNewEmployee(employeeData) {
     })
 }
 
+
 //login existing employee
 function loginEmployee(info) {
     return new Promise((resolve, reject) => {
@@ -182,7 +182,6 @@ function getAllEmployees() {
     return new Promise((resolve, reject) => {
         let MOCK_DATA = getMockData();
         resolve(MOCK_DATA.employees);
-
     })
 }
 
@@ -198,11 +197,8 @@ function displayEmployees() {
                       </div>
                     `
         )
-
         $('row.employee-boxes').append(empInfoHTML);
-
     }
-
 
     $('.current-employee').click(function (event) {
         let selectedEmployeeEmail = ($(event.currentTarget).data('email'));
@@ -210,46 +206,63 @@ function displayEmployees() {
         console.log("sending to individual-employee addpoints section");
         let selectedEmployee = globalEmployees.filter(globalEmployee => selectedEmployeeEmail === globalEmployee.emailAddress);
         console.log(selectedEmployee);
-
-        let selectedIndividual = {
+        selectedIndividual = {
             firstName: selectedEmployee[0].firstName,
             lastName: selectedEmployee[0].lastName,
             emailAddress: selectedEmployee[0].emailAddress,
         }
+        let recipientEmailInput = $("#recipient");
 
-        document.getElementById('employee').innerHTML = selectedEmployee[0].firstName + ' ' + selectedEmployee[0].lastName;
+        recipientEmailInput.val(selectedIndividual.emailAddress);
+
+        document.getElementById('employee').innerHTML = selectedIndividual.firstName + ' ' + selectedIndividual.lastName;
+        
+        getAllTranx()
+            .then((transactionsGet) => {
+                globalTransactions = transactionsGet;
+                
+                const selectedEmployeePointsStatus = globalTransactions.filter(globalTransaction =>
+                   globalTransaction.recipientEmailAddress === selectedIndividual.emailAddress || globalTransaction.senderEmailAddress === selectedIndividual.emailAddress
+                );
+                debugger
+                console.log (selectedEmployeePointsStatus);
+                const pointsStatusHTML= (`
+                
+                
+                
+                `
+
+                )
+                
+            })
     });
-};
-
+}
 $('.button-give-points').click(function (event) {
     console.log("going to assign points page");
 });
 
+
 $("form[name=add-points-form]").submit(function (event) {
     event.preventDefault();
-    //grab the inputs and update the db
+    //grab the inputs and update the transactions
     const employeeAction = $('input[name=employee-action]');
     const reason = employeeAction.val();
     const corpGoal = $('select[name=goal]');
     const goal = corpGoal.val();
     const pointsDropdown = $('select[name=points]');
     const points = pointsDropdown.val();
+
+    let newTransaction = {
+        senderEmailAddress: user.emailAddress,
+        goal: goal,
+        points: points,
+        reason: reason,
+        recipientEmailAddress: $("#recipient").val()
+    }
     console.log(reason);
     console.log(goal);
     console.log(points);
-    let newTransaction = 
-    {
-                    // lastName: selectedIndividual.lastName,
-                    firstName: "Mary",
-                    emailAddress: "mbar@fizzbuzz.com",
-                    // pointsFromLastName: $(user.lastName),
-                    pointsFromFirstName: "John",
-                    goal: goal,
-                    points: points,
-                    reason:  reason
-        
-                }
-        
+    // console.log(senderEmail);
     addNewTranx(newTransaction)
         .then(getAllTranx)
         .then((transactionsGet) => {
@@ -258,6 +271,21 @@ $("form[name=add-points-form]").submit(function (event) {
         })
         .then(displayTranx)
 });
+
+function updateEmployeePoints(newTransaction) {
+    function findRecipient(employee) {
+        return employee.emailAddress === newTransaction.recipientEmailAddress;
+    }
+    let recipient = globalEmployees.find(findRecipient);
+    recipient.pointsReceived = (recipient.pointsReceived + newTransaction.points)
+
+    function findSender(employee) {
+        return employee.emailAddress === newTransaction.senderEmailAddress;
+    }
+    let sender = globalEmployees.find(findSender);
+    globalEmployees.pointsGiven = globalEmployess.pointsGiven + newTransaction.points
+    globalEmployees.pointsRemainingGiven = globalEmployess.pointsRemaining - newTransaction.points
+}
 
 function addNewTranx(tranxData) {
     return new Promise((resolve, reject) => {
@@ -291,21 +319,23 @@ function displayTranx() {
     for (let currentTranx = 0; currentTranx < globalTransactions.length; currentTranx++) {
         const tranxInfoHTML = (
             ` <div class = "current-transaction">
+                <h2>Sender Email: ${globalTransactions[currentTranx].senderEmailAddress}</h2>
                 <h2>Points Given: ${globalTransactions[currentTranx].points}</h2>
                 <h2>Corporate Goal: ${globalTransactions[currentTranx].goal}</h2>
                 <h2>Description: ${globalTransactions[currentTranx].reason}</h2> 
+                <h2>Recipient:${globalTransactions[currentTranx].recipientEmailAddress}</h2>
                 <br>                      
               </div>
             `
         )
 
         $('section.js-transaction-log').append(tranxInfoHTML);
-
     }
-    // for giver and recipient:
-    //update the points, goal and reason
-    //then, return to updated employee-list
 }
+// for giver and recipient:
+//update the points, goal and reason
+//then, return to updated employee-list
+
 
 // this function can stay the same even when we
 // are connecting to real API

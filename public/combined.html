@@ -38,8 +38,8 @@
         <button class="log-in-button">Log In</button>
     </section>
     <section class="thumbs-up-image">
-        <img class="thumbs-up" src=./images/multi-color-thumbs-up.png>
-        <img class="thumbs-up" src=./images/multi-color-thumbs-up-flip.png>
+        <img class="thumbs-up" src=./images/multi-color-thumbs-up.png alt="multi-colored thumbs-up image">
+        <img class="thumbs-up" src=./images/multi-color-thumbs-up-flip.png alt="mirror image of multi-colored thumbs-up image">
         <br>
     </section>
     <section class="js-form-container form-container">
@@ -51,17 +51,16 @@
                 <section class="employee-info">
                     <label for="lastName" class="input-label">Last Name</label>
                     <br>
-                    <input type="text" name="lastName"  class="js-last-name" placeholder="Demo" title="lastName" required/>
+                    <input type="text" name="lastName" class="js-last-name" placeholder="Demo" title="lastName" required/>
                     <br>
                     <label for="firstName" class="input-label">First Name</label>
                     <br>
-                    <input type="text" name="firstName"  class="js-first-name" placeholder="Joseph" title="firstName" required/>
+                    <input type="text" name="firstName" class="js-first-name" placeholder="Joseph" title="firstName" required/>
                 </section>
                 <section class="log-in-info">
                     <label for="emailAddress" class="input-label">Email</label>
                     <br>
-                    <input type="text" name="emailAddress" class="js-emailAddress" placeholder="jdemo@fizzbuzz.com" title="emailAddress"
-                        required/>
+                    <input type="text" name="emailAddress" class="js-emailAddress" placeholder="jdemo@fizzbuzz.com" title="emailAddress" required/>
                     <br>
                     <label for="password" class="input-label">Create Password</label>
                     <br>
@@ -69,8 +68,8 @@
                     <br>
                     <label for="retype-password" class="input-label">Retype Password</label>
                     <br>
-                    <input type="text" name="retype-password" class="js-retype-password" placeholder="secretstring!123"
-                        title="retype-password" required/>
+                    <input type="text" name="retype-password" class="js-retype-password" placeholder="secretstring!123" title="retype-password"
+                        required/>
                 </section>
             </fieldset>
             <div class="buttons">
@@ -92,7 +91,8 @@
                     <label for="email" class="input-label" data-email>Email</label>
                     <br>
                     <br>
-                    <input type="text" name="login-password" class="js-login-password" placeholder="secretstring!123" title="login-password" required/>
+                    <input type="text" name="login-password" class="js-login-password" placeholder="secretstring!123" title="login-password"
+                        required/>
                     <br>
                     <label for="login-password" class="input-label">Password</label>
                 </section>
@@ -175,36 +175,34 @@
     </section>
     <section class="individual-info-container individual-info container">
         <h1 id="employee"></h1>
-        <section class="points-received points-section">
-            <h1>Points received</h1>
-            <div class="round1 received points">
-                <div class="ellipse costs-ellipse">
-                    <h2>Costs</h2>
+        <section class="points-status">
+            <section class="points-received points-section">
+                <h1>Points received</h1>
+                <div class="round1 received points">
+                    <div class="ellipse costs-ellipse">
+                        <h2>Costs</h2>
+                    </div>
+                    <div class="points-from description js-points-from-description">
+                        <h2>5 points from Mary Bar for sourcing a new paper vendor!</h2>
+                    </div>
                 </div>
-                <div class="points-from description js-points-from-description">
-                    <h2>5 points from Mary Bar for sourcing a new paper vendor!</h2>
+            </section>
+            <section class="points-given points-section">
+                <h1>Points given</h1>
+                <div class="round1 given points">
+                    <div class="ellipse sales-ellipse">
+                        <h2>Sales</h2>
+                    </div>
+                    <div class="points-given description js-points-given-description">
+                        <h2>10 points to John Worker for closing the Bizzbang deal!</h2>
+                    </div>
                 </div>
-            </div>
-
+            </section>
+            <section class="js-give-points new-points points-section">
+                <h1>Give additional points to this employee for supporting the corporate goals!</h1>
+                <button class="ellipse button-give-points">Give points!</button>
+            </section>
         </section>
-        <section class="points-given points-section">
-            <h1>Points given</h1>
-            <div class="round1 given points">
-                <div class="ellipse sales-ellipse">
-                    <h2>Sales</h2>
-                </div>
-                <div class="points-given description js-points-given-description">
-                    <h2>10 points to John Worker for closing the Bizzbang deal!</h2>
-                </div>
-            </div>
-
-
-        </section>
-        <section class="js-give-points new-points points-section">
-            <h1>Give additional points to this employee for supporting the corporate goals!</h1>
-            <button class="ellipse button-give-points">Give points!</button>
-        </section>
-
     </section>
     <section class="individual-info-container individual-info container">
         <h1 class="employee"></h1>
@@ -215,12 +213,13 @@
                     <legend>
                         <h1>Give Points!</h1>
                     </legend>
+                    <input type="hidden" name="recipientEmail" id="recipient" title="recipientEmail">
+
                     <label for="employee-action" class="input-label reason js-reason">
                         <h2>For what action would you like to award points?</h2>
                     </label>
                     <input type="text" name="employee-action" class="employee-action js-employee-action" placeholder="ex. sourced a new paper vendor"
                         title="employee-action" required>
-
                     <label for="goal-dropdown" class="input-label">
                         <h2>Which Fizz Buzz corporate goal was supported?</h2>
                     </label>
@@ -231,7 +230,6 @@
                         <option value="Service">Service</option>
                         <option value="Costs">Costs</option>
                     </select>
-
                     <label for="points-dropdown" class="input-label">
                         <h2> How many points would you like to give for this action?</h2>
                     </label>
