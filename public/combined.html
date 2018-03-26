@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang='en'>
 
 <head>
     <meta charset="UTF-8">
@@ -20,12 +20,8 @@
             <img class="logo" src=./images/FizzBuzzSVG.svg alt="FizzBuzz logo">
             <p class="logged-in-employee js-logged-in-employee"></p>
             <section class="buttons">
-                <button class="log-in-button banner-button">
-                    <h3>Log In</h2>
-                </button>
-                <button class="cancel-button banner-button">
-                    <h3>Cancel</h3>
-                </button>
+                <button class="login-button banner-button">Log In</button>
+                <button class="cancel-button hidden banner-button">Cancel</button>
             </section>
         </div>
     </header>
@@ -34,8 +30,8 @@
 
     <p class="program-description">The program where employees send and receive peer recognition for actions that promote the company's goals</p>
     <section class="buttons">
-        <button class="sign-up-button">Sign Up</button>
-        <button class="log-in-button">Log In</button>
+        <button class="sign-up-opening-button">Sign Up</button>
+        <button class="login-opening-button">Log In</button>
     </section>
     <section class="thumbs-up-image">
         <img class="thumbs-up" src=./images/multi-color-thumbs-up.png alt="multi-colored thumbs-up image">
@@ -43,7 +39,7 @@
         <br>
     </section>
     <section class="js-form-container form-container">
-        <form name="sign-up-form" id="js-sign-up-form">
+        <form name="sign-up-form" id="js-sign-up-form" class="hidden">
             <fieldset class="fieldset-form">
                 <legend class=sign-up>
                     <h1>Sign Up</h1>
@@ -57,7 +53,7 @@
                     <br>
                     <input type="text" name="firstName" class="js-first-name" placeholder="Joseph" title="firstName" required/>
                 </section>
-                <section class="log-in-info">
+                <section class="login-info">
                     <label for="emailAddress" class="input-label">Email</label>
                     <br>
                     <input type="text" name="emailAddress" class="js-emailAddress" placeholder="jdemo@fizzbuzz.com" title="emailAddress" required/>
@@ -73,19 +69,17 @@
                 </section>
             </fieldset>
             <div class="buttons">
-                <button type="submit" class="sign-up-button">
-                    <h3>Sign Up</h3>
-                </button>
+                <button type="submit" class="sign-up-button">Sign Up</button>
             </div>
         </form>
     </section>
     <section class="js-form-container form-container">
-        <form name="login-form" class="js-login-form" class="login-form">
+        <form name="login-form" id="js-login-form" class="hidden">
             <fieldset>
                 <legend>
                     <h1>Log In</h1>
                 </legend>
-                <section class="log-in-info">
+                <section class="login-info">
                     <input type="text" name="email" class="js-email" placeholder="jdemo@fizzbuzz.com" title="email" required/>
                     <br>
                     <label for="email" class="input-label" data-email>Email</label>
@@ -98,16 +92,12 @@
                 </section>
             </fieldset>
             <section class="buttons">
-                <button type="submit" class="sign-in-button">
-                    <h3>Log In</h3>
-                </button>
-                <button class="forgot-password-button">
-                    <h3>Forgot password?</h3>
-                </button>
+                <button type="submit" class="sign-in-button">Log In</button>
+                
             </section>
         </form>
     </section>
-    <section class="main">
+    <section class="main hidden" role="main">
         <section class="goal-container container">
             <section class="goals" role="region">
                 <h1>Fizz Buzz 2018 Corporate Goals</h1>
@@ -145,111 +135,97 @@
                 </div>
             </section>
         </section>
-        <section class="employee-container container" role="region">
-            <section class="employee-list">
-                <h1>Employee Peer-to-Peer Recognition!</h1>
-                <p>Click on an employee's last name to send points or view previously received recognition</p>
-                <p>Redeem points in increments of 25 by reaching out to hr@fizzbuzz.com</p>
-                <row class="title-boxes">
-                    <div class="title-box">
-                        <h2>Last Name</h2>
-                    </div>
-                    <div class="title-box">
-                        <h2>First Name</h2>
-                    </div>
-                    <div class="title-box">
-                        <h2>Pts Rec'd</h2>
-                    </div>
-                    <div class="title-box">
-                        <h2>Pts Given</h2>
-                    </div>
-                    <div class="title-box">
-                        <h2>Pts left to give</h2>
-                    </div>
-                </row>
-                <row class="employee-boxes">
-                    <!--use JS to populate-->
-                </row>
-            </section>
-        </section>
-    </section>
-    <section class="individual-info-container individual-info container">
-        <h1 id="employee"></h1>
-        <section class="points-status">
-            <section class="points-received points-section">
-                <h1>Points received</h1>
-                <div class="round1 received points">
-                    <div class="ellipse costs-ellipse">
-                        <h2>Costs</h2>
-                    </div>
-                    <div class="points-from description js-points-from-description">
-                        <h2>5 points from Mary Bar for sourcing a new paper vendor!</h2>
-                    </div>
+        <section class="employee-list" role="region">
+            <h1>Employee Peer-to-Peer Recognition!</h1>            
+            <p>Every employee begins with 100 Points-to-Give to peers throughout the year.</p>
+            <p>Points-Received can be redeemed in increments of 25 by reaching out to hr@fizzbuzz.com</p>
+            <p>Click on an employee's last name to send points or view previously received recognition</p>
+            <row class="title-boxes">
+                <div class="title-box">
+                    <h2>Last Name</h2>
                 </div>
-            </section>
-            <section class="points-given points-section">
-                <h1>Points given</h1>
-                <div class="round1 given points">
-                    <div class="ellipse sales-ellipse">
-                        <h2>Sales</h2>
-                    </div>
-                    <div class="points-given description js-points-given-description">
-                        <h2>10 points to John Worker for closing the Bizzbang deal!</h2>
-                    </div>
+                <div class="title-box">
+                    <h2>First Name</h2>
                 </div>
-            </section>
-            <section class="js-give-points new-points points-section">
-                <h1>Give additional points to this employee for supporting the corporate goals!</h1>
-                <button class="ellipse button-give-points">Give points!</button>
-            </section>
+                <div class="title-box">
+                    <h2>Pts Rec'd</h2>
+                </div>
+                <div class="title-box">
+                    <h2>Pts Given</h2>
+                </div>
+                <div class="title-box">
+                    <h2>Pts to Give</h2>
+                </div>
+            </row>
+            <row class="employee-boxes">
+                <!--use JS to populate-->
+            </row>
         </section>
-    </section>
-    <section class="individual-info-container individual-info container">
-        <h1 class="employee"></h1>
+        <section class="individual-info-container individual-info container">
+            <h1 role="presentation" class="employee-page-title"></h1>
+            <row class="points-status">
+                <row class="points-received-box">
+                    <h1>Points Received</h1>
+                </row>
+                <row class="points-given-box">
+                    <h1>Points Given</h1>
+                </row>
+        </section>
+        <section class="new-points points-section">
+            <h1>Give additional points to this employee for supporting the corporate goals!</h1>
+            <button class="give-points-button">Give points!</button>
+        </section>
+        
+        </row>
+        <section class="individual-info-container individual-info container">
+            <h1 role="presentation" class="employee-page-title"></h1>
+            <section class="add-points-section">
+                <form name="add-points-form" class="add-points-form">
+                    <fieldset>
+                        <legend>
+                            <h1>Give Points!</h1>
+                        </legend>
+                        <input type="hidden" name="recipientEmail" id="recipient" title="recipientEmail">
 
-        <section class="add-points-section">
-            <form name="add-points-form" class="add-points-form">
-                <fieldset>
-                    <legend>
-                        <h1>Give Points!</h1>
-                    </legend>
-                    <input type="hidden" name="recipientEmail" id="recipient" title="recipientEmail">
-
-                    <label for="employee-action" class="input-label reason js-reason">
-                        <h2>For what action would you like to award points?</h2>
-                    </label>
-                    <input type="text" name="employee-action" class="employee-action js-employee-action" placeholder="ex. sourced a new paper vendor"
-                        title="employee-action" required>
-                    <label for="goal-dropdown" class="input-label">
+                        <label for="employee-action" class="input-label reason js-reason">
+                            <h2>For what action would you like to award points?</h2>
+                        </label>
+                        <input type="text" name="employee-action" class="employee-action js-employee-action" placeholder="ex. sourced a new paper vendor"
+                            title="employee-action" required>
                         <h2>Which Fizz Buzz corporate goal was supported?</h2>
-                    </label>
-                    <select name="goal" class="goal-dropdown">
-                        <option value=""></option>
-                        <option value="Ideas">Ideas</option>
-                        <option value="Sales">Sales</option>
-                        <option value="Service">Service</option>
-                        <option value="Costs">Costs</option>
-                    </select>
-                    <label for="points-dropdown" class="input-label">
-                        <h2> How many points would you like to give for this action?</h2>
-                    </label>
-                    <select name="points" class="points-dropdown">
-                        <option value=""></option>
-                        <option value="5">5</option>
-                        <option value="10">10</option>
-                        <option value="15">15</option>
-                        <option value="20">20</option>
-                        <option value="25">25</option>
-                    </select>
-                    <br>
-                </fieldset>
-                <button type="submit" class="js-add-points-button add-points-button">Add the points!</button>
-            </form>
+                        <label for="goal-dropdown" class="input-label">
+                            Goal
+                        </label>
+                        <select name="goal" class="goal-dropdown" title="goal">
+                            <option value=""></option>
+                            <option value="Ideas">Ideas</option>
+                            <option value="Sales">Sales</option>
+                            <option value="Service">Service</option>
+                            <option value="Costs">Costs</option>
+                        </select>
+                        <h2>How many points would you like to give for this action?</h2>
+                        <label for="points-dropdown" class="input-label">Points</label>
+                        <select name="points" class="points-dropdown" title="points">
+                            <option value=""></option>
+                            <option value=5>5</option>
+                            <option value=10>10</option>
+                            <option value=15>15</option>
+                            <option value=20>20</option>
+                            <option value=25>25</option>
+                        </select>
+                        <br>
+                    </fieldset>
+                    <button type="submit" class="js-add-points-button add-points-button">Add the points!</button>
+                    <h1>or</h1>
+                        <button class="employee-list-button">Return to the Employee List</button>
+                    
+                </form>
+            </section>
         </section>
-        <section class="js-transaction-log transaction-log"></section>
+        <section class="js-transaction-log transaction-log">
+        </section>
     </section>
-    </section>
-
+    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
     <script src="./index.js"></script>
 </body>
