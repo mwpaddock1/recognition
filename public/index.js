@@ -93,7 +93,7 @@ $('.sign-up-opening-button').on("click", function (event) {
     $('button.login-button').addClass('hidden');
     $('button.login-opening-button').addClass('hidden');
     $('.sign-up-opening-button').addClass('hidden');
-   
+
 });
 
 $("form[name=sign-up-form]").submit(function (event) {
@@ -133,6 +133,16 @@ $('.login-opening-button').on("click", function (event) {
     $('button.sign-up-opening-button').addClass('hidden');
     $('.login-opening-button').addClass('hidden');
 });
+$('.cancel-button').on("click", function (event) {
+    $('.thumbs-up').removeClass('hidden');
+    $('#js-login-form').addClass('hidden');
+    $('#js-sign-up-form').addClass('hidden');
+    $('.cancel-button').addClass('hidden');
+    $('button.login-button').removeClass('hidden');
+    $('button.sign-up-button').removeClass('hidden');
+    $('button.sign-up-opening-button').removeClass('hidden');
+    $('.login-opening-button').removeClass('hidden');
+});
 $("form[name=login-form]").submit(function (event) {
     event.preventDefault();
     const employeeEmail = $('input[name=email]');
@@ -154,7 +164,7 @@ $("form[name=login-form]").submit(function (event) {
                         $('.js-logged-in-employee').append(`You are logged in as ${user.firstName} ${user.lastName}`);
                         console.log(user);
                     } else {
-                        console.log('no match');
+                        console.log('Please enter a valid email address and password combinaton');
                     }
                 }
             }
@@ -162,6 +172,18 @@ $("form[name=login-form]").submit(function (event) {
             return globalEmployees
         })
         .then(displayEmployees)
+});
+$('.sign-in-button').on("click", function (event) {
+    $('#js-login-form').addClass('hidden');
+    $('.goal-container').removeClass('hidden');
+    $('.employee-list').removeClass('hidden');
+    $('#js-sign-up-form').addClass('hidden');
+});
+$('button.employee-list-button').click(function (event) {
+    $('.employee-list').removeClass('hidden');
+    $('button.employee-list-button').addClass('hidden');
+    $('.cancel-button').removeClass('hidden');
+    $('.individual-recognition-summary').addClass('hidden');
 });
 
 function addNewEmployee(employeeData) {
@@ -177,7 +199,6 @@ function addNewEmployee(employeeData) {
     })
 }
 
-//login existing employee
 function loginEmployee(info) {
     return new Promise((resolve, reject) => {
         let MOCK_DATA = getMockData();
@@ -221,26 +242,31 @@ function displayEmployees() {
     }
 
     $('.current-employee').click(function (event) {
+        $('.employee-list').addClass('hidden');
+        $('button.sign-in-button').addClass('hidden');
+        $('button.employee-list-button').removeClass('hidden');
+        $('.cancel-button').addClass('hidden');
+        $('.individual-recognition-summary').removeClass('hidden');
         let selectedEmployeeEmail = ($(event.currentTarget).data('email'));
         console.log(selectedEmployeeEmail);
         console.log("sending to individual-employee addpoints section");
         let selectedEmployee = globalEmployees.filter(globalEmployee => selectedEmployeeEmail === globalEmployee.emailAddress);
 
         console.log(selectedEmployee);
+
         if (selectedEmployee.pointsRemaining <= 0) {
             alert("You have used your alloted 100 points for this year. Please give your recognition verbally!")
         }
-        console.log('made it here')
+
         if (selectedEmployee.emailAddress === user.emailAddress) {
             alert("You may not give points to yourself!")
-            console.log('made it this far')
+
         } else {
             let selectedIndividual = {
                 firstName: selectedEmployee[0].firstName,
                 lastName: selectedEmployee[0].lastName,
                 emailAddress: selectedEmployee[0].emailAddress,
             }
-            console.log('maybe to here')
 
             let recipientEmailInput = $("#recipient");
 
@@ -256,27 +282,19 @@ function displayEmployees() {
                 .then((transactionsGet) => {
                     globalTransactions = transactionsGet;
 
-                    let highlightedEmployeeInfo = globalTransactions.filter(globalTransaction => (globalTransaction.senderEmailAddress === selectedIndividual.emailAddress) || (globalTransaction.recipientEmailAddress === selectedIndividual.emailAddress))
+                    let highlightedEmployeeInfo = globalTransactions.filter(globalTransaction => (globalTransaction.senderEmailAddress === selectedIndividual.emailAddress) || (globalTransaction.recipientEmailAddress === selectedIndividual.emailAddress)
+                    //highlightedEmployeeInfo is an array of objects
+                )
+                    let goalTransactions = highlightedEmployeeInfo.reduce(function (allTransactions, transaction) {
+                        if (highlightedEmployeeInfo.goal in allTransactions) {
+                            allTransactions[highlightedEmployeeInfo][goal].push(transaction);
+                            // goalTransactions.push(transaction)
+                        } else {
+                            (transaction) = [];
+                        }
+                        return allTransactions;
+                    }, {});
                     
-                    //highlightedEmployeeInfo is an array with 4 objects
-                    console.log(highlightedEmployeeInfo);
-                    // let goalTransactions = highlightedEmployeeInfo.reduce(function (allTransactions, transaction) {
-                    //     if (highlightedEmployeeInfo.goal in allTransactions) {
-                    //         allTransactions[highlightedEmployeeInfo].goal.push(transaction);
-                    //         // goalTransactions.push(transaction)
-                    //     } else {
-                    //         (transaction) = [];
-                    //     }
-
-                    //     console.log(allTransactions);
-                    //     return allTransactions;
-                    // }, {});
-                    // let goalTransactions = (highLightedEmployeeInfo, goal =>
-                    //   highLightedEmployeeInfo.reduce((allTransactions, transaction)=> {
-                    //       allTransactions[transaction.goal] = transaction;
-                    //       return allTransactions
-                    //   }, {})
-                    // )
 
                     for (let i = 0; i < highlightedEmployeeInfo.length; i++) {
                         let transactionInfo = {
@@ -317,12 +335,17 @@ function displayEmployees() {
             }
         };
     })
-    $('.button-give-points').click(function (event) {
+    $('button.give-points-button').click(function (event) {
+        $('.individual-info-container').removeClass('hidden');
+        $('.individual-recognition-summary').addClass('hidden');
+
+
         console.log("going to assign points page");
     });
 
     $("form[name=add-points-form]").submit(function (event) {
         event.preventDefault();
+
         //grab the inputs and update the transactions
         const employeeAction = $('input[name=employee-action]');
         const reason = employeeAction.val();
@@ -350,6 +373,11 @@ function displayEmployees() {
                 return globalTransactions;
             })
             .then(displayTranx)
+
+        //figure out where these go:
+        $('.employee-list').removeClass('hidden');
+        $('button.employee-list-button').addClass('hidden');
+        $('button.cancel-button').removeClass('hidden');
     });
 
     function updateEmployeePoints(newTransaction) {
@@ -368,6 +396,7 @@ function displayEmployees() {
 
         sender.pointsRemaining = sender.pointsRemaining - newTransaction.points
     }
+
 
 
     function addNewTranx(tranxData) {

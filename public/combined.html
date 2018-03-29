@@ -18,10 +18,11 @@
     <header>
         <div class="logo-banner">
             <img class="logo" src=./images/FizzBuzzSVG.svg alt="FizzBuzz logo">
-            <p class="logged-in-employee js-logged-in-employee"></p>
+
             <section class="buttons">
                 <button class="login-button banner-button">Log In</button>
-                <button class="cancel-button hidden banner-button">Cancel</button>
+                <button class="cancel-button banner-button hidden">Cancel</button>
+                <button class="employee-list-button hidden">Employee List</button>
             </section>
         </div>
     </header>
@@ -69,7 +70,7 @@
                 </section>
             </fieldset>
             <div class="buttons">
-                <button type="submit" class="sign-up-button">Sign Up</button>
+                <button type="submit" class="sign-in-button">Sign Up</button>
             </div>
         </form>
     </section>
@@ -93,12 +94,12 @@
             </fieldset>
             <section class="buttons">
                 <button type="submit" class="sign-in-button">Log In</button>
-                
+
             </section>
         </form>
     </section>
-    <section class="main hidden" role="main">
-        <section class="goal-container container">
+    <section class="main" role="main">
+        <section class="goal-container hidden">
             <section class="goals" role="region">
                 <h1>Fizz Buzz 2018 Corporate Goals</h1>
                 <div class="innovation goal">
@@ -135,11 +136,12 @@
                 </div>
             </section>
         </section>
-        <section class="employee-list" role="region">
-            <h1>Employee Peer-to-Peer Recognition!</h1>            
+        <section class="employee-list hidden" role="region">
+            <h1>Employee Peer-to-Peer Recognition!</h1>
             <p>Every employee begins with 100 Points-to-Give to peers throughout the year.</p>
             <p>Points-Received can be redeemed in increments of 25 by reaching out to hr@fizzbuzz.com</p>
             <p>Click on an employee's last name to send points or view previously received recognition</p>
+            <p class="logged-in-employee js-logged-in-employee"></p>
             <row class="title-boxes">
                 <div class="title-box">
                     <h2>Last Name</h2>
@@ -158,10 +160,9 @@
                 </div>
             </row>
             <row class="employee-boxes">
-                <!--use JS to populate-->
             </row>
         </section>
-        <section class="individual-info-container individual-info container">
+        <section class="js-individual-info-container individual-recognition-summary hidden">
             <h1 role="presentation" class="employee-page-title"></h1>
             <row class="points-status">
                 <row class="points-received-box">
@@ -170,14 +171,14 @@
                 <row class="points-given-box">
                     <h1>Points Given</h1>
                 </row>
+            </row>
+
+            <div class="points-section hidden">
+                <h2>Give additional points to this employee for supporting the corporate goals!</h>
+                    <button class="give-points-button">Give points!</button>
         </section>
-        <section class="new-points points-section">
-            <h1>Give additional points to this employee for supporting the corporate goals!</h1>
-            <button class="give-points-button">Give points!</button>
-        </section>
-        
-        </row>
-        <section class="individual-info-container individual-info container">
+
+        <section class="individual-info-container individual-info hidden">
             <h1 role="presentation" class="employee-page-title"></h1>
             <section class="add-points-section">
                 <form name="add-points-form" class="add-points-form">
@@ -193,7 +194,7 @@
                         <input type="text" name="employee-action" class="employee-action js-employee-action" placeholder="ex. sourced a new paper vendor"
                             title="employee-action" required>
                         <h2>Which Fizz Buzz corporate goal was supported?</h2>
-                        <label for="goal-dropdown" class="input-label">
+                        <label for="goal-dropdown" class="input-label required">
                             Goal
                         </label>
                         <select name="goal" class="goal-dropdown" title="goal">
@@ -205,7 +206,7 @@
                         </select>
                         <h2>How many points would you like to give for this action?</h2>
                         <label for="points-dropdown" class="input-label">Points</label>
-                        <select name="points" class="points-dropdown" title="points">
+                        <select name="points" class="points-dropdown required" title="points">
                             <option value=""></option>
                             <option value=5>5</option>
                             <option value=10>10</option>
@@ -216,16 +217,13 @@
                         <br>
                     </fieldset>
                     <button type="submit" class="js-add-points-button add-points-button">Add the points!</button>
-                    <h1>or</h1>
-                        <button class="employee-list-button">Return to the Employee List</button>
-                    
                 </form>
             </section>
         </section>
-        <section class="js-transaction-log transaction-log">
+        <section class="js-transaction-log transaction-log hidden">
         </section>
     </section>
-    
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
     <script src="./index.js"></script>
 </body>

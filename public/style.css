@@ -1,6 +1,6 @@
 body {
     font-size: 8px;
-    /* background-image: url("./images/white-934556_1920.jpg"); */
+    background-image: url("./images/white-934556_1920.jpg"); 
     box-sizing: border-box;
     background-size: cover;
     background-repeat: no-repeat;
@@ -37,22 +37,20 @@ h1 {
 
 .logged-in-employee {
     text-align: center;
-    color: #f2f2f2
+    color: #0a74bf;
 }
 
 .banner-button {
     margin-right: 25px;
-    /* height: 50px; */
-}
+   }
 
 header {
     background-color: #0c91F0;
     width: 100%;
     height: 125px;
 }
-.logged-in-employee {
-    color: black;
-}
+
+button.employee-list-button,
 button.login-opening-button,
 button.sign-up-opening-button,
 button.employee-list-button,
@@ -75,7 +73,9 @@ button.add-points-button {
     padding-left: 5%;
     padding-right: 5%;
 }
-
+form {
+    border: 2px solid #0c91F0;
+}
 fieldset {
     margin: 0 auto;
     padding-left: 10px;
@@ -183,7 +183,8 @@ p {
 
 .goals,
 .employee-list,
-.individual-info {
+.individual-info,
+.individual-recognition-summary {
     text-align: center;
     margin: auto;
 }
@@ -195,7 +196,8 @@ p {
 }
 
 .goals,
-.individual-info {
+.individual-info,
+.individual-recognition-summary {
     background-color: #F2F2F2;
     border: 5px solid #E0E0E0;
 }
@@ -229,6 +231,7 @@ p {
     font-size: 32px;
     padding-bottom: 5px;
     padding-top: 50px;
+    border: 2px solid #e0e0e0;
 }
 
 .goal-detail {
@@ -288,6 +291,7 @@ p {
 
 form.add-points-form {
     width: 100%;
+    display: block;
 }
 
 .points-section {
@@ -298,10 +302,12 @@ form.add-points-form {
     display: block;
     margin: auto;
     width: 75%;
+    padding: 0 35px;
+    color: #0c91F0;
 }
 
-.points-section h1 {
-    font-size: 30px;
+.points-section h2 {
+    font-size: 24px;
     text-align: center;
 }
 
@@ -319,11 +325,6 @@ button {
     transition-duration: 0.4s;
 }
 
-/* button.button-give-points {
-    border-radius: 10%;
-    padding: 2% 2%;
-    margin: auto;
-} */
 
 .transaction-log {
     text-align: left;
@@ -346,7 +347,6 @@ button:hover {
 .form-container {
     max-width: 600px;
     background-color: #FFF9AD;
-    border: 2px solid #0c91F0;
     border-radius: 3px;
     margin: auto;
 }
@@ -398,8 +398,8 @@ section.points-given h2 {
         padding-left: 5rem;
     }
     .main {
-        /* display: flex; */
-        /* align-items: center; */
+        display: flex; 
+        /* align-items: center;  */
         justify-content: center;
     }
     .ellipse {
@@ -413,9 +413,7 @@ section.points-given h2 {
     .logo-text {
         font-size: 2rem;
     }
-    /* #js-sign-up-form {
-        margin-top: 50px;
-    } */
+   
     input,
     .input-label {
         margin-left: 75px;
@@ -425,13 +423,14 @@ section.points-given h2 {
     }
     .employee-list,
     .goals,
-    .individual-info {
+    .individual-info,
+    .individual-recognition-summary {
         width: 60%;
         padding: 20px;
     }
     .employee-list {
         font-size: 16px;
-        width: 75%;
+        /* width: 50%; */
         padding-bottom: 50px;
     }
     .goal {
@@ -443,6 +442,7 @@ section.points-given h2 {
     .goal-container {
         width: 25%;
     }
+    
     .employee-container,
     .individual-info-container {
         width: 75%;
