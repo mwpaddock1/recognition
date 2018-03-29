@@ -8,7 +8,7 @@
 //             pointsRemaining: 90,
 //             pointsFromLastName: "Bar",
 //             pointsFromFirstName: "Mary",
-//             corpGoal: "costs",
+//             corpGoal: "Costs",
 //             points: 5,
 //             reason: "sourced a new paper vendor"
 //         },
@@ -52,7 +52,7 @@
 //             senderLastName: "Bar",
 //             senderFirstName: "Mary",
 //             senderEmailAddress: "mbar@fizzbuzz.com",
-//             goal: "costs",
+//             goal: "Costs",
 //             points: 5,
 //             reason: "sourced a new paper vendor"
 //         },
@@ -82,6 +82,7 @@
 let globalEmployees;
 let globalTransactions;
 let user;
+
 // $(".new-search-button").on("click", function (event) {
 //     $(".js-search-form").removeClass("hidden");
 //     $(".js-search-results").addClass("hidden");
@@ -276,25 +277,25 @@ function displayEmployees() {
 
             );
 
-            // let newEmployee = (reformattedArray.reduce(reducingFunction));
-            // user = newEmployee;
             getAllTranx()
                 .then((transactionsGet) => {
                     globalTransactions = transactionsGet;
 
                     let highlightedEmployeeInfo = globalTransactions.filter(globalTransaction => (globalTransaction.senderEmailAddress === selectedIndividual.emailAddress) || (globalTransaction.recipientEmailAddress === selectedIndividual.emailAddress)
-                    //highlightedEmployeeInfo is an array of objects
-                )
-                    let goalTransactions = highlightedEmployeeInfo.reduce(function (allTransactions, transaction) {
-                        if (highlightedEmployeeInfo.goal in allTransactions) {
-                            allTransactions[highlightedEmployeeInfo][goal].push(transaction);
-                            // goalTransactions.push(transaction)
+                        //highlightedEmployeeInfo is an array of objects
+                    )
+                    let sortedTransactions = highlightedEmployeeInfo.reduce(function (allTransactions, transaction) {
+                        if (transaction.goal in allTransactions) {
+                            allTransactions[transaction.goal].push(transaction);
+                            debugger
                         } else {
-                            (transaction) = [];
+
+                            allTransactions[transaction.goal] = [transaction];
+debugger
+
+                            return allTransactions;
                         }
-                        return allTransactions;
                     }, {});
-                    
 
                     for (let i = 0; i < highlightedEmployeeInfo.length; i++) {
                         let transactionInfo = {
@@ -316,7 +317,7 @@ function displayEmployees() {
             function formatSenderInfo(transactionInfo) {
                 const senderInfoHTML = (
                     `<section class ="points-given"> 
-                                          <p class="ellipse ellipse-display">${transactionInfo.goal}</p> <h2> ${transactionInfo.points} points from Sender <i>${transactionInfo.reason}</i>h2>
+                                          <p class="ellipse ellipse-display ${transactionInfo.goal}-ellipse">${transactionInfo.goal}</p> <h2> ${transactionInfo.points} points from Sender <i>${transactionInfo.reason}</i><h2>
                              </section>`
                 );
 
@@ -327,7 +328,7 @@ function displayEmployees() {
             function formatRecipientInfo(transactionInfo) {
                 const recipientInfoHTML = (
                     `<section class ="points-received">                                   
-                                       <p class="ellipse ellipse-display">${transactionInfo.goal}</p> <h2> ${transactionInfo.points} points to Recipient for: <i>${transactionInfo.reason}</i><h2>
+                                       <p class="ellipse ellipse-display ${transactionInfo.goal}-ellipse">${transactionInfo.goal}</p> <h2> ${transactionInfo.points} points to Recipient for: <i>${transactionInfo.reason}</i><h2>
                              </section>`
                 );
                 $("row.points-received-box").append(recipientInfoHTML);

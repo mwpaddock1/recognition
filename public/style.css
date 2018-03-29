@@ -242,22 +242,22 @@ p {
     max-width: 300px;
 }
 
-.innovation-ellipse,
-.innovation-detail {
+.Ideas-ellipse,
+.ideas-detail {
     background-color: #E6F1C8;
 }
 
-.sales-ellipse,
+.Sales-ellipse,
 .sales-detail {
     background-color: #0c91F0;
 }
 
-.costs-ellipse,
+.Costs-ellipse,
 .costs-detail {
     background-color: #FFF9AD;
 }
 
-.service-ellipse,
+.Service-ellipse,
 .service-detail {
     background-color: #4BA66A;
 }
