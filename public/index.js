@@ -130,6 +130,17 @@ $('.login-opening-button').on("click", function (event) {
     $('#js-login-form').removeClass('hidden');
     $('.cancel-button').removeClass('hidden');
     $('button.login-button').addClass('hidden');
+    $('button.login-banner-button').addClass('hidden');
+    $('button.sign-up-button').addClass('hidden');
+    $('button.sign-up-opening-button').addClass('hidden');
+    $('.login-opening-button').addClass('hidden');
+});
+$('button.login-banner-button').on('click', function (event) {
+    $('.thumbs-up').addClass('hidden');
+    $('#js-login-form').removeClass('hidden');
+    $('.cancel-button').removeClass('hidden');
+    $('button.login-button').addClass('hidden');
+    $('button.login-banner-button').addClass('hidden');
     $('button.sign-up-button').addClass('hidden');
     $('button.sign-up-opening-button').addClass('hidden');
     $('.login-opening-button').addClass('hidden');
@@ -143,6 +154,8 @@ $('.cancel-button').on("click", function (event) {
     $('button.sign-up-button').removeClass('hidden');
     $('button.sign-up-opening-button').removeClass('hidden');
     $('.login-opening-button').removeClass('hidden');
+    $('.goals').addClass('hidden');
+    $('.employee-list').addClass('hidden');
 });
 $("form[name=login-form]").submit(function (event) {
     event.preventDefault();
@@ -176,7 +189,7 @@ $("form[name=login-form]").submit(function (event) {
 });
 $('.sign-in-button').on("click", function (event) {
     $('#js-login-form').addClass('hidden');
-    $('.goal-container').removeClass('hidden');
+    $('.goals').removeClass('hidden');
     $('.employee-list').removeClass('hidden');
     $('#js-sign-up-form').addClass('hidden');
 });
@@ -243,231 +256,211 @@ function displayEmployees() {
     }
 
     $('.current-employee').click(function (event) {
-        $('.employee-list').addClass('hidden');
-        $('button.sign-in-button').addClass('hidden');
-        $('button.employee-list-button').removeClass('hidden');
-        $('.cancel-button').addClass('hidden');
-        $('.individual-recognition-summary').removeClass('hidden');
+
         let selectedEmployeeEmail = ($(event.currentTarget).data('email'));
         console.log(selectedEmployeeEmail);
         console.log("sending to individual-employee addpoints section");
         let selectedEmployee = globalEmployees.filter(globalEmployee => selectedEmployeeEmail === globalEmployee.emailAddress);
 
-        console.log(selectedEmployee);
+        // console.log(selectedEmployee);
 
-        if (selectedEmployee.pointsRemaining <= 0) {
+        if (user.pointsRemaining <= 0) {
             alert("You have used your alloted 100 points for this year. Please give your recognition verbally!")
         }
-
-        if (selectedEmployee.emailAddress === user.emailAddress) {
+        if (selectedEmployeeEmail === user.emailAddress) {
             alert("You may not give points to yourself!")
-
         } else {
+            $('.employee-list').addClass('hidden');
+            $('button.sign-in-button').addClass('hidden');
+            $('button.employee-list-button').removeClass('hidden');
+            $('.cancel-button').addClass('hidden');
+            $('.individual-recognition-summary').removeClass('hidden');
             let selectedIndividual = {
                 firstName: selectedEmployee[0].firstName,
                 lastName: selectedEmployee[0].lastName,
                 emailAddress: selectedEmployee[0].emailAddress,
             }
-
             let recipientEmailInput = $("#recipient");
-
             recipientEmailInput.val(selectedIndividual.emailAddress);
-
-            $('.employee-page-title').append(`Recognition for ${selectedIndividual.firstName} ${ selectedIndividual.lastName}`
-
-            );
+            $('.employee-page-title').append(`Recognition for ${selectedIndividual.firstName} ${ selectedIndividual.lastName}`);
 
             getAllTranx()
                 .then((transactionsGet) => {
                     globalTransactions = transactionsGet;
-
                     let highlightedEmployeeInfo = globalTransactions.filter(globalTransaction => (globalTransaction.senderEmailAddress === selectedIndividual.emailAddress) || (globalTransaction.recipientEmailAddress === selectedIndividual.emailAddress)
                         //highlightedEmployeeInfo is an array of objects
                     )
                     let sortedTransactions = highlightedEmployeeInfo.reduce(function (allTransactions, transaction) {
                         if (transaction.goal in allTransactions) {
                             allTransactions[transaction.goal].push(transaction);
-                            debugger
+                            return allTransactions;
                         } else {
-
                             allTransactions[transaction.goal] = [transaction];
-debugger
 
                             return allTransactions;
                         }
                     }, {});
+                    for (i in sortedTransactions) {
+                        console.log(i, sortedTransactions[i])
+                        //sortedTransactions is an object with 4 keys(Cost, Sales, Ideas, Service) which have arrays 
 
-                    for (let i = 0; i < highlightedEmployeeInfo.length; i++) {
+
                         let transactionInfo = {
-                            goal: highlightedEmployeeInfo[i].goal,
-                            points: highlightedEmployeeInfo[i].points,
-                            reason: highlightedEmployeeInfo[i].reason,
-                            senderEmailAddress: highlightedEmployeeInfo[i].senderEmailAddress,
-                            // senderFirstName: highlightedEmployeeInfo[i].senderFirstName,
-                            // senderLastName: highlightedEmployeeInfo[i].senderLastName,
-                            recipientEmailAddress: highlightedEmployeeInfo[i].recipientEmailAddress,
-                            // recipientFirstName: highlightedEmployeeInfo[i].recipientFirstName,
-                            // recipientLastName: highlightedEmployeeInfo[i].recipientLastName
+                            goal: sortedTransactions[i].goal,
+                            points: sortedTransactions[i].points,
+                            reason: sortedTransactions[i].reason,
+                            senderEmailAddress: sortedTransactions[i].senderEmailAddress,
+                            // senderFirstName: sortedTransactions[j].senderFirstName,
+                            // senderLastName: sortedTransactions[j].senderLastName,
+                            // recipientEmailAddress: sortedTransactions[j].recipientEmailAddress,
+                            // recipientFirstName: sortedTransactions[j].recipientFirstName,
+                            // recipientLastName: sortedTransactions[j].recipientLastName
+                            // 
                         }
+
                         let recipientHTMLResults = formatRecipientInfo(transactionInfo);
                         let senderHTMLResults = formatSenderInfo(transactionInfo);
                     };
                 });
+        }
+    });
 
-            function formatSenderInfo(transactionInfo) {
-                const senderInfoHTML = (
-                    `<section class ="points-given"> 
+    function formatSenderInfo(transactionInfo) {
+        const senderInfoHTML = (
+            `<section class ="points-given"> 
                                           <p class="ellipse ellipse-display ${transactionInfo.goal}-ellipse">${transactionInfo.goal}</p> <h2> ${transactionInfo.points} points from Sender <i>${transactionInfo.reason}</i><h2>
                              </section>`
-                );
+        );
 
-                $("row.points-given-box").append(senderInfoHTML);
-                return senderInfoHTML;
-            }
+        $("row.points-given-box").append(senderInfoHTML);
+        return senderInfoHTML;
+    }
 
-            function formatRecipientInfo(transactionInfo) {
-                const recipientInfoHTML = (
-                    `<section class ="points-received">                                   
+    function formatRecipientInfo(transactionInfo) {
+        const recipientInfoHTML = (
+            `<section class ="points-received">                                   
                                        <p class="ellipse ellipse-display ${transactionInfo.goal}-ellipse">${transactionInfo.goal}</p> <h2> ${transactionInfo.points} points to Recipient for: <i>${transactionInfo.reason}</i><h2>
                              </section>`
-                );
-                $("row.points-received-box").append(recipientInfoHTML);
-                return recipientInfoHTML;
-            }
-        };
-    })
-    $('button.give-points-button').click(function (event) {
-        $('.individual-info-container').removeClass('hidden');
-        $('.individual-recognition-summary').addClass('hidden');
-
-
-        console.log("going to assign points page");
-    });
-
-    $("form[name=add-points-form]").submit(function (event) {
-        event.preventDefault();
-
-        //grab the inputs and update the transactions
-        const employeeAction = $('input[name=employee-action]');
-        const reason = employeeAction.val();
-        const corpGoal = $('select[name=goal]');
-        const goal = corpGoal.val();
-        const pointsDropdown = $('select[name=points]');
-        const points = parseInt(pointsDropdown.val());
-
-        let newTransaction = {
-            senderEmailAddress: user.emailAddress,
-            goal: goal,
-            points: points,
-            reason: reason,
-            recipientEmailAddress: $("#recipient").val()
-        }
-        console.log(reason);
-        console.log(goal);
-        console.log(points);
-        // console.log(senderEmail);
-        addNewTranx(newTransaction)
-            .then(updateEmployeePoints)
-            .then(getAllTranx)
-            .then((transactionsGet) => {
-                globalTransactions = transactionsGet;
-                return globalTransactions;
-            })
-            .then(displayTranx)
-
-        //figure out where these go:
-        $('.employee-list').removeClass('hidden');
-        $('button.employee-list-button').addClass('hidden');
-        $('button.cancel-button').removeClass('hidden');
-    });
-
-    function updateEmployeePoints(newTransaction) {
-        function findRecipient(employee) {
-            return employee.emailAddress === newTransaction.recipientEmailAddress;
-        }
-
-        let recipient = globalEmployees.find(findRecipient);
-        recipient.pointsReceived = (recipient.pointsReceived + newTransaction.points)
-
-        function findSender(employee) {
-            return employee.emailAddress === newTransaction.senderEmailAddress;
-        }
-        let sender = globalEmployees.find(findSender);
-        sender.pointsGiven = sender.pointsGiven + newTransaction.points
-
-        sender.pointsRemaining = sender.pointsRemaining - newTransaction.points
+        );
+        $("row.points-received-box").append(recipientInfoHTML);
+        return recipientInfoHTML;
     }
+};
+
+$('button.give-points-button').click(function (event) {
+    $('.individual-info-container').removeClass('hidden');
+    $('.individual-recognition-summary').addClass('hidden');
 
 
+    console.log("going to assign points page");
+});
 
-    function addNewTranx(tranxData) {
-        return new Promise((resolve, reject) => {
-            let TRANX_DATA = getTranxData();
-            //also include the new employee
-            TRANX_DATA.transactions.push(tranxData);
-            setTranxData(TRANX_DATA);
+$("form[name=add-points-form]").submit(function (event) {
+    event.preventDefault();
+    $('.employee-boxes').empty();
 
-            let MOCK_DATA = getMockData();
+    //grab the inputs and update the transactions
+    const employeeAction = $('input[name=employee-action]');
+    const reason = employeeAction.val();
+    const corpGoal = $('select[name=goal]');
+    const goal = corpGoal.val();
+    const pointsDropdown = $('select[name=points]');
+    const points = parseInt(pointsDropdown.val());
 
-            function findRecipient(employee) {
-                return employee.emailAddress === tranxData.recipientEmailAddress;
-            }
+    let newTransaction = {
+        senderEmailAddress: user.emailAddress,
+        goal: goal,
+        points: points,
+        reason: reason,
+        recipientEmailAddress: $("#recipient").val()
+    }
+    console.log(reason);
+    console.log(goal);
+    console.log(points);
+    // console.log(senderEmail);
+    addNewTranx(newTransaction)
+        .then(updateEmployeePoints)
+        .then(getAllTranx)
+        .then((transactionsGet) => {
+            globalTransactions = transactionsGet;
 
-            let recipient = MOCK_DATA.employees.find(findRecipient);
-            recipient.pointsReceived = recipient.pointsReceived + tranxData.points
-
-            function findSender(employee) {
-                return employee.emailAddress === tranxData.senderEmailAddress
-            }
-            let sender = MOCK_DATA.employees.find(findSender)
-            sender.pointsGiven = sender.pointsGiven + tranxData.points;
-
-            sender.pointsRemaining = sender.pointsRemaining - tranxData.points
-            setMockData(MOCK_DATA)
-            resolve(tranxData);
+            return globalTransactions;
         })
+        .then(getAllEmployees)
+        .then(displayEmployees);
+    //figure out where these go:
+    $('.employee-list').removeClass('hidden');
+    $('button.employee-list-button').addClass('hidden');
+    $('button.logout-button').removeClass('hidden');
+});
+
+function updateEmployeePoints(newTransaction) {
+    function findRecipient(employee) {
+        return employee.emailAddress === newTransaction.recipientEmailAddress;
     }
 
-    function getTranxData() {
-        let TRANX_DATA_STRING = localStorage.getItem('TRANX_DATA');
-        let TRANX_DATA = JSON.parse(TRANX_DATA_STRING);
-        return TRANX_DATA;
-    }
+    let recipient = globalEmployees.find(findRecipient);
+    recipient.pointsReceived = (recipient.pointsReceived + newTransaction.points)
 
-    function setTranxData(TRANX_DATA) {
-        let TRANX_DATA_STRING = JSON.stringify(TRANX_DATA);
-        localStorage.setItem('TRANX_DATA', TRANX_DATA_STRING);
+    function findSender(employee) {
+        return employee.emailAddress === newTransaction.senderEmailAddress;
     }
+    let sender = globalEmployees.find(findSender);
+    sender.pointsGiven = sender.pointsGiven + newTransaction.points
 
-    function getAllTranx() {
-        return new Promise((resolve, reject) => {
-            let TRANX_DATA = getTranxData();
-            resolve(TRANX_DATA.transactions);
-        })
-    }
-
-    function displayTranx() {
-        for (let currentTranx = 0; currentTranx < globalTransactions.length; currentTranx++) {
-            const tranxInfoHTML = (
-                ` <div class = "current-transaction">
-                                            <h2>Sender Email: ${globalTransactions[currentTranx].senderEmailAddress}</h2>
-                                            <h2>Points Given: ${globalTransactions[currentTranx].points}</h2>
-                                            <h2>Corporate Goal: ${globalTransactions[currentTranx].goal}</h2>
-                                            <h2>Description: ${globalTransactions[currentTranx].reason}</h2> 
-                                            <h2>Recipient: ${globalTransactions[currentTranx].recipientEmailAddress}</h2>
-                                            <br>                      
-                                          </div>
-                                        `
-            )
-
-            $('section.js-transaction-log').append(tranxInfoHTML);
-        }
-    }
+    sender.pointsRemaining = sender.pointsRemaining - newTransaction.points
 }
 
-// for giver and recipient:
-//update the points, goal and reason
-//then, return to updated employee-list
+
+
+function addNewTranx(tranxData) {
+    return new Promise((resolve, reject) => {
+        let TRANX_DATA = getTranxData();
+        //also include the new employee
+        TRANX_DATA.transactions.push(tranxData);
+        setTranxData(TRANX_DATA);
+
+        let MOCK_DATA = getMockData();
+
+        function findRecipient(employee) {
+            return employee.emailAddress === tranxData.recipientEmailAddress;
+        }
+
+        let recipient = MOCK_DATA.employees.find(findRecipient);
+        recipient.pointsReceived = recipient.pointsReceived + tranxData.points
+
+        function findSender(employee) {
+            return employee.emailAddress === tranxData.senderEmailAddress
+        }
+        let sender = MOCK_DATA.employees.find(findSender)
+        sender.pointsGiven = sender.pointsGiven + tranxData.points;
+
+        sender.pointsRemaining = sender.pointsRemaining - tranxData.points
+        setMockData(MOCK_DATA)
+        resolve(tranxData);
+    })
+}
+
+function getTranxData() {
+    let TRANX_DATA_STRING = localStorage.getItem('TRANX_DATA');
+    let TRANX_DATA = JSON.parse(TRANX_DATA_STRING);
+    return TRANX_DATA;
+}
+
+function setTranxData(TRANX_DATA) {
+    let TRANX_DATA_STRING = JSON.stringify(TRANX_DATA);
+    localStorage.setItem('TRANX_DATA', TRANX_DATA_STRING);
+}
+
+function getAllTranx() {
+    return new Promise((resolve, reject) => {
+        let TRANX_DATA = getTranxData();
+        resolve(TRANX_DATA.transactions);
+    })
+}
+
+
+
 
 
 // this function can stay the same even when we
