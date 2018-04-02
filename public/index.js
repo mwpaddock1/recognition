@@ -81,7 +81,8 @@
 // to real API later
 let globalEmployees;
 let globalTransactions;
-let user;
+let JWT;
+let loggedInUser;
 
 // $(".new-search-button").on("click", function (event) {
 //     $(".js-search-form").removeClass("hidden");
@@ -164,28 +165,15 @@ $("form[name=login-form]").submit(function (event) {
     const employeePassword = $('input[name=login-password]');
     const loggedInEmployeePassword = employeePassword.val();
     console.log(loggedInEmployeeEmail);
-
-    getAllEmployees()
+    loginEmployee(loggedInEmployeeEmail, loggedInEmployeePassword)
+        .then(getAllEmployees)
         .then((employeesGet) => {
             globalEmployees = employeesGet;
-
-            function getUser() {
-                for (let i = 0; i < globalEmployees.length; i++) {
-                    let userEmail = globalEmployees[i].emailAddress;
-                    let userPassword = globalEmployees[i].password;
-                    if (userEmail === loggedInEmployeeEmail && userPassword === loggedInEmployeePassword) {
-                        user = globalEmployees[i];
-                        $('.js-logged-in-employee').append(`You are logged in as ${user.firstName} ${user.lastName}`);
-                        console.log(user);
-                    } else {
-                        console.log('Please enter a valid email address and password combinaton');
-                    }
-                }
-            }
-            getUser();
             return globalEmployees
         })
         .then(displayEmployees)
+     $('.js-logged-in-employee').append(`You are logged in as ${loggedInUser.firstName} ${loggedInUser.lastName}`);
+
 });
 $('.sign-in-button').on("click", function (event) {
     $('#js-login-form').addClass('hidden');
@@ -213,12 +201,27 @@ function addNewEmployee(employeeData) {
     })
 }
 
-function loginEmployee(info) {
+function loginEmployee(loggedInEmployeeEmail, loggedInEmployeePassword) {
+    let token = "thisisastring";
     return new Promise((resolve, reject) => {
         let MOCK_DATA = getMockData();
-        setMockData(MOCK_DATA);
-        //getAllEmployees(MOCK_DATA);
-        resolve();
+
+        function getUser() {
+            for (let i = 0; i < MOCK_DATA.employees.length; i++) {
+                let userEmail = MOCK_DATA.employees[i].emailAddress;
+                let userPassword = MOCK_DATA.employees[i].password;
+                if (userEmail === loggedInEmployeeEmail && userPassword === loggedInEmployeePassword) {
+                    return MOCK_DATA.employees[i]
+                   
+                    // console.log(user);
+                    // } else {
+                    //     console.log('Please enter a valid email address and password combinaton');
+                }
+            }
+        }
+        loggedInUser = getUser();
+        resolve({token, loggedInUser});
+        debugger
     })
 }
 
@@ -264,10 +267,10 @@ function displayEmployees() {
 
         // console.log(selectedEmployee);
 
-        if (user.pointsRemaining <= 0) {
+        if (loggedInUser.pointsRemaining <= 0) {
             alert("You have used your alloted 100 points for this year. Please give your recognition verbally!")
         }
-        if (selectedEmployeeEmail === user.emailAddress) {
+        if (selectedEmployeeEmail === loggedInUser.emailAddress) {
             alert("You may not give points to yourself!")
         } else {
             $('.employee-list').addClass('hidden');
@@ -302,25 +305,28 @@ function displayEmployees() {
                     }, {});
                     for (i in sortedTransactions) {
                         console.log(i, sortedTransactions[i])
-                        //sortedTransactions is an object with 4 keys(Cost, Sales, Ideas, Service) which have arrays 
+                        //sortedTransactions is an object with 4 keys(Cost, Sales, Ideas, Service) which have arrays as the values
+                        for (j = 0; j < sortedTransactions[i].length; j++) {
 
+                            transactionInfo = {
+                                goal: sortedTransactions[i][j].goal,
+                                points: sortedTransactions[i][j].points,
+                                reason: sortedTransactions[i][j].reason,
+                                senderEmailAddress: sortedTransactions[i][j].senderEmailAddress,
+                                senderFirstName: sortedTransactions[i][j].senderFirstName,
+                                senderLastName: sortedTransactions[i][j].senderLastName,
+                                recipientEmailAddress: sortedTransactions[i][j].recipientEmailAddress,
+                                recipientFirstName: sortedTransactions[i][j].recipientFirstName,
+                                recipientLastName: sortedTransactions[i][j].recipientLastName
 
-                        let transactionInfo = {
-                            goal: sortedTransactions[i].goal,
-                            points: sortedTransactions[i].points,
-                            reason: sortedTransactions[i].reason,
-                            senderEmailAddress: sortedTransactions[i].senderEmailAddress,
-                            // senderFirstName: sortedTransactions[j].senderFirstName,
-                            // senderLastName: sortedTransactions[j].senderLastName,
-                            // recipientEmailAddress: sortedTransactions[j].recipientEmailAddress,
-                            // recipientFirstName: sortedTransactions[j].recipientFirstName,
-                            // recipientLastName: sortedTransactions[j].recipientLastName
-                            // 
+                            }
+
+                            let recipientHTMLResults = formatRecipientInfo(transactionInfo);
+                            let senderHTMLResults = formatSenderInfo(transactionInfo);
                         }
-
-                        let recipientHTMLResults = formatRecipientInfo(transactionInfo);
-                        let senderHTMLResults = formatSenderInfo(transactionInfo);
                     };
+
+
                 });
         }
     });
@@ -368,7 +374,7 @@ $("form[name=add-points-form]").submit(function (event) {
     const points = parseInt(pointsDropdown.val());
 
     let newTransaction = {
-        senderEmailAddress: user.emailAddress,
+        senderEmailAddress: loggedInUser.emailAddress,
         goal: goal,
         points: points,
         reason: reason,
