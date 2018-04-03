@@ -113,9 +113,9 @@ $("form[name=sign-up-form]").submit(function (event) {
         Object.assign(obj1, obj2);
 
     let newEmployee = (reformattedArray.reduce(reducingFunction));
-    user = newEmployee;
+    loggedInUser = newEmployee;
     //add something to make sure an employee doesn't dupe him/herself
-    $('.js-logged-in-employee').append(`You are logged in as ${user.firstName} ${user.lastName}`);
+
     console.log(reformattedArray.reduce(reducingFunction));
     addNewEmployee(newEmployee)
         .then(getAllEmployees)
@@ -124,7 +124,7 @@ $("form[name=sign-up-form]").submit(function (event) {
             return globalEmployees;
         })
         .then(displayEmployees)
-
+    $('.js-logged-in-employee').append(`You are logged in as ${loggedInUser.firstName} ${  loggedInUser.lastName}`);
 });
 $('.login-opening-button').on("click", function (event) {
     $('.thumbs-up').addClass('hidden');
@@ -172,7 +172,7 @@ $("form[name=login-form]").submit(function (event) {
             return globalEmployees
         })
         .then(displayEmployees)
-     $('.js-logged-in-employee').append(`You are logged in as ${loggedInUser.firstName} ${loggedInUser.lastName}`);
+    // $('.js-logged-in-employee').append(`You are logged in as ${loggedInUser.firstName} ${loggedInUser.lastName}`);
 
 });
 $('.sign-in-button').on("click", function (event) {
@@ -212,16 +212,14 @@ function loginEmployee(loggedInEmployeeEmail, loggedInEmployeePassword) {
                 let userPassword = MOCK_DATA.employees[i].password;
                 if (userEmail === loggedInEmployeeEmail && userPassword === loggedInEmployeePassword) {
                     return MOCK_DATA.employees[i]
-                   
-                    // console.log(user);
-                    // } else {
-                    //     console.log('Please enter a valid email address and password combinaton');
                 }
             }
         }
         loggedInUser = getUser();
-        resolve({token, loggedInUser});
-        debugger
+        resolve({
+            token,
+            loggedInUser
+        });
     })
 }
 
@@ -264,9 +262,6 @@ function displayEmployees() {
         console.log(selectedEmployeeEmail);
         console.log("sending to individual-employee addpoints section");
         let selectedEmployee = globalEmployees.filter(globalEmployee => selectedEmployeeEmail === globalEmployee.emailAddress);
-
-        // console.log(selectedEmployee);
-
         if (loggedInUser.pointsRemaining <= 0) {
             alert("You have used your alloted 100 points for this year. Please give your recognition verbally!")
         }
@@ -286,66 +281,122 @@ function displayEmployees() {
             let recipientEmailInput = $("#recipient");
             recipientEmailInput.val(selectedIndividual.emailAddress);
             $('.employee-page-title').append(`Recognition for ${selectedIndividual.firstName} ${ selectedIndividual.lastName}`);
-
+           
             getAllTranx()
                 .then((transactionsGet) => {
                     globalTransactions = transactionsGet;
-                    let highlightedEmployeeInfo = globalTransactions.filter(globalTransaction => (globalTransaction.senderEmailAddress === selectedIndividual.emailAddress) || (globalTransaction.recipientEmailAddress === selectedIndividual.emailAddress)
-                        //highlightedEmployeeInfo is an array of objects
-                    )
-                    let sortedTransactions = highlightedEmployeeInfo.reduce(function (allTransactions, transaction) {
-                        if (transaction.goal in allTransactions) {
-                            allTransactions[transaction.goal].push(transaction);
-                            return allTransactions;
+                    let highlightedEmployeeSenderInfo = globalTransactions.filter(globalTransaction => (globalTransaction.senderEmailAddress === selectedIndividual.emailAddress))
+
+                    let sortedSentTransactions = highlightedEmployeeSenderInfo.reduce(function (allSentTransactions, transaction) {
+                        if (transaction.goal in allSentTransactions) {
+                            allSentTransactions[transaction.goal].push(transaction);
+                            return allSentTransactions;
                         } else {
-                            allTransactions[transaction.goal] = [transaction];
-
-                            return allTransactions;
-                        }
+                            allSentTransactions[transaction.goal] = [transaction];                            
+                            return allSentTransactions; 
+                        }                      
                     }, {});
-                    for (i in sortedTransactions) {
-                        console.log(i, sortedTransactions[i])
-                        //sortedTransactions is an object with 4 keys(Cost, Sales, Ideas, Service) which have arrays as the values
-                        for (j = 0; j < sortedTransactions[i].length; j++) {
-
-                            transactionInfo = {
-                                goal: sortedTransactions[i][j].goal,
-                                points: sortedTransactions[i][j].points,
-                                reason: sortedTransactions[i][j].reason,
-                                senderEmailAddress: sortedTransactions[i][j].senderEmailAddress,
-                                senderFirstName: sortedTransactions[i][j].senderFirstName,
-                                senderLastName: sortedTransactions[i][j].senderLastName,
-                                recipientEmailAddress: sortedTransactions[i][j].recipientEmailAddress,
-                                recipientFirstName: sortedTransactions[i][j].recipientFirstName,
-                                recipientLastName: sortedTransactions[i][j].recipientLastName
-
+                    console.log(sortedSentTransactions);
+                    for (i in sortedSentTransactions) {
+                           //sortedSentTransactions is an object with 4 keys(Cost, Sales, Ideas, Service) which have arrays as the values
+                        for (let j = 0; j <sortedSentTransactions[i].length; j++) {                           
+                            sentTransactionInfo = {
+                                goal: sortedSentTransactions[i][j].goal,
+                                points: sortedSentTransactions[i][j].points,
+                                reason: sortedSentTransactions[i][j].reason,
+                                // senderEmailAddress: sortedSentTransactions[i][j].senderEmailAddress,
+                                // senderFirstName: sortedSentTransactions[i][j].senderFirstName,
+                                // senderLastName: sortedSentTransactions[i][j].senderLastName,
+                                recipientEmailAddress: sortedSentTransactions[i][j].recipientEmailAddress,
+                                recipientFirstName: sortedSentTransactions[i][j].recipientFirstName,
+                                recipientLastName: sortedSentTransactions[i][j].recipientLastName
                             }
 
-                            let recipientHTMLResults = formatRecipientInfo(transactionInfo);
-                            let senderHTMLResults = formatSenderInfo(transactionInfo);
-                        }
+                            // if (j === 0) {
+                            //     const sentCategoryInfoHTML = (`<section class="points-given"><p class="ellipse ellipse-display ${sentTransactionInfo.goal}-ellipse">${sentTransactionInfo.goal}</p>
+                            //     </section>`);
+                            //     $("row.points-given-box").append(sentCategoryInfoHTML);
+                            //     return
+                            // } else {
+                            //     console.log('nothing to do here')
+                            // }
+
+                            let senderHTMLResults = formatSenderInfo(sentTransactionInfo);
+                        }                        
                     };
+                    let highlightedEmployeeRecipientInfo = globalTransactions.filter(globalTransaction =>
+                        (globalTransaction.recipientEmailAddress === selectedIndividual.emailAddress)
+                        //highlightedEmployeeInfo is an array of objects
+                    )
+
+                    let sortedRecipientTransactions = highlightedEmployeeRecipientInfo.reduce(function (allReceivedTransactions, transaction) {
+                        if (transaction.goal in allReceivedTransactions) {
+                            allReceivedTransactions[transaction.goal].push(transaction);
+                            return allReceivedTransactions;
+                        } else {
+                            allReceivedTransactions[transaction.goal] = [transaction];
+                            return allReceivedTransactions;
+                        }
+                    }, {});
+                    console.log(sortedRecipientTransactions);
+                    for (let i in sortedRecipientTransactions) {
+                        
+                        //sortedRecipientTransactions is an object with 4 keys(Cost, Sales, Ideas, Service) which have arrays as the values
+                        for (let j = 0; j < sortedRecipientTransactions[i].length; j++) {
+
+                            // if (j = 0) {
+                            //     const recipientCategoryInfoHTML = (
+                            //         `<section class="points-given"><p class="ellipse ellipse-display ${sortedRecipientTransactions[i][j].goal}-ellipse">${sortedRecipientTransactions[i][j].goal}</p>
+                            //         </section>`
+                            //     );
+                            //     $("row.points-given-box").append(recipientCategoryInfoHTML);
+                            //     return recipientCategoryInfoHTML
+                            // } else {
+                            //     console.log(j);
+                            // }
+                            recipientTransactionInfo = {
+                                goal: sortedRecipientTransactions[i][j].goal,
+                                points: sortedRecipientTransactions[i][j].points,
+                                reason: sortedRecipientTransactions[i][j].reason,
+                                senderEmailAddress: sortedRecipientTransactions[i][j].senderEmailAddress,
+                                // senderFirstName: sortedSentTransactions[i][j].senderFirstName,
+                                // senderLastName: sortedSentTransactions[i][j].senderLastName,
+                                recipientEmailAddress: sortedRecipientTransactions[i][j].recipientEmailAddress,
+                                recipientFirstName: sortedRecipientTransactions[i][j].recipientFirstName,
+                                recipientLastName: sortedRecipientTransactions[i][j].recipientLastName
+                            }
 
 
+                            let recipientHTMLResults = formatRecipientInfo(recipientTransactionInfo);
+                            // if (j == 0) {
+                            //     const recipientCategoryInfoHTML = (`<section class="points-given"><p class="ellipse ellipse-display ${recipientTransactionInfo.goal}-ellipse">${recipientTransactionInfo.goal}</p>
+                            //         </section>`);
+                            //     $("row.points-given-box").append(recipientCategoryInfoHTML);
+                            //     return recipientCategoryInfoHTML
+                            // } else {
+                            //     console.log(j);
+                            // }
+                        }
+                    }
                 });
-        }
+        };
     });
 
-    function formatSenderInfo(transactionInfo) {
-        const senderInfoHTML = (
+    function formatSenderInfo(sentTransactionInfo) {
+        const sentInfoHTML = (
             `<section class ="points-given"> 
-                                          <p class="ellipse ellipse-display ${transactionInfo.goal}-ellipse">${transactionInfo.goal}</p> <h2> ${transactionInfo.points} points from Sender <i>${transactionInfo.reason}</i><h2>
-                             </section>`
+                    <h2> ${sentTransactionInfo.points} points to ${sentTransactionInfo.recipientEmailAddress} ${sentTransactionInfo.senderLastName} for <i>${sentTransactionInfo.reason}</i><h2>
+             </section>`
         );
 
-        $("row.points-given-box").append(senderInfoHTML);
-        return senderInfoHTML;
+        $("row.points-given-box").append(sentInfoHTML);
+        return sentInfoHTML;
     }
 
-    function formatRecipientInfo(transactionInfo) {
+    function formatRecipientInfo(recipientTransactionInfo) {
         const recipientInfoHTML = (
             `<section class ="points-received">                                   
-                                       <p class="ellipse ellipse-display ${transactionInfo.goal}-ellipse">${transactionInfo.goal}</p> <h2> ${transactionInfo.points} points to Recipient for: <i>${transactionInfo.reason}</i><h2>
+                                        <h2> ${recipientTransactionInfo.points} points from ${recipientTransactionInfo.senderEmailAddress} ${recipientTransactionInfo.recipientLastName} for: <i>${recipientTransactionInfo.reason}</i><h2>
                              </section>`
         );
         $("row.points-received-box").append(recipientInfoHTML);
