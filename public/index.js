@@ -183,9 +183,13 @@ $('.sign-in-button').on("click", function (event) {
 });
 $('button.employee-list-button').click(function (event) {
     $('.employee-list').removeClass('hidden');
+    $('section.points-given').empty();
+    $('section.points-received').empty();
+    $('.employee-page-title').empty();
     $('button.employee-list-button').addClass('hidden');
     $('.cancel-button').removeClass('hidden');
     $('.individual-recognition-summary').addClass('hidden');
+    //     $('.individual-recognition-summary').empty();
 });
 
 function addNewEmployee(employeeData) {
@@ -277,11 +281,12 @@ function displayEmployees() {
                 firstName: selectedEmployee[0].firstName,
                 lastName: selectedEmployee[0].lastName,
                 emailAddress: selectedEmployee[0].emailAddress,
+
             }
             let recipientEmailInput = $("#recipient");
             recipientEmailInput.val(selectedIndividual.emailAddress);
             $('.employee-page-title').append(`Recognition for ${selectedIndividual.firstName} ${ selectedIndividual.lastName}`);
-           
+
             getAllTranx()
                 .then((transactionsGet) => {
                     globalTransactions = transactionsGet;
@@ -292,37 +297,30 @@ function displayEmployees() {
                             allSentTransactions[transaction.goal].push(transaction);
                             return allSentTransactions;
                         } else {
-                            allSentTransactions[transaction.goal] = [transaction];                            
-                            return allSentTransactions; 
-                        }                      
+                            allSentTransactions[transaction.goal] = [transaction];
+                            return allSentTransactions;
+                        }
                     }, {});
+
+
                     console.log(sortedSentTransactions);
                     for (i in sortedSentTransactions) {
-                           //sortedSentTransactions is an object with 4 keys(Cost, Sales, Ideas, Service) which have arrays as the values
-                        for (let j = 0; j <sortedSentTransactions[i].length; j++) {                           
+                        //sortedSentTransactions is an object with 4 keys(Cost, Sales, Ideas, Service) which have arrays as the values
+                        for (let j = 0; j < sortedSentTransactions[i].length; j++) {
+                            function findSortedSenderRecipient(sortedEmp) {
+                                return sortedEmp.emailAddress === sortedSentTransactions[i][j].recipientEmailAddress
+                            }
+                            let sortedSender = globalEmployees.find(findSortedSenderRecipient);
                             sentTransactionInfo = {
                                 goal: sortedSentTransactions[i][j].goal,
                                 points: sortedSentTransactions[i][j].points,
                                 reason: sortedSentTransactions[i][j].reason,
-                                // senderEmailAddress: sortedSentTransactions[i][j].senderEmailAddress,
-                                // senderFirstName: sortedSentTransactions[i][j].senderFirstName,
-                                // senderLastName: sortedSentTransactions[i][j].senderLastName,
                                 recipientEmailAddress: sortedSentTransactions[i][j].recipientEmailAddress,
-                                recipientFirstName: sortedSentTransactions[i][j].recipientFirstName,
-                                recipientLastName: sortedSentTransactions[i][j].recipientLastName
+                                senderFirstName: sortedSender.firstName,
+                                senderLastName: sortedSender.lastName,
                             }
-
-                            // if (j === 0) {
-                            //     const sentCategoryInfoHTML = (`<section class="points-given"><p class="ellipse ellipse-display ${sentTransactionInfo.goal}-ellipse">${sentTransactionInfo.goal}</p>
-                            //     </section>`);
-                            //     $("row.points-given-box").append(sentCategoryInfoHTML);
-                            //     return
-                            // } else {
-                            //     console.log('nothing to do here')
-                            // }
-
                             let senderHTMLResults = formatSenderInfo(sentTransactionInfo);
-                        }                        
+                        }
                     };
                     let highlightedEmployeeRecipientInfo = globalTransactions.filter(globalTransaction =>
                         (globalTransaction.recipientEmailAddress === selectedIndividual.emailAddress)
@@ -338,35 +336,25 @@ function displayEmployees() {
                             return allReceivedTransactions;
                         }
                     }, {});
+
                     console.log(sortedRecipientTransactions);
                     for (let i in sortedRecipientTransactions) {
-                        
                         //sortedRecipientTransactions is an object with 4 keys(Cost, Sales, Ideas, Service) which have arrays as the values
                         for (let j = 0; j < sortedRecipientTransactions[i].length; j++) {
-
-                            // if (j = 0) {
-                            //     const recipientCategoryInfoHTML = (
-                            //         `<section class="points-given"><p class="ellipse ellipse-display ${sortedRecipientTransactions[i][j].goal}-ellipse">${sortedRecipientTransactions[i][j].goal}</p>
-                            //         </section>`
-                            //     );
-                            //     $("row.points-given-box").append(recipientCategoryInfoHTML);
-                            //     return recipientCategoryInfoHTML
-                            // } else {
-                            //     console.log(j);
-                            // }
+                            function findSortedRecipientSender(sortedEmployee) {
+                                return sortedEmployee.emailAddress === sortedRecipientTransactions[i][j].senderEmailAddress
+                            }
+                            let sortedRecipient = globalEmployees.find(findSortedRecipientSender);
+                            
                             recipientTransactionInfo = {
                                 goal: sortedRecipientTransactions[i][j].goal,
                                 points: sortedRecipientTransactions[i][j].points,
                                 reason: sortedRecipientTransactions[i][j].reason,
                                 senderEmailAddress: sortedRecipientTransactions[i][j].senderEmailAddress,
-                                // senderFirstName: sortedSentTransactions[i][j].senderFirstName,
-                                // senderLastName: sortedSentTransactions[i][j].senderLastName,
-                                recipientEmailAddress: sortedRecipientTransactions[i][j].recipientEmailAddress,
-                                recipientFirstName: sortedRecipientTransactions[i][j].recipientFirstName,
-                                recipientLastName: sortedRecipientTransactions[i][j].recipientLastName
+                                recipientFirstName: sortedRecipient.firstName,
+                                recipientLastName: sortedRecipient.lastName
                             }
-
-
+                            console.log(j);
                             let recipientHTMLResults = formatRecipientInfo(recipientTransactionInfo);
                             // if (j == 0) {
                             //     const recipientCategoryInfoHTML = (`<section class="points-given"><p class="ellipse ellipse-display ${recipientTransactionInfo.goal}-ellipse">${recipientTransactionInfo.goal}</p>
@@ -376,6 +364,12 @@ function displayEmployees() {
                             // } else {
                             //     console.log(j);
                             // }
+//                             function captureGoalTitle(j) {
+//                                 if (j= 0) {
+//                                     return goalTitle= recipientTransactionInfo.goal}
+// debugger
+//                             }
+//                             captureGoalTitle(J);
                         }
                     }
                 });
@@ -384,19 +378,21 @@ function displayEmployees() {
 
     function formatSenderInfo(sentTransactionInfo) {
         const sentInfoHTML = (
-            `<section class ="points-given"> 
-                    <h2> ${sentTransactionInfo.points} points to ${sentTransactionInfo.recipientEmailAddress} ${sentTransactionInfo.senderLastName} for <i>${sentTransactionInfo.reason}</i><h2>
+            `<section class ="points-given"> <p class="ellipse ellipse-display ${sentTransactionInfo.goal}-ellipse">${sentTransactionInfo.goal}</p>                                 
+                    <h2> ${sentTransactionInfo.points} points to ${sentTransactionInfo.senderFirstName} ${sentTransactionInfo.senderLastName} for:  <i>${sentTransactionInfo.reason}</i><h2>
+                     
              </section>`
         );
 
         $("row.points-given-box").append(sentInfoHTML);
         return sentInfoHTML;
     }
-
+    // iv class = "current-employee" data-email="${globalEmployees[currentEmployee].emailAddress}">
     function formatRecipientInfo(recipientTransactionInfo) {
         const recipientInfoHTML = (
-            `<section class ="points-received">                                   
-                                        <h2> ${recipientTransactionInfo.points} points from ${recipientTransactionInfo.senderEmailAddress} ${recipientTransactionInfo.recipientLastName} for: <i>${recipientTransactionInfo.reason}</i><h2>
+            `<section class ="points-received">  <p class="ellipse ellipse-display ${recipientTransactionInfo.goal}-ellipse">${recipientTransactionInfo.goal}</p>                                 
+                                        <h2> ${recipientTransactionInfo.points} points from ${recipientTransactionInfo.recipientFirstName} ${recipientTransactionInfo.recipientLastName} for: <i>${recipientTransactionInfo.reason}</i><h2>                                       
+                                      
                              </section>`
         );
         $("row.points-received-box").append(recipientInfoHTML);
@@ -425,6 +421,8 @@ $("form[name=add-points-form]").submit(function (event) {
     const points = parseInt(pointsDropdown.val());
 
     let newTransaction = {
+        senderFirstName: loggedInUser.firstName,
+        senderLastName: loggedInUser.lastName,
         senderEmailAddress: loggedInUser.emailAddress,
         goal: goal,
         points: points,
@@ -457,15 +455,15 @@ function updateEmployeePoints(newTransaction) {
     }
 
     let recipient = globalEmployees.find(findRecipient);
-    recipient.pointsReceived = (recipient.pointsReceived + newTransaction.points)
+    recipient.pointsReceived = (recipient.pointsReceived + newTransaction.points);
+
 
     function findSender(employee) {
         return employee.emailAddress === newTransaction.senderEmailAddress;
     }
     let sender = globalEmployees.find(findSender);
-    sender.pointsGiven = sender.pointsGiven + newTransaction.points
-
-    sender.pointsRemaining = sender.pointsRemaining - newTransaction.points
+    sender.pointsGiven = sender.pointsGiven + newTransaction.points;
+    sender.pointsRemaining = sender.pointsRemaining - newTransaction.points;
 }
 
 
