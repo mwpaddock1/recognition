@@ -6,14 +6,20 @@ const morgan = require('morgan');
 
 const app = express();
 app.use(morgan('common'));
-// app.use(morgan(':date[iso] :method :url :response-time'));
+
+// app.use(function (req, res, next) {
+//   res.header('Access-Control-Allow-Origin', '*');
+//   res.header('Access-Control-Allow-Headers', 'Content-Type');
+//   res.header('Access-Control-Allow-Methods', 'GET,POST,PUT,PATCH,DELETE');
+//   next();
+// });
 
 app.use(express.static('public'));
 const bodyParser = require ('body-parser');
 const jsonParser = bodyParser.json();
 const {employeeList} = require ('./models');
 
-employeeList.create('demo1', 'josey', 'josey@fizzbuzz.com');
+employeeList.create('demo1', 'josephine', 'josey@fizzbuzz.com');
 employeeList.create('example', 'mary', 'mary@fizzbuzz.com');
 
 app.get('/employee-list', (req, res) => {

@@ -193,6 +193,7 @@ function displayEmployees() {
         )
         $('row.employee-boxes').append(empInfoHTML);
     }
+//get the selected employee and display his / her points
     $('.current-employee').click(function (event) {
 
         let selectedEmployeeEmail = ($(event.currentTarget).data('email'));
