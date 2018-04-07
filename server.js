@@ -20,10 +20,14 @@ app.get('/employee-list', (req, res) => {
 res.json(employeeList.get());
 });
 
+
+// app.post();
+//app.put();
+//app.delete();
 if (require.main === module) {
   app.listen(process.env.PORT || 8080, function () {
     console.info(`App listening on ${this.address().port}`);
   });
 }
-
+//environment variable called PORT - it's value is set outside of this app
 module.exports = app;

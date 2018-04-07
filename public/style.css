@@ -74,6 +74,9 @@ button.add-points-button {
     padding-left: 5%;
     padding-right: 5%;
 }
+.demo-credentials {
+    text-align: center;
+}
 form {
     border: 2px solid #0c91F0;
 }
@@ -377,7 +380,16 @@ section.points-given h2 {
 .title-box {
     background-color: #FFF9AD;
 }
-
+.title-box h2 {
+    display: flex;
+    box-sizing: border-box;
+    padding-left: 10px;
+    /* text-align: center; */
+    /* font-size: 12px; */
+    /* width: 90%; */
+    /* flex-wrap: wrap; */
+    /* flex: initial; */
+}
 .employee-box {
     background-color: #F2f2f2;
 }
@@ -400,8 +412,11 @@ section.points-given h2 {
     }
     .main {
         display: flex;
-        /* align-items: center;  */
-        justify-content: center;
+        align-items: flex-start;
+        flex-direction: column;
+        align-content: center;
+        justify-content: top;
+        /* justify-content: space-around; */
     }
     .ellipse {
         padding: 2% 2%;
@@ -436,13 +451,22 @@ section.points-given h2 {
     }
     .goal {
         display: inline-flex;
+        /* justify-content: space-between; */
     }
     .goals {
-        width: 90%;
+        width: 95%;
+        margin-bottom: 50px;
+        justify-content: space-between;
+        /* display: flex; */
     }
     .goal-container {
-        width: 25%;
+        width: 50%;
         display: flex;
+        /* align-content: center; */
+        margin: auto;
+        justify-content: space-around;
+        /* flex-direction: column; */
+        /* justify-content: space-around; */
     }
     
     .employee-container,

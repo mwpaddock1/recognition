@@ -26,7 +26,7 @@ const employeeList = {
         delete this.items[id];
     },
     update: function (updatedEmployee) {
-        console.log(`Deleting employee list employee\`${updatedEmployee.id}\``);
+        console.log(`Updating employee list employee\`${updatedEmployee.id}\``);
         const {
             id
         } = updatedEmployee;

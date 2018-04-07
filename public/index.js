@@ -1,101 +1,16 @@
-// console.log(JSON.stringify({
-//     employees: [{
-//             lastName: "Foo",
-//             firstName: "Joseph",
-//             emailAddress: "jfoo@fizzbuzz.com",
-//             pointsGiven: 10,
-//             pointsReceived: 5,
-//             pointsRemaining: 90,
-//             pointsFromLastName: "Bar",
-//             pointsFromFirstName: "Mary",
-//             corpGoal: "Costs",
-//             points: 5,
-//             reason: "sourced a new paper vendor"
-//         },
-//         {
-//             lastName: "Bar",
-//             firstName: "Mary",
-//             emailAddress: "mbar@fizzbuzz.com",
-//             pointsGiven: 5,
-//             pointsReceived: 0,
-//             pointsRemaining: 95,
-//             pointsFromLastName: "Staff",
-//             pointsFromFirstName: "John",
-//             corpGoal: "service",
-//             points: 10,
-//             reason: "served dinner at the homeless shelter"
-//         },
-//         {
-//             lastName: "Staff",
-//             firstName: "John",
-//             emailAddress: "jstaff@fizzbuzz.com",
-//             pointsGiven: 0,
-//             pointsReceived: 10,
-//             pointsRemaining: 100
-//         },
-//         {
-//             lastName: "Worker",
-//             firstName: "John",
-//             emailAddress: "jworker@fizzbuzz.com",
-//             pointsGiven: 0,
-//             pointsReceived: 0,
-//             pointsRemaining: 100
-//         }
-//     ]
-
-// //  }));
-// console.log(JSON.stringify({
-//     transactions: [{
-//             recipientLastName: "Foo",
-//             recipientFirstName: "Joseph",
-//             recipientEmailAddress: "jfoo@fizzbuzz.com",
-//             senderLastName: "Bar",
-//             senderFirstName: "Mary",
-//             senderEmailAddress: "mbar@fizzbuzz.com",
-//             goal: "Costs",
-//             points: 5,
-//             reason: "sourced a new paper vendor"
-//         },
-//         {
-//             recipientLastName: "Bar",
-//             recipientFirstName: "Mary",
-//             recipientEmailAddress: "mbar@fizzbuzz.com",
-//             senderLastName: "Staff",
-//             senderFirstName: "John",
-//             senderEmailAddress: "jstaff@fizzbuzz.com",
-//             goal: "service",
-//             points: 10,
-//             reason: "served dinner at the homeless shelter"
-//         }
-
-//     ]
-//  }));
-
-// function getEmployees(callbackFn) {
-//     setTimeout(function () {
-//         callbackFn(MOCK_DATA)
-//     }, 100);
-// }
-
-// this function stays the same when we connect
-// to real API later
 let globalEmployees;
 let globalTransactions;
 let JWT;
 let loggedInUser;
 
-// $(".new-search-button").on("click", function (event) {
-//     $(".js-search-form").removeClass("hidden");
-//     $(".js-search-results").addClass("hidden");
 $('.sign-up-opening-button').on("click", function (event) {
     $('.thumbs-up').addClass('hidden');
     $('#js-sign-up-form').removeClass('hidden');
     $('.cancel-button').removeClass('hidden');
-    $('button.sign-up-button').removeClass('hidden');
-    $('button.login-button').addClass('hidden');
-    $('button.login-opening-button').addClass('hidden');
+    $('.sign-up-button').removeClass('hidden');
+    $('.login-button').addClass('hidden');
+    $('.login-opening-button').addClass('hidden');
     $('.sign-up-opening-button').addClass('hidden');
-
 });
 
 $("form[name=sign-up-form]").submit(function (event) {
@@ -124,39 +39,58 @@ $("form[name=sign-up-form]").submit(function (event) {
             return globalEmployees;
         })
         .then(displayEmployees)
-    $('.js-logged-in-employee').append(`You are logged in as ${loggedInUser.firstName} ${  loggedInUser.lastName}`);
+    $('.demo-credentials').addClass('hidden');
+
+    $('.js-logged-in-employee').append(`You are logged in as ${loggedInUser.firstName} ${loggedInUser.lastName}`);
+    document.getElementById("js-sign-up-form").reset();
+
 });
 $('.login-opening-button').on("click", function (event) {
     $('.thumbs-up').addClass('hidden');
     $('#js-login-form').removeClass('hidden');
     $('.cancel-button').removeClass('hidden');
     $('button.login-button').addClass('hidden');
-    $('button.login-banner-button').addClass('hidden');
-    $('button.sign-up-button').addClass('hidden');
-    $('button.sign-up-opening-button').addClass('hidden');
+    $('sign-in-button').removeClass('hidden');
+    $('.login-banner-button').addClass('hidden');
+    $('.sign-up-button').addClass('hidden');
+    $('.sign-up-opening-button').addClass('hidden');
     $('.login-opening-button').addClass('hidden');
+
 });
-$('button.login-banner-button').on('click', function (event) {
+$('.login-banner-button').on('click', function (event) {
     $('.thumbs-up').addClass('hidden');
     $('#js-login-form').removeClass('hidden');
     $('.cancel-button').removeClass('hidden');
     $('button.login-button').addClass('hidden');
-    $('button.login-banner-button').addClass('hidden');
-    $('button.sign-up-button').addClass('hidden');
-    $('button.sign-up-opening-button').addClass('hidden');
+    $('.login-banner-button').addClass('hidden');
+    $('.sign-up-button').addClass('hidden');
+    $('.sign-up-opening-button').addClass('hidden');
     $('.login-opening-button').addClass('hidden');
 });
 $('.cancel-button').on("click", function (event) {
-    $('.thumbs-up').removeClass('hidden');
     $('#js-login-form').addClass('hidden');
     $('#js-sign-up-form').addClass('hidden');
     $('.cancel-button').addClass('hidden');
     $('button.login-button').removeClass('hidden');
-    $('button.sign-up-button').removeClass('hidden');
-    $('button.sign-up-opening-button').removeClass('hidden');
+    $('.sign-up-button').removeClass('hidden');
+    $('.sign-up-opening-button').removeClass('hidden');
+    $('.login-opening-button').removeClass('hidden');
+    $('.thumbs-up').removeClass('hidden');
+    $('.goals').addClass('hidden');
+    $('.employee-list').addClass('hidden');
+    $('.demo-credentials').removeClass('hidden');
+});
+$('.logout-button').on('click', function (event) {
+    $('.thumbs-up').removeClass('hidden');
+    $('.cancel-button').addClass('hidden');
+    $('button.login-button').removeClass('hidden');
+    $('.sign-up-button').removeClass('hidden');
+    $('.sign-up-opening-button').removeClass('hidden');
     $('.login-opening-button').removeClass('hidden');
     $('.goals').addClass('hidden');
     $('.employee-list').addClass('hidden');
+    $('.demo-credentials').removeClass('hidden');
+    $('.logout-button').addClass('hidden');
 });
 $("form[name=login-form]").submit(function (event) {
     event.preventDefault();
@@ -171,25 +105,25 @@ $("form[name=login-form]").submit(function (event) {
             globalEmployees = employeesGet;
             return globalEmployees
         })
-        .then(displayEmployees)
-    // $('.js-logged-in-employee').append(`You are logged in as ${loggedInUser.firstName} ${loggedInUser.lastName}`);
-
+        .then(displayEmployees);
+    $('.js-logged-in-employee').append(`You are logged in as ${loggedInUser.firstName} ${loggedInUser.lastName}`);
+    document.getElementById("js-login-form").reset();
 });
 $('.sign-in-button').on("click", function (event) {
     $('#js-login-form').addClass('hidden');
     $('.goals').removeClass('hidden');
     $('.employee-list').removeClass('hidden');
     $('#js-sign-up-form').addClass('hidden');
+    $('.demo-credentials').addClass('hidden');
 });
-$('button.employee-list-button').click(function (event) {
+$('.employee-list-button').click(function (event) {
     $('.employee-list').removeClass('hidden');
     $('section.points-given').empty();
     $('section.points-received').empty();
     $('.employee-page-title').empty();
-    $('button.employee-list-button').addClass('hidden');
+    $('.employee-list-button').addClass('hidden');
     $('.cancel-button').removeClass('hidden');
     $('.individual-recognition-summary').addClass('hidden');
-    //     $('.individual-recognition-summary').empty();
 });
 
 function addNewEmployee(employeeData) {
@@ -259,7 +193,6 @@ function displayEmployees() {
         )
         $('row.employee-boxes').append(empInfoHTML);
     }
-
     $('.current-employee').click(function (event) {
 
         let selectedEmployeeEmail = ($(event.currentTarget).data('email'));
@@ -273,8 +206,8 @@ function displayEmployees() {
             alert("You may not give points to yourself!")
         } else {
             $('.employee-list').addClass('hidden');
-            $('button.sign-in-button').addClass('hidden');
-            $('button.employee-list-button').removeClass('hidden');
+            $('.sign-in-button').addClass('hidden');
+            $('.employee-list-button').removeClass('hidden');
             $('.cancel-button').addClass('hidden');
             $('.individual-recognition-summary').removeClass('hidden');
             let selectedIndividual = {
@@ -301,9 +234,6 @@ function displayEmployees() {
                             return allSentTransactions;
                         }
                     }, {});
-
-
-                    console.log(sortedSentTransactions);
                     for (i in sortedSentTransactions) {
                         //sortedSentTransactions is an object with 4 keys(Cost, Sales, Ideas, Service) which have arrays as the values
                         for (let j = 0; j < sortedSentTransactions[i].length; j++) {
@@ -336,8 +266,6 @@ function displayEmployees() {
                             return allReceivedTransactions;
                         }
                     }, {});
-
-                    console.log(sortedRecipientTransactions);
                     for (let i in sortedRecipientTransactions) {
                         //sortedRecipientTransactions is an object with 4 keys(Cost, Sales, Ideas, Service) which have arrays as the values
                         for (let j = 0; j < sortedRecipientTransactions[i].length; j++) {
@@ -345,7 +273,7 @@ function displayEmployees() {
                                 return sortedEmployee.emailAddress === sortedRecipientTransactions[i][j].senderEmailAddress
                             }
                             let sortedRecipient = globalEmployees.find(findSortedRecipientSender);
-                            
+
                             recipientTransactionInfo = {
                                 goal: sortedRecipientTransactions[i][j].goal,
                                 points: sortedRecipientTransactions[i][j].points,
@@ -354,8 +282,18 @@ function displayEmployees() {
                                 recipientFirstName: sortedRecipient.firstName,
                                 recipientLastName: sortedRecipient.lastName
                             }
-                            console.log(j);
                             let recipientHTMLResults = formatRecipientInfo(recipientTransactionInfo);
+                            // function captureGoalTitle() {
+                            //     if (j = 0) {
+                            //         let goalTitle = recipientTransactionInfo.goal;
+                            //         return goalTitle
+                            //     } else {
+                            //         console.log('not a goal title');
+                            //     }
+                            // }
+                            // // console.log(goalTitle);
+                            // captureGoalTitle(j);
+
                             // if (j == 0) {
                             //     const recipientCategoryInfoHTML = (`<section class="points-given"><p class="ellipse ellipse-display ${recipientTransactionInfo.goal}-ellipse">${recipientTransactionInfo.goal}</p>
                             //         </section>`);
@@ -364,12 +302,7 @@ function displayEmployees() {
                             // } else {
                             //     console.log(j);
                             // }
-//                             function captureGoalTitle(j) {
-//                                 if (j= 0) {
-//                                     return goalTitle= recipientTransactionInfo.goal}
-// debugger
-//                             }
-//                             captureGoalTitle(J);
+
                         }
                     }
                 });
@@ -377,34 +310,43 @@ function displayEmployees() {
     });
 
     function formatSenderInfo(sentTransactionInfo) {
+
         const sentInfoHTML = (
             `<section class ="points-given"> <p class="ellipse ellipse-display ${sentTransactionInfo.goal}-ellipse">${sentTransactionInfo.goal}</p>                                 
-                    <h2> ${sentTransactionInfo.points} points to ${sentTransactionInfo.senderFirstName} ${sentTransactionInfo.senderLastName} for:  <i>${sentTransactionInfo.reason}</i><h2>
-                     
-             </section>`
+                    <h2> ${sentTransactionInfo.points} points to ${sentTransactionInfo.senderFirstName} ${sentTransactionInfo.senderLastName} for:  <i>${sentTransactionInfo.reason}</i><h2>         </section>`
         );
 
         $("row.points-given-box").append(sentInfoHTML);
         return sentInfoHTML;
     }
-    // iv class = "current-employee" data-email="${globalEmployees[currentEmployee].emailAddress}">
+
     function formatRecipientInfo(recipientTransactionInfo) {
+        // if (recipientTransactionInfo.points == 0) {
+        //     const recipientHTMLResults = (
+        //         `<section class="points-received"><h2>No points received to date!</h2>
+        //      </section>`
+        //     );
+
+        //     return recipientInfoHTML;
+        // } else {
         const recipientInfoHTML = (
-            `<section class ="points-received">  <p class="ellipse ellipse-display ${recipientTransactionInfo.goal}-ellipse">${recipientTransactionInfo.goal}</p>                                 
-                                        <h2> ${recipientTransactionInfo.points} points from ${recipientTransactionInfo.recipientFirstName} ${recipientTransactionInfo.recipientLastName} for: <i>${recipientTransactionInfo.reason}</i><h2>                                       
-                                      
-                             </section>`
+            `<section class ="points-received">  
+                <p class="ellipse ellipse-display ${recipientTransactionInfo.goal}-ellipse">${recipientTransactionInfo.goal}</p>                                     
+                <h2> ${recipientTransactionInfo.points} points from ${recipientTransactionInfo.recipientFirstName} ${recipientTransactionInfo.recipientLastName} for: <i>${recipientTransactionInfo.reason}</i><h2>                                       
+             </section>`
         );
+
+
+        //  }
         $("row.points-received-box").append(recipientInfoHTML);
         return recipientInfoHTML;
+
     }
 };
 
-$('button.give-points-button').click(function (event) {
+$('.give-points-button').click(function (event) {
     $('.individual-info-container').removeClass('hidden');
     $('.individual-recognition-summary').addClass('hidden');
-
-
     console.log("going to assign points page");
 });
 
@@ -432,21 +374,21 @@ $("form[name=add-points-form]").submit(function (event) {
     console.log(reason);
     console.log(goal);
     console.log(points);
-    // console.log(senderEmail);
+
     addNewTranx(newTransaction)
         .then(updateEmployeePoints)
         .then(getAllTranx)
         .then((transactionsGet) => {
             globalTransactions = transactionsGet;
-
             return globalTransactions;
         })
         .then(getAllEmployees)
         .then(displayEmployees);
-    //figure out where these go:
     $('.employee-list').removeClass('hidden');
-    $('button.employee-list-button').addClass('hidden');
-    $('button.logout-button').removeClass('hidden');
+    $('.employee-list-button').addClass('hidden');
+    $('.logout-button').removeClass('hidden');
+    $('.individual-info-container').addClass('hidden');
+    document.getElementById("js-add-points-form").reset();
 });
 
 function updateEmployeePoints(newTransaction) {
@@ -457,7 +399,6 @@ function updateEmployeePoints(newTransaction) {
     let recipient = globalEmployees.find(findRecipient);
     recipient.pointsReceived = (recipient.pointsReceived + newTransaction.points);
 
-
     function findSender(employee) {
         return employee.emailAddress === newTransaction.senderEmailAddress;
     }
@@ -465,8 +406,6 @@ function updateEmployeePoints(newTransaction) {
     sender.pointsGiven = sender.pointsGiven + newTransaction.points;
     sender.pointsRemaining = sender.pointsRemaining - newTransaction.points;
 }
-
-
 
 function addNewTranx(tranxData) {
     return new Promise((resolve, reject) => {
@@ -513,13 +452,3 @@ function getAllTranx() {
         resolve(TRANX_DATA.transactions);
     })
 }
-
-
-
-
-
-// this function can stay the same even when we
-// are connecting to real API
-
-// function getAndDisplayEmployees() {
-//     getEmployees(displayEmployees);
