@@ -30,7 +30,12 @@ $("form[name=sign-up-form]").submit(function (event) {
     let newEmployee = (reformattedArray.reduce(reducingFunction));
     loggedInUser = newEmployee;
     //add something to make sure an employee doesn't dupe him/herself
-
+    if (loggedInUser.email === 'hr@fizzbuzz.com') {
+        displayDeleteEmployeeButton()
+    }
+    function displayDeleteEmployeeButton() {
+        $('.delete-employee-button').removeClass('hidden');
+    }
     console.log(reformattedArray.reduce(reducingFunction));
     addNewEmployee(newEmployee)
         .then(getAllEmployees)
@@ -55,7 +60,6 @@ $('.login-opening-button').on("click", function (event) {
     $('.sign-up-button').addClass('hidden');
     $('.sign-up-opening-button').addClass('hidden');
     $('.login-opening-button').addClass('hidden');
-
 });
 $('.login-banner-button').on('click', function (event) {
     $('.thumbs-up').addClass('hidden');
@@ -107,6 +111,8 @@ $("form[name=login-form]").submit(function (event) {
         })
         .then(displayEmployees);
     $('.js-logged-in-employee').append(`You are logged in as ${loggedInUser.firstName} ${loggedInUser.lastName}`);
+    
+    
     document.getElementById("js-login-form").reset();
 });
 $('.sign-in-button').on("click", function (event) {
@@ -192,6 +198,7 @@ function displayEmployees() {
                     `
         )
         $('row.employee-boxes').append(empInfoHTML);
+
     }
 //get the selected employee and display his / her points
     $('.current-employee').click(function (event) {

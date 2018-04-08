@@ -49,6 +49,7 @@ header {
     width: 100%;
     height: 125px;
 }
+button.delete-employee-button
 button.logout-button,
 button.login-banner-button
 button.employee-list-button,
