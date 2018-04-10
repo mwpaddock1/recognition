@@ -139,4 +139,3 @@ if (require.main === module) {
   });
 }
 //environment variable called PORT - it's value is set outside of this app
-// module.exports = app;

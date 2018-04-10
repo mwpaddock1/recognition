@@ -3,6 +3,7 @@ let globalTransactions;
 let JWT;
 let loggedInUser;
 
+
 $('.sign-up-opening-button').on("click", function (event) {
     $('.thumbs-up').addClass('hidden');
     $('#js-sign-up-form').removeClass('hidden');
@@ -33,6 +34,7 @@ $("form[name=sign-up-form]").submit(function (event) {
     if (loggedInUser.email === 'hr@fizzbuzz.com') {
         displayDeleteEmployeeButton()
     }
+
     function displayDeleteEmployeeButton() {
         $('.delete-employee-button').removeClass('hidden');
     }
@@ -111,8 +113,8 @@ $("form[name=login-form]").submit(function (event) {
         })
         .then(displayEmployees);
     $('.js-logged-in-employee').append(`You are logged in as ${loggedInUser.firstName} ${loggedInUser.lastName}`);
-    
-    
+
+
     document.getElementById("js-login-form").reset();
 });
 $('.sign-in-button').on("click", function (event) {
@@ -200,7 +202,7 @@ function displayEmployees() {
         $('row.employee-boxes').append(empInfoHTML);
 
     }
-//get the selected employee and display his / her points
+    //get the selected employee and display his / her points
     $('.current-employee').click(function (event) {
 
         let selectedEmployeeEmail = ($(event.currentTarget).data('email'));
@@ -257,6 +259,16 @@ function displayEmployees() {
                                 senderFirstName: sortedSender.firstName,
                                 senderLastName: sortedSender.lastName,
                             }
+                            if (j === 0) {
+                                const goalTitle = sentTransactionInfo.goal;
+                                const sentCategoryInfoHTML = (`<section class="points-given"><p class="ellipse ellipse-display ${goalTitle}-ellipse">${goalTitle}</p>
+                                                                </section>`);
+                                $("row.points-given-box").append(sentCategoryInfoHTML);
+
+
+                            } else {
+                                console.log('not a goal title');
+                            }
                             let senderHTMLResults = formatSenderInfo(sentTransactionInfo);
                         }
                     };
@@ -290,27 +302,20 @@ function displayEmployees() {
                                 recipientFirstName: sortedRecipient.firstName,
                                 recipientLastName: sortedRecipient.lastName
                             }
+
+                            if (j === 0) {
+                                const goalTitle = recipientTransactionInfo.goal;
+                                debugger
+                                const recipientCategoryInfoHTML = (`<section class="points-given"><p class="ellipse ellipse-display ${goalTitle}-ellipse">${goalTitle}</p>
+                                                                </section>`);
+                                $("row.points-received-box").append(recipientCategoryInfoHTML);
+
+
+                            } else {
+                                console.log('not a goal title');
+                            }
                             let recipientHTMLResults = formatRecipientInfo(recipientTransactionInfo);
-                            // function captureGoalTitle() {
-                            //     if (j = 0) {
-                            //         let goalTitle = recipientTransactionInfo.goal;
-                            //         return goalTitle
-                            //     } else {
-                            //         console.log('not a goal title');
-                            //     }
-                            // }
-                            // // console.log(goalTitle);
-                            // captureGoalTitle(j);
-
-                            // if (j == 0) {
-                            //     const recipientCategoryInfoHTML = (`<section class="points-given"><p class="ellipse ellipse-display ${recipientTransactionInfo.goal}-ellipse">${recipientTransactionInfo.goal}</p>
-                            //         </section>`);
-                            //     $("row.points-given-box").append(recipientCategoryInfoHTML);
-                            //     return recipientCategoryInfoHTML
-                            // } else {
-                            //     console.log(j);
-                            // }
-
+                            console.log(j);
                         }
                     }
                 });
@@ -320,8 +325,9 @@ function displayEmployees() {
     function formatSenderInfo(sentTransactionInfo) {
 
         const sentInfoHTML = (
-            `<section class ="points-given"> <p class="ellipse ellipse-display ${sentTransactionInfo.goal}-ellipse">${sentTransactionInfo.goal}</p>                                 
-                    <h2> ${sentTransactionInfo.points} points to ${sentTransactionInfo.senderFirstName} ${sentTransactionInfo.senderLastName} for:  <i>${sentTransactionInfo.reason}</i><h2>         </section>`
+            `<section class ="points-given">                                
+                    <h2> ${sentTransactionInfo.points} points to ${sentTransactionInfo.senderFirstName} ${sentTransactionInfo.senderLastName} for:  <i>${sentTransactionInfo.reason}</i><h2> 
+                            </section>`
         );
 
         $("row.points-given-box").append(sentInfoHTML);
@@ -329,17 +335,9 @@ function displayEmployees() {
     }
 
     function formatRecipientInfo(recipientTransactionInfo) {
-        // if (recipientTransactionInfo.points == 0) {
-        //     const recipientHTMLResults = (
-        //         `<section class="points-received"><h2>No points received to date!</h2>
-        //      </section>`
-        //     );
-
-        //     return recipientInfoHTML;
-        // } else {
-        const recipientInfoHTML = (
+                const recipientInfoHTML = (
             `<section class ="points-received">  
-                <p class="ellipse ellipse-display ${recipientTransactionInfo.goal}-ellipse">${recipientTransactionInfo.goal}</p>                                     
+                                                    
                 <h2> ${recipientTransactionInfo.points} points from ${recipientTransactionInfo.recipientFirstName} ${recipientTransactionInfo.recipientLastName} for: <i>${recipientTransactionInfo.reason}</i><h2>                                       
              </section>`
         );

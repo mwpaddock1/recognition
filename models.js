@@ -6,12 +6,13 @@ function StorageException(message) {
 }
 
 const employeeList = {
-    create: function (lastName, firstName, emailAddress) {
+    create: function (lastName, firstName, emailAddress, password) {
         console.log('Creating new employee');
         const employee = {
             lastName: lastName,
             firstName: firstName,
             emailAddress: emailAddress,
+            password: password,
             id: uuid.v4(),
         };
         this.employees[employee.id] = employee;
