@@ -3,7 +3,6 @@ let globalTransactions;
 let JWT;
 let loggedInUser;
 
-
 $('.sign-up-opening-button').on("click", function (event) {
     $('.thumbs-up').addClass('hidden');
     $('#js-sign-up-form').removeClass('hidden');
@@ -200,7 +199,6 @@ function displayEmployees() {
                     `
         )
         $('row.employee-boxes').append(empInfoHTML);
-
     }
     //get the selected employee and display his / her points
     $('.current-employee').click(function (event) {
@@ -224,7 +222,6 @@ function displayEmployees() {
                 firstName: selectedEmployee[0].firstName,
                 lastName: selectedEmployee[0].lastName,
                 emailAddress: selectedEmployee[0].emailAddress,
-
             }
             let recipientEmailInput = $("#recipient");
             recipientEmailInput.val(selectedIndividual.emailAddress);
@@ -234,7 +231,7 @@ function displayEmployees() {
                 .then((transactionsGet) => {
                     globalTransactions = transactionsGet;
                     let highlightedEmployeeSenderInfo = globalTransactions.filter(globalTransaction => (globalTransaction.senderEmailAddress === selectedIndividual.emailAddress))
-
+                    //then pick out the transactions related to the highlighted employee
                     let sortedSentTransactions = highlightedEmployeeSenderInfo.reduce(function (allSentTransactions, transaction) {
                         if (transaction.goal in allSentTransactions) {
                             allSentTransactions[transaction.goal].push(transaction);
@@ -244,8 +241,8 @@ function displayEmployees() {
                             return allSentTransactions;
                         }
                     }, {});
+                    //then break out the sent recognition and display it
                     for (i in sortedSentTransactions) {
-                        //sortedSentTransactions is an object with 4 keys(Cost, Sales, Ideas, Service) which have arrays as the values
                         for (let j = 0; j < sortedSentTransactions[i].length; j++) {
                             function findSortedSenderRecipient(sortedEmp) {
                                 return sortedEmp.emailAddress === sortedSentTransactions[i][j].recipientEmailAddress
@@ -259,12 +256,12 @@ function displayEmployees() {
                                 senderFirstName: sortedSender.firstName,
                                 senderLastName: sortedSender.lastName,
                             }
+                            //break the transactions out by corporate goal
                             if (j === 0) {
                                 const goalTitle = sentTransactionInfo.goal;
                                 const sentCategoryInfoHTML = (`<section class="points-given"><p class="ellipse ellipse-display ${goalTitle}-ellipse">${goalTitle}</p>
                                                                 </section>`);
                                 $("row.points-given-box").append(sentCategoryInfoHTML);
-
 
                             } else {
                                 console.log('not a goal title');
@@ -272,11 +269,11 @@ function displayEmployees() {
                             let senderHTMLResults = formatSenderInfo(sentTransactionInfo);
                         }
                     };
+                    //then break out the received recognition and display it
                     let highlightedEmployeeRecipientInfo = globalTransactions.filter(globalTransaction =>
                         (globalTransaction.recipientEmailAddress === selectedIndividual.emailAddress)
                         //highlightedEmployeeInfo is an array of objects
                     )
-
                     let sortedRecipientTransactions = highlightedEmployeeRecipientInfo.reduce(function (allReceivedTransactions, transaction) {
                         if (transaction.goal in allReceivedTransactions) {
                             allReceivedTransactions[transaction.goal].push(transaction);
@@ -302,20 +299,16 @@ function displayEmployees() {
                                 recipientFirstName: sortedRecipient.firstName,
                                 recipientLastName: sortedRecipient.lastName
                             }
-
+                            //break the transactions out by corporate goal
                             if (j === 0) {
                                 const goalTitle = recipientTransactionInfo.goal;
-                                debugger
-                                const recipientCategoryInfoHTML = (`<section class="points-given"><p class="ellipse ellipse-display ${goalTitle}-ellipse">${goalTitle}</p>
+                                const recipientCategoryInfoHTML = (`<section class="points-received"><p class="ellipse ellipse-display ${goalTitle}-ellipse">${goalTitle}</p>
                                                                 </section>`);
                                 $("row.points-received-box").append(recipientCategoryInfoHTML);
-
-
                             } else {
                                 console.log('not a goal title');
                             }
                             let recipientHTMLResults = formatRecipientInfo(recipientTransactionInfo);
-                            console.log(j);
                         }
                     }
                 });
@@ -323,30 +316,23 @@ function displayEmployees() {
     });
 
     function formatSenderInfo(sentTransactionInfo) {
-
         const sentInfoHTML = (
             `<section class ="points-given">                                
                     <h2> ${sentTransactionInfo.points} points to ${sentTransactionInfo.senderFirstName} ${sentTransactionInfo.senderLastName} for:  <i>${sentTransactionInfo.reason}</i><h2> 
-                            </section>`
+             </section>`
         );
-
         $("row.points-given-box").append(sentInfoHTML);
         return sentInfoHTML;
     }
 
     function formatRecipientInfo(recipientTransactionInfo) {
-                const recipientInfoHTML = (
-            `<section class ="points-received">  
-                                                    
+        const recipientInfoHTML = (
+            `<section class ="points-received">                                                      
                 <h2> ${recipientTransactionInfo.points} points from ${recipientTransactionInfo.recipientFirstName} ${recipientTransactionInfo.recipientLastName} for: <i>${recipientTransactionInfo.reason}</i><h2>                                       
              </section>`
         );
-
-
-        //  }
         $("row.points-received-box").append(recipientInfoHTML);
         return recipientInfoHTML;
-
     }
 };
 

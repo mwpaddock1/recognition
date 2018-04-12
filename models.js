@@ -40,12 +40,12 @@ const employeeList = {
     }
 };
 
-function createemployeeList() {
+function createEmployeeList() {
     const storage = Object.create(employeeList);
     storage.employees = {};
     return storage;
 }
 
 module.exports = {
-    employeeList: createemployeeList()
+    employeeList: createEmployeeList()
 }

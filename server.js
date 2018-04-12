@@ -1,7 +1,12 @@
 'use strict';
+//dotenv loads environment variables from a .env file into the process
+//environment variable called PORT - it's value is set outside of this app
+
 require('dotenv').config();
 const express = require('express');
+//using Mongoose to connect to the server
 const mongoose = require('mongoose');
+//using morgan to creat logs
 const morgan = require('morgan');
 const passport = require('passport');
 
@@ -12,18 +17,18 @@ const passport = require('passport');
 // const { james: jimmy, robert: bobby } = actorSurnames;
 // console.log(jimmy); // Stewart - the variable name is jimmy, not james
 // console.log(bobby); // De Niro - the variable name is bobby, not robert
-// const {
-//   router: usersRouter
-// } = require('./users');
-// const {
-//   router: authRouter,
-//   localStrategy,
-//   jwtStrategy
-// } = require('./auth');
+const {
+  router: usersRouter
+} = require('./users');
+const {
+  router: authRouter,
+  localStrategy,
+  jwtStrategy
+} = require('./auth');
 
 
 mongoose.Promise = global.Promise;
-
+//get the PORT and the database from config
 const {
   PORT,
   DATABASE_URL
@@ -32,6 +37,8 @@ const app = express();
 //logging
 app.use(morgan('common'));
 app.use(express.json());
+
+//CORS
 app.use(function (req, res, next) {
   res.header('Access-Control-Allow-Origin', '*');
   res.header('Access-Control-Allow-Headers', 'Content-Type');
@@ -41,28 +48,26 @@ app.use(function (req, res, next) {
   }
   next();
 });
-// passport.use(localStrategy);
-// passport.use(jwtStrategy);
+passport.use(localStrategy);
+passport.use(jwtStrategy);
 
-// app.use('/api/users/', usersRouter);
-// app.use('/api/auth/', authRouter);
-// // A protected endpoint which needs a valid JWT to access it
-// app.get('/api/protected', jwtAuth, (req, res) => {
-//   return res.json({
-//     data: 'rosebud'
-//   });
-// });
-
-// app.use('*', (req, res) => {
-//   return res.status(404).json({
-//     message: 'Not Found'
-//   });
-// });
+app.use('/api/users/', usersRouter);
+app.use('/api/auth/', authRouter);
 
 
+const jwtAuth = passport.authenticate('jwt', { session: false });
+// A protected endpoint which needs a valid JWT to access it
+app.get('/api/protected', jwtAuth, (req, res) => {
+  return res.json({
+    data: 'rosebud'
+  });
+});
 
-
-
+app.use('*', (req, res) => {
+  return res.status(404).json({
+    message: 'Not Found'
+  });
+});
 
 //let JWT = localStorage.getItem('JWT');
 
@@ -72,13 +77,13 @@ const jsonParser = bodyParser.json();
 const {
   employeeList
 } = require('./models');
+//move these requests
+// employeeList.create('demo1', 'josephine', 'josey@fizzbuzz.com');
+// employeeList.create('example', 'mary', 'mary@fizzbuzz.com');
 
-employeeList.create('demo1', 'josephine', 'josey@fizzbuzz.com');
-employeeList.create('example', 'mary', 'mary@fizzbuzz.com');
-
-app.get('/employee-list', (req, res) => {
-  res.json(employeeList.get());
-});
+// app.get('/employee-list', (req, res) => {
+//   res.json(employeeList.get());
+// });
 
 
 // app.post();
@@ -89,53 +94,52 @@ app.get('/employee-list', (req, res) => {
 // assumes runServer has run and set `server` to a server object
 let server;
 
-// function runServer() {
-//   return new Promise((resolve, reject) => {
-//     mongoose.connect(DATABASE_URL, {
-//       useMongoClient: true
-//     }, err => {
-//       if (err) {
-//         return reject(err);
-//       }
-//       server = app
-//         .listen(PORT, () => {
-//           console.log(`Your app is listening on port ${PORT}`);
-//           resolve();
-//         })
-//         .on('error', err => {
-//           mongoose.disconnect();
-//           reject(err);
-//         });
-//     });
-//   });
-// }
+function runServer() {
+  return new Promise((resolve, reject) => {
+    mongoose.connect(DATABASE_URL, {
+      useMongoClient: true
+    }, err => {
+      if (err) {
+        return reject(err);
+      }
+      server = app
+        .listen(PORT, () => {
+          console.log(`Your app is listening on port ${PORT}`);
+          resolve();
+        })
+        .on('error', err => {
+          mongoose.disconnect();
+          reject(err);
+        });
+    });
+  });
+}
 
-// function closeServer() {
-//   return mongoose.disconnect().then(() => {
-//     return new Promise((resolve, reject) => {
-//       console.log('Closing server');
-//       server.close(err => {
-//         if (err) {
-//           return reject(err);
-//         }
-//         resolve();
-//       });
-//     });
-//   });
-// }
+function closeServer() {
+  return mongoose.disconnect().then(() => {
+    return new Promise((resolve, reject) => {
+      console.log('Closing server');
+      server.close(err => {
+        if (err) {
+          return reject(err);
+        }
+        resolve();
+      });
+    });
+  });
+}
 
-// if (require.main === module) {
-//   runServer().catch(err => console.error(err));
-// }
+if (require.main === module) {
+  runServer().catch(err => console.error(err));
+}
 
 module.exports = {
   app,
-  // runServer,
-  // closeServer
+  runServer,
+  closeServer
 };
 if (require.main === module) {
   app.listen(process.env.PORT || 8080, function () {
     console.info(`App listening on ${this.address().port}`);
   });
 }
-//environment variable called PORT - it's value is set outside of this app
