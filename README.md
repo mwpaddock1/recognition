@@ -1,7 +1,7 @@
 
 Recognition
 The Employee to Employee Recognition Program
-Aligning employee interests with corporate goals can help further those goals. This this an application where employees give recognition to their peers for actions that support the corporate goals. This application can be customized to reflect the goals of any corporation.
+Aligning employee interests with corporate goals can help further those goals. This is an application where employees give recognition to their peers for actions that support the corporate goals. This application can be customized to reflect the goals of any corporation.
 
 Future iterations could include a method for employees to redeem recognition points for gift cards or swag.
 
@@ -11,8 +11,11 @@ Email: demo@fizzbuzz.com
 Password: demo1234
 
 Screen Shots
-
-
+<img src="./README-images/login-screen.png" width="30%"></img> 
+<img src="./README-images/corp-goals.png" width="30%"></img> 
+<img src="./README-images/employee-list.png" width="30%"></img> 
+<img src="./README-images/individucal-recognition.png" width="30%"></img> 
+<img src="./README-images/give-points.png" width="30%"></img> 
 Technology
 Front End
 •	html
