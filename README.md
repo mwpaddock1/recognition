@@ -11,7 +11,7 @@ Email: demo@fizzbuzz.com
 Password: demo1234
 
 Screen Shots
-<img src="./readme-images/FindYourUSRepsFirstPage.png" width="30%"></img> 
+
 
 Technology
 Front End
