@@ -6,7 +6,7 @@ const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
 
 const UserSchema = mongoose.Schema({
-  username: {
+  emailAddress: {
     type: String,
     required: true,
     unique: true
@@ -15,26 +15,75 @@ const UserSchema = mongoose.Schema({
     type: String,
     required: true
   },
-  firstName: {type: String, default: ''},
-  lastName: {type: String, default: ''}
+  firstName: {
+    type: String,
+    default: ''
+  },
+  lastName: {
+    type: String,
+    default: ''
+  },
+
 });
 
-UserSchema.methods.serialize = function() {
+const TransactionSchema = mongoose.Schema({
+  points: {
+    type: Number,
+    required: true
+  },
+  goal: {
+    type: String,
+    required: true
+  },
+  reason: {
+    type: String,
+    required: true
+  },
+  recipientEmailAddress: {
+    type: String,
+    required: true,
+    unique: true
+  },
+  senderEmailAddress: {
+    type: String,
+    required: true,
+    unique: true
+  }
+
+});
+
+//validates the password
+UserSchema.methods.validatePassword = function (password) {
+  return bcrypt.compare(password, this.password);
+};
+//applies the hashes to the password
+UserSchema.statics.hashPassword = function (password) {
+  return bcrypt.hash(password, 10);
+};
+//This schema doesn't include the password - only the parts we want
+UserSchema.methods.serialize = function () {
   return {
-    username: this.username || '',
+    id: this._id,
+    emailAddress: this.emailAddress || '', 
     firstName: this.firstName || '',
     lastName: this.lastName || ''
   };
 };
 
-UserSchema.methods.validatePassword = function(password) {
-  return bcrypt.compare(password, this.password);
-};
+TransactionSchema.methods.serialize = function() {
+  return {
+    id: this._id,
+    points: this.points,
+    reason: this.reason,
+    recipientEmailAddress: this.recipientEmailAddress,
+    senderEmailAddress: this.senderEmailAddress,
 
-UserSchema.statics.hashPassword = function(password) {
-  return bcrypt.hash(password, 10);
-};
+  }
+}
 
 const User = mongoose.model('User', UserSchema);
+const Transaction = mongoose.model('Transaction', TransactionSchema)
 
-module.exports = {User};
+module.exports = {
+  User, Transaction
+};

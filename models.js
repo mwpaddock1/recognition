@@ -4,6 +4,7 @@ function StorageException(message) {
     this.message = message;
     this.name = "StorageException";
 }
+const mongoose = require('mongoose');
 
 const employeeList = {
     create: function (lastName, firstName, emailAddress, password) {

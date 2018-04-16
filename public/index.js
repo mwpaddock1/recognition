@@ -29,14 +29,14 @@ $("form[name=sign-up-form]").submit(function (event) {
 
     let newEmployee = (reformattedArray.reduce(reducingFunction));
     loggedInUser = newEmployee;
-    //add something to make sure an employee doesn't dupe him/herself
-    if (loggedInUser.email === 'hr@fizzbuzz.com') {
-        displayDeleteEmployeeButton()
-    }
 
-    function displayDeleteEmployeeButton() {
-        $('.delete-employee-button').removeClass('hidden');
-    }
+    // if (loggedInUser.email === 'hr@fizzbuzz.com') {
+    //     displayDeleteEmployeeButton()
+    // }
+
+    // function displayDeleteEmployeeButton() {
+    //     $('.delete-employee-button').removeClass('hidden');
+    // }
     console.log(reformattedArray.reduce(reducingFunction));
     addNewEmployee(newEmployee)
         .then(getAllEmployees)
@@ -200,9 +200,9 @@ function displayEmployees() {
         )
         $('row.employee-boxes').append(empInfoHTML);
     }
+
     //get the selected employee and display his / her points
     $('.current-employee').click(function (event) {
-
         let selectedEmployeeEmail = ($(event.currentTarget).data('email'));
         console.log(selectedEmployeeEmail);
         console.log("sending to individual-employee addpoints section");
@@ -313,12 +313,13 @@ function displayEmployees() {
                     }
                 });
         };
+
     });
 
     function formatSenderInfo(sentTransactionInfo) {
         const sentInfoHTML = (
             `<section class ="points-given">                                
-                    <h2> ${sentTransactionInfo.points} points to ${sentTransactionInfo.senderFirstName} ${sentTransactionInfo.senderLastName} for:  <i>${sentTransactionInfo.reason}</i><h2> 
+                <h2> ${sentTransactionInfo.points} points to ${sentTransactionInfo.senderFirstName} ${sentTransactionInfo.senderLastName} for:  <i>${sentTransactionInfo.reason}</i><h2> 
              </section>`
         );
         $("row.points-given-box").append(sentInfoHTML);
@@ -328,14 +329,14 @@ function displayEmployees() {
     function formatRecipientInfo(recipientTransactionInfo) {
         const recipientInfoHTML = (
             `<section class ="points-received">                                                      
-                <h2> ${recipientTransactionInfo.points} points from ${recipientTransactionInfo.recipientFirstName} ${recipientTransactionInfo.recipientLastName} for: <i>${recipientTransactionInfo.reason}</i><h2>                                       
+               <h2> ${recipientTransactionInfo.points} points from ${recipientTransactionInfo.recipientFirstName} ${recipientTransactionInfo.recipientLastName} for: <i>${recipientTransactionInfo.reason}</i><h2>                                       
              </section>`
         );
         $("row.points-received-box").append(recipientInfoHTML);
         return recipientInfoHTML;
     }
-};
 
+};
 $('.give-points-button').click(function (event) {
     $('.individual-info-container').removeClass('hidden');
     $('.individual-recognition-summary').addClass('hidden');
