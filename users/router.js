@@ -1,10 +1,13 @@
 'use strict';
 const express = require('express');
-// const passport = require('passport');
+const passport = require('passport');
 const bodyParser = require('body-parser');
-const {User} = require('./models');
+const {User, Transaction} = require('./models');
 const router = express.Router();
 const jsonParser = bodyParser.json();
+const { router: authRouter, localStrategy, jwtStrategy } = require('../auth');
+passport.use(localStrategy);
+passport.use(jwtStrategy);
 // const jwt = require('jsonwebtoken');
 
 // Post to register a new user
@@ -139,5 +142,133 @@ router.get('/', (req, res) => {
     .then(users => res.json(users.map(user => user.serialize())))
     .catch(err => res.status(500).json({message: 'Internal server error'}));
 });
+
+//GET the list of employees
+router.get('/employee-list', jwtAuth, (req, res) => {
+  employee
+      .find()
+      .sort({
+          'created': 'desc'
+      })
+
+      .then(employeeList => {
+          res.json({
+              employeeList: employeeList.map(
+                  (employeeList) => employeeList.serialize())
+          });
+
+      })
+      .catch(err => {
+          console.error(err);
+          res.status(500).json({
+              message: 'Internal Server Error'
+          })
+      });
+});
+//POST a new employee
+router.post('/employee-list', jwtAuth, (req, res) => {
+  // console.log(req.body)
+  employee
+      .create({
+          employee: {
+              firstName: req.user.firstName,
+              lastName: req.user.lastName,
+              emailAddress: req.user.emailAddress
+          },
+
+      })
+      .then(employeeList => res.status(201).json(employeeList.serialize()))
+});
+
+
+
+
+//have to figure out if we want a DELETE - would require admin login
+//DELETE ENDPOINT an employee
+// app.delete('/employee-list/:id', jwtAuth, (req, res) => {
+//     employee
+//         .findById(req.params.id)
+//         .then(review => {
+//             if (employeeList.employee_id !== req.user.userID) {
+//                 console.log("Ids don't match");
+//                 res.status(403).json({
+//                     message: `${employeeList.employee_id} does not match ${req.user.userID}`
+//                 });
+//                 return null;
+//             } else {
+//                 return empl
+//                     .findByIdAndRemove(req.params.id);
+//             }
+//         })
+//         .then(deletedReview => {
+//             if (deletedReview != null)
+//                 return res.sendStatus(204);
+//         });
+// });
+
+// GET the list of transactions
+router.get('/transactions', jwtAuth, (req, res) => {
+  transaction
+      .find()
+      
+      .then(transactions => {
+          res.json({
+              transactions: transactions.map(
+                  (transactions) => transactions.serialize())
+          });
+      })
+      .catch(err => {
+          console.error(err);
+          res.status(500).json({
+              message: 'Internal Server Error'
+          })
+      });
+});
+//POST a new transaction
+router.post('/transactions', jwtAuth, (req, res) => {
+  // console.log(req.body)
+  transaction 
+      .create({               
+              points: req.user.points,
+              goal: req.user.goal,
+              reason: req.user.reason,
+              senderEmailAddress: req.user.senderEmailAddress,
+              recipientEmailAddress: req.user.recipientEmailAddress
+         })
+      .then(transactions => res.status(201).json(transactions.serialize()))
+});
+
+//PUT ENDPOINT - the only things that are updated are the score tallies - 
+router.put('/transactions/:id', jwtAuth, (req, res) => {
+  PostReview
+      .findById(req.params.id)
+      .then(transactions => {
+          if (transactions.transaction_id !== req.user.transactionID) {
+              res.status(403).json({
+                  message: `${transactions.transaction_id} does not match ${req.user.transactionID}`
+              });
+              return null;
+          }
+          const updated = {};
+          const updatedFields = ["pointsReceived", "pointsGiven", "pointsRemaining"];
+
+          updatedFields.forEach(field => {
+              if (field in req.body) {
+                  updated[field] = req.body[field];
+              }
+          });
+          return updatedTrans.findByIdAndUpdate(req.params.id, {
+              $set: updated
+          }, {
+              new: true
+          });
+      })
+      .then(updatedTransaction => {
+          if (updatedTransaction != null)
+              return res.status(200).json(updatedTransaction.serialize())
+      })
+      .catch(err => res.status(500).json(err))
+});
+
 
 module.exports = {router};

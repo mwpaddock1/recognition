@@ -26,6 +26,24 @@ const UserSchema = mongoose.Schema({
 
 });
 
+//validates the password
+UserSchema.methods.validatePassword = function (password) {
+  return bcrypt.compare(password, this.password);
+};
+//applies the hashes to the password
+UserSchema.statics.hashPassword = function (password) {
+  return bcrypt.hash(password, 10);
+};
+//This schema doesn't include the password - only the parts we want
+UserSchema.methods.serialize = function () {
+  return {
+    id: this._id,
+    emailAddress: this.emailAddress || '', 
+    firstName: this.firstName || '',
+    lastName: this.lastName || ''
+  };
+};
+
 const TransactionSchema = mongoose.Schema({
   points: {
     type: Number,
@@ -52,24 +70,6 @@ const TransactionSchema = mongoose.Schema({
 
 });
 
-//validates the password
-UserSchema.methods.validatePassword = function (password) {
-  return bcrypt.compare(password, this.password);
-};
-//applies the hashes to the password
-UserSchema.statics.hashPassword = function (password) {
-  return bcrypt.hash(password, 10);
-};
-//This schema doesn't include the password - only the parts we want
-UserSchema.methods.serialize = function () {
-  return {
-    id: this._id,
-    emailAddress: this.emailAddress || '', 
-    firstName: this.firstName || '',
-    lastName: this.lastName || ''
-  };
-};
-
 TransactionSchema.methods.serialize = function() {
   return {
     id: this._id,
@@ -81,9 +81,9 @@ TransactionSchema.methods.serialize = function() {
   }
 }
 
-const User = mongoose.model('User', UserSchema);
 const Transaction = mongoose.model('Transaction', TransactionSchema)
 
+const User = mongoose.model('User', UserSchema);
 module.exports = {
   User, Transaction
 };

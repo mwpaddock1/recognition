@@ -1,6 +1,5 @@
 'use strict';
 //dotenv loads environment variables from a .env file into the process
-//environment variable called PORT - it's value is set outside of this app
 
 require('dotenv').config();
 const express = require('express');
@@ -25,7 +24,6 @@ const {
   localStrategy,
   jwtStrategy
 } = require('./auth');
-
 
 mongoose.Promise = global.Promise;
 //get the PORT and the database from config
@@ -135,6 +133,7 @@ if (require.main === module) {
 
 module.exports = {
   app,
+  jwtAuth,
   runServer,
   closeServer
 };
