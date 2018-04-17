@@ -11,7 +11,8 @@ Email: demo@fizzbuzz.com
 Password: demo1234
  
 Screen Shot
-<img src="/README-images/login-screen.png" width="30%"></img> 
+![login-screen](./README-images/login-screen.png?raw=true "Login Screen")
+<img src="./README-images/login-screen.png" width="30%"></img> 
 <img src="./README-images/corp-goals.png" width="30%"></img> 
 <img src="./README-images/employee-list.png" width="30%"></img> 
 <img src="./README-images/individucal-recognition.png" width="30%"></img> 
