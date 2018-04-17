@@ -320,7 +320,7 @@ function displayEmployees() {
 
     function formatSenderInfo(sentTransactionInfo) {
         const sentInfoHTML = (
-            `<section class ="points-given">                                
+            `<section class ="points-given" role="region">                                
                 <h2> ${sentTransactionInfo.points} points to ${sentTransactionInfo.senderFirstName} ${sentTransactionInfo.senderLastName} for:  <i>${sentTransactionInfo.reason}</i><h2> 
              </section>`
         );
@@ -330,7 +330,7 @@ function displayEmployees() {
 
     function formatRecipientInfo(recipientTransactionInfo) {
         const recipientInfoHTML = (
-            `<section class ="points-received">                                                      
+            `<section class ="points-received" role="region">                                                      
                <h2> ${recipientTransactionInfo.points} points from ${recipientTransactionInfo.recipientFirstName} ${recipientTransactionInfo.recipientLastName} for: <i>${recipientTransactionInfo.reason}</i><h2>                                       
              </section>`
         );

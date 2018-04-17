@@ -118,8 +118,8 @@ input.goal-support {
 
 .input-label {
     font-size: 16px;
-    padding: 0 0 75px 15px;
-    margin-left: 35px;
+    padding: 0 0 75px 5px;
+    /* margin-left: 35px; */
 }
 
 ::placeholder {
@@ -230,7 +230,9 @@ p {
     width: 150px;
     display: inline-block;
 }
-
+.points-received, .points-given {
+    font-size: 26px;
+}
 .points-given-box h1,
 .points-received-box h1 {
     font-size: 32px;
@@ -314,6 +316,7 @@ form.add-points-form {
 .points-section h2 {
     font-size: 24px;
     text-align: center;
+    color: #0a74bf;
 }
 
 button {
@@ -421,6 +424,7 @@ section.points-given h2 {
     }
     .ellipse {
         padding: 2% 2%;
+        font-size: 16px;
     }
     .program-description {
         padding: 0;
@@ -433,7 +437,7 @@ section.points-given h2 {
    
     input,
     .input-label {
-        margin-left: 75px;
+        /* margin-left: 75px; */
     }
     .program-name {
         font-size: 2.5rem;
@@ -447,6 +451,7 @@ section.points-given h2 {
     }
     .employee-list {
         font-size: 16px;
+        font-weight: bold;
         /* width: 50%; */
         padding-bottom: 50px;
     }

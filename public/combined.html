@@ -19,7 +19,7 @@
         <div class="logo-banner">
             <img class="logo" src=./images/FizzBuzzSVG.svg alt="FizzBuzz logo">
 
-            <section class="buttons">
+            <section class="buttons" role="region">
                 <button class="login-banner-button banner-button">Log In</button>
                 <button class="cancel-button banner-button hidden">Cancel</button>
                 <button class="logout-button banner-button hidden">Log Out</button>
@@ -27,30 +27,30 @@
             </section>
         </div>
     </header>
-    <section class="opening-screen"></section>
-    <h2 class="program-name">Fizz Buzz Employee-to-Employee Recognition Program</h2>
-
-    <p class="program-description">The program where employees send and receive peer recognition for actions that promote the company's goals</p>
-    <section class="buttons">
-        <button class="sign-up-opening-button">Sign Up</button>
-        <button class="login-opening-button">Log In</button>
+    <section class="opening-screen" role="region">
+        <h2 class="program-name">Fizz Buzz Employee-to-Employee Recognition Program</h2>
+        <p class="program-description">The program where employees send and receive peer recognition for actions that promote the company's goals</p>
+        <section class="buttons" role="region">
+            <button class="sign-up-opening-button">Sign Up</button>
+            <button class="login-opening-button">Log In</button>
+        </section>
+        <section class="demo-credentials" role="region">
+            <h1>Demo Login Credentials:</h1>
+            <h1> email: demo@fizzbuzz.com, password: demo1234</h1>
+        </section>
+        <section class="thumbs-up-image" role="region">
+            <img class="thumbs-up" src=./images/multi-color-thumbs-up.png alt="multi-colored thumbs-up image">
+            <img class="thumbs-up" src=./images/multi-color-thumbs-up-flip.png alt="mirror image of multi-colored thumbs-up image">
+            <br>
+        </section>
     </section>
-    <section class="demo-credentials">
-        <h1>Demo Login Credentials:</h1>
-        <h1> email: demo@fizzbuzz.com, password: demo1234</h1>
-    </section>
-    <section class="thumbs-up-image">
-        <img class="thumbs-up" src=./images/multi-color-thumbs-up.png alt="multi-colored thumbs-up image">
-        <img class="thumbs-up" src=./images/multi-color-thumbs-up-flip.png alt="mirror image of multi-colored thumbs-up image">
-        <br>
-    </section>
-    <section class="js-form-container form-container">
+    <section class="js-form-container form-container" role="region">
         <form name="sign-up-form" id="js-sign-up-form" class="hidden">
             <fieldset class="fieldset-form">
                 <legend class=sign-up>
                     <h1>Sign Up</h1>
                 </legend>
-                <section class="employee-info">
+                <section class="employee-info" role="region" >
                     <label for="lastName" class="input-label">Last Name</label>
                     <br>
                     <input type="text" name="lastName" class="js-last-name" placeholder="Demo" title="lastName" required/>
@@ -59,7 +59,7 @@
                     <br>
                     <input type="text" name="firstName" class="js-first-name" placeholder="Joseph" title="firstName" required/>
                 </section>
-                <section class="login-info">
+                <section class="login-info" role="region">
                     <label for="emailAddress" class="input-label">Email</label>
                     <br>
                     <input type="text" name="emailAddress" class="js-emailAddress" placeholder="jdemo@fizzbuzz.com" title="emailAddress" required/>
@@ -79,13 +79,13 @@
             </div>
         </form>
     </section>
-    <section class="js-form-container form-container">
+    <section class="js-form-container form-container" role="region">
         <form name="login-form" id="js-login-form" class="hidden">
             <fieldset>
                 <legend>
                     <h1>Log In</h1>
                 </legend>
-                <section class="login-info">
+                <section class="login-info" role="region" >
                     <input type="text" name="email" class="js-email" placeholder="jdemo@fizzbuzz.com" title="email" required/>
                     <br>
                     <label for="email" class="input-label" data-email>Email</label>
@@ -97,13 +97,13 @@
                     <label for="login-password" class="input-label">Password</label>
                 </section>
             </fieldset>
-            <section class="buttons">
+            <section class="buttons" role="region" >
                 <button type="submit" class="sign-in-button">Log In</button>
             </section>
         </form>
     </section>
     <section class="main" role="main">
-        <section class="goal-container">
+        <section class="goal-container" role="region">
             <section class="goals hidden" role="region">
                 <h1>Fizz Buzz 2018 Corporate Goals</h1>
                 <div class="ideas goal">
@@ -165,11 +165,11 @@
             </row>
             <row class="employee-boxes">
             </row>
-            
+
         </section>
-        <section class="js-individual-info-container individual-recognition-summary hidden">
+        <section class="js-individual-info-container individual-recognition-summary hidden" role="region">
             <h1 role="presentation" class="employee-page-title"></h1>
-           
+
             <row class="points-status">
                 <row class="points-received-box">
                     <h1>Points Received</h1>
@@ -179,31 +179,28 @@
                 </row>
             </row>
 
-            <div class="points-section hidden">
+            <div class="points-section hidden" role="region">
                 <h2>Give additional points to this employee for supporting the corporate goals!</h>
                     <button class="give-points-button">Give points!</button>
                     <button class="delete-employee-button button hidden">Delete Employee</button>
         </section>
-        
+
         <section class="individual-info-container individual-info hidden">
             <h1 role="presentation" class="employee-page-title"></h1>
-            <section class="add-points-section">
+            <section class="add-points-section" role="region">
                 <form name="add-points-form" id="js-add-points-form" class="add-points-form">
                     <fieldset>
                         <legend>
                             <h1>Give Points!</h1>
                         </legend>
                         <input type="hidden" name="recipientEmail" id="recipient" title="recipientEmail">
+                        <h2>For what action would you like to award points?</h2>
 
-                        <label for="employee-action" class="input-label reason js-reason">
-                            <h2>For what action would you like to award points?</h2>
-                        </label>
                         <input type="text" name="employee-action" class="employee-action js-employee-action" placeholder="ex. sourced a new paper vendor"
-                            title="employee-action" required>
+                            title="employee-action" aria-label="employee-action" required>
+                        <label for="employee-action" class="input-label reason js-reason">Employee Action</label>
                         <h2>Which Fizz Buzz corporate goal was supported?</h2>
-                        <label for="goal-dropdown" class="input-label required">
-                            Goal
-                        </label>
+                        
                         <select name="goal" class="goal-dropdown" title="goal">
                             <option value=""></option>
                             <option value="Ideas">Ideas</option>
@@ -211,8 +208,11 @@
                             <option value="Service">Service</option>
                             <option value="Costs">Costs</option>
                         </select>
+                        <label for="goal-dropdown" class="input-label required">
+                            Goal
+                        </label>
                         <h2>How many points would you like to give for this action?</h2>
-                        <label for="points-dropdown" class="input-label">Points</label>
+                       
                         <select name="points" class="points-dropdown required" title="points">
                             <option value=""></option>
                             <option value=5>5</option>
@@ -221,13 +221,14 @@
                             <option value=20>20</option>
                             <option value=25>25</option>
                         </select>
+                        <label for="points-dropdown" class="input-label">Points</label>
                         <br>
                     </fieldset>
                     <button type="submit" class="js-add-points-button add-points-button">Add the points!</button>
                 </form>
             </section>
         </section>
-        <section class="js-transaction-log transaction-log hidden">
+        <section class="js-transaction-log transaction-log hidden" role="region">
         </section>
     </section>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
