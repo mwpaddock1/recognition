@@ -6,7 +6,9 @@ const express = require('express');
 // //using Mongoose to connect to the server
 // const mongoose = require('mongoose');
 // //using morgan to create logs
-// const morgan = require('morgan');
+const morgan = require('morgan');
+const app = express();
+app.use(morgan('common'));
 // const passport = require('passport');
 
 // Here we use destructuring assignment with renaming so the two variables
@@ -31,9 +33,7 @@ const express = require('express');
 //   PORT,
 //   DATABASE_URL
 // } = require('./config');
-const app = express();
-// //logging
-// app.use(morgan('common'));
+
 // app.use(express.json());
 
 // //CORS
@@ -69,7 +69,7 @@ const app = express();
 
 // //let JWT = localStorage.getItem('JWT');
 
-// app.use(express.static('public'));
+app.use(express.static('public'));
 // const bodyParser = require('body-parser');
 // const jsonParser = bodyParser.json();
 // const {
@@ -90,52 +90,52 @@ const app = express();
 
 // // Referenced by both runServer and closeServer. closeServer
 // // assumes runServer has run and set `server` to a server object
-let server;
+// let server;
 
-function runServer() {
-  return new Promise((resolve, reject) => {
+// function runServer() {
+//   return new Promise((resolve, reject) => {
     // mongoose.connect(DATABASE_URL, {
     //   useMongoClient: true
     // }, err => {
     //   if (err) {
     //     return reject(err);
     //   }
-      server = app
-        .listen(PORT, () => {
-          console.log(`Your app is listening on port ${PORT}`);
-          resolve();
-        })
-        .on('error', err => {
-          mongoose.disconnect();
-          reject(err);
-        });
-    });
-  // });
-}
-
-function closeServer() {
-  // return mongoose.disconnect().then(() => {
-  //   return new Promise((resolve, reject) => {
-      console.log('Closing server');
-      server.close(err => {
-        if (err) {
-          return reject(err);
-        }
-        resolve();
-      });
+    //   server = app
+    //     .listen(PORT, () => {
+    //       console.log(`Your app is listening on port ${PORT}`);
+    //       resolve();
+    //     })
+    //     .on('error', err => {
+    //       mongoose.disconnect();
+    //       reject(err);
+    //     });
     // });
   // });
-}
+// }
 
-if (require.main === module) {
-  runServer().catch(err => console.error(err));
-}
+// function closeServer() {
+  // return mongoose.disconnect().then(() => {
+  //   return new Promise((resolve, reject) => {
+      // console.log('Closing server');
+      // server.close(err => {
+      //   if (err) {
+      //     return reject(err);
+      //   }
+      //   resolve();
+      // });
+    // });
+  // });
+// }
 
-module.exports = {
-  // app,
-  runServer,
-  closeServer
-};
+// if (require.main === module) {
+//   runServer().catch(err => console.error(err));
+// }
+
+// module.exports = {
+//   // app,
+//   runServer,
+//   closeServer
+// };
 if (require.main === module) {
   app.listen(process.env.PORT || 8080, function () {
     console.info(`App listening on ${this.address().port}`);

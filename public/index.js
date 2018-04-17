@@ -4,6 +4,10 @@ let JWT;
 let loggedInUser;
 
 $('.sign-up-opening-button').on("click", function (event) {
+    renderSignUpForm()
+});
+
+function renderSignUpForm() {
     $('.thumbs-up').addClass('hidden');
     $('#js-sign-up-form').removeClass('hidden');
     $('.cancel-button').removeClass('hidden');
@@ -11,7 +15,7 @@ $('.sign-up-opening-button').on("click", function (event) {
     $('.login-button').addClass('hidden');
     $('.login-opening-button').addClass('hidden');
     $('.sign-up-opening-button').addClass('hidden');
-});
+}
 
 $("form[name=sign-up-form]").submit(function (event) {
     event.preventDefault();
@@ -30,13 +34,6 @@ $("form[name=sign-up-form]").submit(function (event) {
     let newEmployee = (reformattedArray.reduce(reducingFunction));
     loggedInUser = newEmployee;
 
-    // if (loggedInUser.email === 'hr@fizzbuzz.com') {
-    //     displayDeleteEmployeeButton()
-    // }
-
-    // function displayDeleteEmployeeButton() {
-    //     $('.delete-employee-button').removeClass('hidden');
-    // }
     console.log(reformattedArray.reduce(reducingFunction));
     addNewEmployee(newEmployee)
         .then(getAllEmployees)
@@ -52,6 +49,10 @@ $("form[name=sign-up-form]").submit(function (event) {
 
 });
 $('.login-opening-button').on("click", function (event) {
+    renderLoginForm()
+});
+
+function renderLoginForm() {
     $('.thumbs-up').addClass('hidden');
     $('#js-login-form').removeClass('hidden');
     $('.cancel-button').removeClass('hidden');
@@ -61,18 +62,13 @@ $('.login-opening-button').on("click", function (event) {
     $('.sign-up-button').addClass('hidden');
     $('.sign-up-opening-button').addClass('hidden');
     $('.login-opening-button').addClass('hidden');
-});
+    $('#js-sign-up-form').addClass('hidden');
+};
 $('.login-banner-button').on('click', function (event) {
-    $('.thumbs-up').addClass('hidden');
-    $('#js-login-form').removeClass('hidden');
-    $('.cancel-button').removeClass('hidden');
-    $('button.login-button').addClass('hidden');
-    $('.login-banner-button').addClass('hidden');
-    $('.sign-up-button').addClass('hidden');
-    $('.sign-up-opening-button').addClass('hidden');
-    $('.login-opening-button').addClass('hidden');
+    renderLoginForm()
 });
-$('.cancel-button').on("click", function (event) {
+
+function renderRestart() {
     $('#js-login-form').addClass('hidden');
     $('#js-sign-up-form').addClass('hidden');
     $('.cancel-button').addClass('hidden');
@@ -84,18 +80,19 @@ $('.cancel-button').on("click", function (event) {
     $('.goals').addClass('hidden');
     $('.employee-list').addClass('hidden');
     $('.demo-credentials').removeClass('hidden');
-});
-$('.logout-button').on('click', function (event) {
-    $('.thumbs-up').removeClass('hidden');
-    $('.cancel-button').addClass('hidden');
-    $('button.login-button').removeClass('hidden');
-    $('.sign-up-button').removeClass('hidden');
-    $('.sign-up-opening-button').removeClass('hidden');
-    $('.login-opening-button').removeClass('hidden');
     $('.goals').addClass('hidden');
+    // $('.employee-list').empty();
+    $('row.employee-boxes').empty();
     $('.employee-list').addClass('hidden');
     $('.demo-credentials').removeClass('hidden');
     $('.logout-button').addClass('hidden');
+    $('.js-logged-in-employee').empty();
+}
+$('.cancel-button').on("click", function (event) {
+    renderRestart()
+});
+$('.logout-button').on('click', function (event) {
+    renderRestart()
 });
 $("form[name=login-form]").submit(function (event) {
     event.preventDefault();
@@ -111,11 +108,16 @@ $("form[name=login-form]").submit(function (event) {
             return globalEmployees
         })
         .then(displayEmployees);
+    if (loggedInUser.emailAddress === 'hr@fizzbuzz.com') {
+        $('.delete-employee-button').removeClass('hidden')
+    }
+
     $('.js-logged-in-employee').append(`You are logged in as ${loggedInUser.firstName} ${loggedInUser.lastName}`);
-
-
     document.getElementById("js-login-form").reset();
 });
+$('delete-employee-button').on("click", function (event){
+    // remove employee
+})
 $('.sign-in-button').on("click", function (event) {
     $('#js-login-form').addClass('hidden');
     $('.goals').removeClass('hidden');
