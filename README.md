@@ -9,18 +9,20 @@ Link to App: Recognition
 Demo Credentials:
 Email: demo@fizzbuzz.com
 Password: demo1234
-
-Screen Shots
-<img src="./README-images/login-screen.png" width="30%"></img> 
+ 
+Screen Shot
+<img src="/README-images/login-screen.png" width="30%"></img> 
 <img src="./README-images/corp-goals.png" width="30%"></img> 
 <img src="./README-images/employee-list.png" width="30%"></img> 
 <img src="./README-images/individucal-recognition.png" width="30%"></img> 
 <img src="./README-images/give-points.png" width="30%"></img> 
+
+
 Technology
 Front End
-•	html
-•	css
-•	javascript
+•	HTML
+•	CSS
+•	Javascript
 •	jQuery
 •	AJAX
 Back End
