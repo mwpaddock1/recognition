@@ -56,13 +56,14 @@ function renderLoginForm() {
     $('.thumbs-up').addClass('hidden');
     $('#js-login-form').removeClass('hidden');
     $('.cancel-button').removeClass('hidden');
-    $('button.login-button').addClass('hidden');
-    $('sign-in-button').removeClass('hidden');
+    $('.login-button').addClass('hidden');
+    $('.sign-in-button').removeClass('hidden');
     $('.login-banner-button').addClass('hidden');
     $('.sign-up-button').addClass('hidden');
     $('.sign-up-opening-button').addClass('hidden');
     $('.login-opening-button').addClass('hidden');
     $('#js-sign-up-form').addClass('hidden');
+    
 };
 $('.login-banner-button').on('click', function (event) {
     renderLoginForm()
@@ -72,7 +73,7 @@ function renderRestart() {
     $('#js-login-form').addClass('hidden');
     $('#js-sign-up-form').addClass('hidden');
     $('.cancel-button').addClass('hidden');
-    $('button.login-button').removeClass('hidden');
+    $('.login-button').removeClass('hidden');
     $('.sign-up-button').removeClass('hidden');
     $('.sign-up-opening-button').removeClass('hidden');
     $('.login-opening-button').removeClass('hidden');
@@ -81,7 +82,6 @@ function renderRestart() {
     $('.employee-list').addClass('hidden');
     $('.demo-credentials').removeClass('hidden');
     $('.goals').addClass('hidden');
-    // $('.employee-list').empty();
     $('row.employee-boxes').empty();
     $('.employee-list').addClass('hidden');
     $('.demo-credentials').removeClass('hidden');

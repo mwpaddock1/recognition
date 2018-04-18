@@ -24,7 +24,7 @@ img.logo {
 }
 
 h1 {
-    color: #0a74bf;
+    color:#0B7FBF ;
 }
 
 .hidden {
@@ -37,7 +37,7 @@ h1 {
 
 .logged-in-employee {
     text-align: center;
-    color: #0a74bf;
+    color: #0B7FBF;
 }
 
 .banner-button {
@@ -45,7 +45,7 @@ h1 {
    }
 
 header {
-    background-color: #0c91F0;
+    background-color: #0B7FBF;
     width: 100%;
     height: 125px;
 }
@@ -68,7 +68,7 @@ button.add-points-button {
 }
 
 .program-name {
-    color: #0a74bf;
+    color: #0B7FBF;
     font-size: 1.5rem;
     font-weight: bold;
     text-align: center;
@@ -79,7 +79,7 @@ button.add-points-button {
     text-align: center;
 }
 form {
-    border: 2px solid #0c91F0;
+    border: 2px solid #0B7FBF;
 }
 fieldset {
     margin: 0 auto;
@@ -136,7 +136,7 @@ input.goal-support {
 }
 
 .program-description {
-    color: #0a74bf;
+    color: #0B7FBF;
     font-size: 1rem;
     margin: 5%;
     padding: 2%;
@@ -145,7 +145,7 @@ input.goal-support {
 
 .sign-up h1 {
     text-align: center;
-    color: #0c91f0;
+    color: #0B7FBF;
 }
 
 legend {
@@ -180,10 +180,11 @@ img.thumbs-up {
     overflow: auto;
     white-space: nowrap;
     height: 147px;
+    box-sizing: border-box;
 }
 
 p {
-    font-size: 20px;
+    font-size: 18px;
 }
 
 .goals,
@@ -247,6 +248,7 @@ p {
     margin: 2px 2px 2px 1px;
     border-radius: 4px;
     max-width: 300px;
+    font-size: 12px;
 }
 
 .Ideas-ellipse,
@@ -256,7 +258,7 @@ p {
 
 .Sales-ellipse,
 .sales-detail {
-    background-color: #0c91F0;
+    background-color: #0B7FBF;
 }
 
 .Costs-ellipse,
@@ -316,7 +318,7 @@ form.add-points-form {
 .points-section h2 {
     font-size: 24px;
     text-align: center;
-    color: #0a74bf;
+    color: #0B7FBF;
 }
 
 button {
@@ -435,10 +437,10 @@ section.points-given h2 {
         font-size: 2rem;
     }
    
-    input,
-    .input-label {
+    /* input,
+    .input-label { */
         /* margin-left: 75px; */
-    }
+    /* } */
     .program-name {
         font-size: 2.5rem;
     }
