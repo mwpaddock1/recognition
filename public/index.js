@@ -138,6 +138,7 @@ function renderEmployeeList() {
     $('.employee-list-button').addClass('hidden');
     $('.cancel-button').removeClass('hidden');
     $('.individual-recognition-summary').addClass('hidden');
+    $('.individual-info-container').addClass('hidden');
 };
 
 function addNewEmployee(employeeData) {
@@ -216,6 +217,14 @@ function displayEmployees() {
 
     });
 
+    function renderIndividualEmployeeRecognition() {
+        $('.employee-list').addClass('hidden');
+        $('.sign-in-button').addClass('hidden');
+        $('.employee-list-button').removeClass('hidden');
+        $('.cancel-button').addClass('hidden');
+        $('.individual-recognition-summary').removeClass('hidden');
+    }
+
     function selectAndDisplayEmployee() {
         //get the selected employee and display his / her points
 
@@ -229,17 +238,12 @@ function displayEmployees() {
         if (selectedEmployeeEmail === loggedInUser.emailAddress) {
             alert("You may not give points to yourself!")
         } else {
-
-            $('.employee-list').addClass('hidden');
-            $('.sign-in-button').addClass('hidden');
-            $('.employee-list-button').removeClass('hidden');
-            $('.cancel-button').addClass('hidden');
-            $('.individual-recognition-summary').removeClass('hidden');
             selectedIndividual = {
                 firstName: selectedEmployee[0].firstName,
                 lastName: selectedEmployee[0].lastName,
                 emailAddress: selectedEmployee[0].emailAddress,
             }
+            renderIndividualEmployeeRecognition();
             let recipientEmailInput = $("#recipient");
             recipientEmailInput.val(selectedIndividual.emailAddress);
             $('.employee-page-title').append(`Recognition for ${selectedIndividual.firstName} ${ selectedIndividual.lastName}`);
@@ -388,6 +392,7 @@ $("form[name=add-points-form]").submit(function (event) {
     console.log(goal);
     console.log(points);
 
+
     addNewTranx(newTransaction)
         .then(updateEmployeePoints)
         .then(getAllTranx)
@@ -397,10 +402,7 @@ $("form[name=add-points-form]").submit(function (event) {
         })
         .then(getAllEmployees)
         .then(displayEmployees);
-    $('.employee-list').removeClass('hidden');
-    $('.employee-list-button').addClass('hidden');
-    $('.logout-button').removeClass('hidden');
-    $('.individual-info-container').addClass('hidden');
+    renderEmployeeList();
     document.getElementById("js-add-points-form").reset();
 });
 
