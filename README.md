@@ -7,9 +7,11 @@ Aligning employee interests with corporate goals can help further those goals. T
 
 Future iterations could include a method for employees to redeem recognition points for gift cards or swag.
 
-Link to App: Recognition
+Link to App: https://dashboard.heroku.com/apps/agile-depths-57496
+
 Demo Credentials:
 Email: demo@fizzbuzz.com
+
 Password: demo1234
 
  
