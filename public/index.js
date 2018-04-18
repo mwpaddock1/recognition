@@ -2,6 +2,7 @@ let globalEmployees;
 let globalTransactions;
 let JWT;
 let loggedInUser;
+let selectedIndividual;
 
 $('.sign-up-opening-button').on("click", function (event) {
     renderSignUpForm()
@@ -63,7 +64,7 @@ function renderLoginForm() {
     $('.sign-up-opening-button').addClass('hidden');
     $('.login-opening-button').addClass('hidden');
     $('#js-sign-up-form').addClass('hidden');
-    
+
 };
 $('.login-banner-button').on('click', function (event) {
     renderLoginForm()
@@ -115,25 +116,29 @@ $("form[name=login-form]").submit(function (event) {
     $('.js-logged-in-employee').append(`You are logged in as ${loggedInUser.firstName} ${loggedInUser.lastName}`);
     document.getElementById("js-login-form").reset();
 });
-$('delete-employee-button').on("click", function (event){
+$('delete-employee-button').on("click", function (event) {
     // remove employee
-})
+});
 $('.sign-in-button').on("click", function (event) {
+    renderEmployeeList()
+});
+$('.employee-list-button').click(function (event) {
+    renderEmployeeList()
+});
+
+function renderEmployeeList() {
     $('#js-login-form').addClass('hidden');
     $('.goals').removeClass('hidden');
     $('.employee-list').removeClass('hidden');
     $('#js-sign-up-form').addClass('hidden');
     $('.demo-credentials').addClass('hidden');
-});
-$('.employee-list-button').click(function (event) {
-    $('.employee-list').removeClass('hidden');
     $('section.points-given').empty();
     $('section.points-received').empty();
     $('.employee-page-title').empty();
     $('.employee-list-button').addClass('hidden');
     $('.cancel-button').removeClass('hidden');
     $('.individual-recognition-summary').addClass('hidden');
-});
+};
 
 function addNewEmployee(employeeData) {
     employeeData.pointsGiven = 0;
@@ -203,8 +208,17 @@ function displayEmployees() {
         $('row.employee-boxes').append(empInfoHTML);
     }
 
-    //get the selected employee and display his / her points
     $('.current-employee').click(function (event) {
+
+        selectAndDisplayEmployee();
+
+        displayEmployeeTransactions();
+
+    });
+
+    function selectAndDisplayEmployee() {
+        //get the selected employee and display his / her points
+
         let selectedEmployeeEmail = ($(event.currentTarget).data('email'));
         console.log(selectedEmployeeEmail);
         console.log("sending to individual-employee addpoints section");
@@ -215,12 +229,13 @@ function displayEmployees() {
         if (selectedEmployeeEmail === loggedInUser.emailAddress) {
             alert("You may not give points to yourself!")
         } else {
+
             $('.employee-list').addClass('hidden');
             $('.sign-in-button').addClass('hidden');
             $('.employee-list-button').removeClass('hidden');
             $('.cancel-button').addClass('hidden');
             $('.individual-recognition-summary').removeClass('hidden');
-            let selectedIndividual = {
+            selectedIndividual = {
                 firstName: selectedEmployee[0].firstName,
                 lastName: selectedEmployee[0].lastName,
                 emailAddress: selectedEmployee[0].emailAddress,
@@ -228,95 +243,98 @@ function displayEmployees() {
             let recipientEmailInput = $("#recipient");
             recipientEmailInput.val(selectedIndividual.emailAddress);
             $('.employee-page-title').append(`Recognition for ${selectedIndividual.firstName} ${ selectedIndividual.lastName}`);
+            return selectedIndividual
+        }
+    }
 
-            getAllTranx()
-                .then((transactionsGet) => {
-                    globalTransactions = transactionsGet;
-                    let highlightedEmployeeSenderInfo = globalTransactions.filter(globalTransaction => (globalTransaction.senderEmailAddress === selectedIndividual.emailAddress))
-                    //then pick out the transactions related to the highlighted employee
-                    let sortedSentTransactions = highlightedEmployeeSenderInfo.reduce(function (allSentTransactions, transaction) {
-                        if (transaction.goal in allSentTransactions) {
-                            allSentTransactions[transaction.goal].push(transaction);
-                            return allSentTransactions;
-                        } else {
-                            allSentTransactions[transaction.goal] = [transaction];
-                            return allSentTransactions;
-                        }
-                    }, {});
-                    //then break out the sent recognition and display it
-                    for (i in sortedSentTransactions) {
-                        for (let j = 0; j < sortedSentTransactions[i].length; j++) {
-                            function findSortedSenderRecipient(sortedEmp) {
-                                return sortedEmp.emailAddress === sortedSentTransactions[i][j].recipientEmailAddress
-                            }
-                            let sortedSender = globalEmployees.find(findSortedSenderRecipient);
-                            sentTransactionInfo = {
-                                goal: sortedSentTransactions[i][j].goal,
-                                points: sortedSentTransactions[i][j].points,
-                                reason: sortedSentTransactions[i][j].reason,
-                                recipientEmailAddress: sortedSentTransactions[i][j].recipientEmailAddress,
-                                senderFirstName: sortedSender.firstName,
-                                senderLastName: sortedSender.lastName,
-                            }
-                            //break the transactions out by corporate goal
-                            if (j === 0) {
-                                const goalTitle = sentTransactionInfo.goal;
-                                const sentCategoryInfoHTML = (`<section class="points-given"><p class="ellipse ellipse-display ${goalTitle}-ellipse">${goalTitle}</p>
-                                                                </section>`);
-                                $("row.points-given-box").append(sentCategoryInfoHTML);
-
-                            } else {
-                                console.log('not a goal title');
-                            }
-                            let senderHTMLResults = formatSenderInfo(sentTransactionInfo);
-                        }
-                    };
-                    //then break out the received recognition and display it
-                    let highlightedEmployeeRecipientInfo = globalTransactions.filter(globalTransaction =>
-                        (globalTransaction.recipientEmailAddress === selectedIndividual.emailAddress)
-                        //highlightedEmployeeInfo is an array of objects
-                    )
-                    let sortedRecipientTransactions = highlightedEmployeeRecipientInfo.reduce(function (allReceivedTransactions, transaction) {
-                        if (transaction.goal in allReceivedTransactions) {
-                            allReceivedTransactions[transaction.goal].push(transaction);
-                            return allReceivedTransactions;
-                        } else {
-                            allReceivedTransactions[transaction.goal] = [transaction];
-                            return allReceivedTransactions;
-                        }
-                    }, {});
-                    for (let i in sortedRecipientTransactions) {
-                        //sortedRecipientTransactions is an object with 4 keys(Cost, Sales, Ideas, Service) which have arrays as the values
-                        for (let j = 0; j < sortedRecipientTransactions[i].length; j++) {
-                            function findSortedRecipientSender(sortedEmployee) {
-                                return sortedEmployee.emailAddress === sortedRecipientTransactions[i][j].senderEmailAddress
-                            }
-                            let sortedRecipient = globalEmployees.find(findSortedRecipientSender);
-
-                            recipientTransactionInfo = {
-                                goal: sortedRecipientTransactions[i][j].goal,
-                                points: sortedRecipientTransactions[i][j].points,
-                                reason: sortedRecipientTransactions[i][j].reason,
-                                senderEmailAddress: sortedRecipientTransactions[i][j].senderEmailAddress,
-                                recipientFirstName: sortedRecipient.firstName,
-                                recipientLastName: sortedRecipient.lastName
-                            }
-                            //break the transactions out by corporate goal
-                            if (j === 0) {
-                                const goalTitle = recipientTransactionInfo.goal;
-                                const recipientCategoryInfoHTML = (`<section class="points-received"><p class="ellipse ellipse-display ${goalTitle}-ellipse">${goalTitle}</p>
-                                                                </section>`);
-                                $("row.points-received-box").append(recipientCategoryInfoHTML);
-                            } else {
-                                console.log('not a goal title');
-                            }
-                            let recipientHTMLResults = formatRecipientInfo(recipientTransactionInfo);
-                        }
+    //get and sort the transactions for the selected employee
+    function displayEmployeeTransactions() {
+        getAllTranx()
+            .then((transactionsGet) => {
+                globalTransactions = transactionsGet;
+                let highlightedEmployeeSenderInfo = globalTransactions.filter(globalTransaction => (globalTransaction.senderEmailAddress === selectedIndividual.emailAddress))
+                //then pick out the transactions related to the highlighted employee
+                let sortedSentTransactions = highlightedEmployeeSenderInfo.reduce(function (allSentTransactions, transaction) {
+                    if (transaction.goal in allSentTransactions) {
+                        allSentTransactions[transaction.goal].push(transaction);
+                        return allSentTransactions;
+                    } else {
+                        allSentTransactions[transaction.goal] = [transaction];
+                        return allSentTransactions;
                     }
-                });
-        };
+                }, {});
+                //then break out the sent recognition and display it
+                for (i in sortedSentTransactions) {
+                    for (let j = 0; j < sortedSentTransactions[i].length; j++) {
+                        function findSortedSenderRecipient(sortedEmp) {
+                            return sortedEmp.emailAddress === sortedSentTransactions[i][j].recipientEmailAddress
+                        }
+                        let sortedSender = globalEmployees.find(findSortedSenderRecipient);
+                        sentTransactionInfo = {
+                            goal: sortedSentTransactions[i][j].goal,
+                            points: sortedSentTransactions[i][j].points,
+                            reason: sortedSentTransactions[i][j].reason,
+                            recipientEmailAddress: sortedSentTransactions[i][j].recipientEmailAddress,
+                            senderFirstName: sortedSender.firstName,
+                            senderLastName: sortedSender.lastName,
+                        }
+                        //break the transactions out by corporate goal
+                        if (j === 0) {
+                            const goalTitle = sentTransactionInfo.goal;
+                            const sentCategoryInfoHTML = (`<section class="points-given"><p class="ellipse ellipse-display ${goalTitle}-ellipse">${goalTitle}</p>
+                                                                </section>`);
+                            $("row.points-given-box").append(sentCategoryInfoHTML);
 
-    });
+                        } else {
+                            console.log('not a goal title');
+                        }
+                        let senderHTMLResults = formatSenderInfo(sentTransactionInfo);
+                    }
+                };
+                //then break out the received recognition and display it
+                let highlightedEmployeeRecipientInfo = globalTransactions.filter(globalTransaction =>
+                    (globalTransaction.recipientEmailAddress === selectedIndividual.emailAddress)
+                )
+                let sortedRecipientTransactions = highlightedEmployeeRecipientInfo.reduce(function (allReceivedTransactions, transaction) {
+                    if (transaction.goal in allReceivedTransactions) {
+                        allReceivedTransactions[transaction.goal].push(transaction);
+                        return allReceivedTransactions;
+                    } else {
+                        allReceivedTransactions[transaction.goal] = [transaction];
+                        return allReceivedTransactions;
+                    }
+                }, {});
+                for (let i in sortedRecipientTransactions) {
+                    //sortedRecipientTransactions is an object with 4 keys(Cost, Sales, Ideas, Service) which have arrays as the values
+                    for (let j = 0; j < sortedRecipientTransactions[i].length; j++) {
+                        function findSortedRecipientSender(sortedEmployee) {
+                            return sortedEmployee.emailAddress === sortedRecipientTransactions[i][j].senderEmailAddress
+                        }
+                        let sortedRecipient = globalEmployees.find(findSortedRecipientSender);
+
+                        recipientTransactionInfo = {
+                            goal: sortedRecipientTransactions[i][j].goal,
+                            points: sortedRecipientTransactions[i][j].points,
+                            reason: sortedRecipientTransactions[i][j].reason,
+                            senderEmailAddress: sortedRecipientTransactions[i][j].senderEmailAddress,
+                            recipientFirstName: sortedRecipient.firstName,
+                            recipientLastName: sortedRecipient.lastName
+                        }
+                        //break the transactions out by corporate goal
+                        if (j === 0) {
+                            const goalTitle = recipientTransactionInfo.goal;
+                            const recipientCategoryInfoHTML = (`<section class="points-received"><p class="ellipse ellipse-display ${goalTitle}-ellipse">${goalTitle}</p>
+                                                                </section>`);
+                            $("row.points-received-box").append(recipientCategoryInfoHTML);
+                        } else {
+                            console.log('not a goal title');
+                        }
+                        let recipientHTMLResults = formatRecipientInfo(recipientTransactionInfo);
+                    }
+                }
+            });
+    };
+
 
     function formatSenderInfo(sentTransactionInfo) {
         const sentInfoHTML = (
