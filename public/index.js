@@ -4,20 +4,6 @@ let JWT;
 let loggedInUser;
 let selectedIndividual;
 
-$('.sign-up-opening-button').on("click", function (event) {
-    renderSignUpForm()
-});
-
-function renderSignUpForm() {
-    $('.thumbs-up').addClass('hidden');
-    $('#js-sign-up-form').removeClass('hidden');
-    $('.cancel-button').removeClass('hidden');
-    $('.sign-up-button').removeClass('hidden');
-    $('.login-button').addClass('hidden');
-    $('.login-opening-button').addClass('hidden');
-    $('.sign-up-opening-button').addClass('hidden');
-}
-
 $("form[name=sign-up-form]").submit(function (event) {
     event.preventDefault();
     //get the form inputs and place them into an array
@@ -47,54 +33,8 @@ $("form[name=sign-up-form]").submit(function (event) {
 
     $('.js-logged-in-employee').append(`You are logged in as ${loggedInUser.firstName} ${loggedInUser.lastName}`);
     document.getElementById("js-sign-up-form").reset();
-
-});
-$('.login-opening-button').on("click", function (event) {
-    renderLoginForm()
 });
 
-function renderLoginForm() {
-    $('.thumbs-up').addClass('hidden');
-    $('#js-login-form').removeClass('hidden');
-    $('.cancel-button').removeClass('hidden');
-    $('.login-button').addClass('hidden');
-    $('.sign-in-button').removeClass('hidden');
-    $('.login-banner-button').addClass('hidden');
-    $('.sign-up-button').addClass('hidden');
-    $('.sign-up-opening-button').addClass('hidden');
-    $('.login-opening-button').addClass('hidden');
-    $('#js-sign-up-form').addClass('hidden');
-
-};
-$('.login-banner-button').on('click', function (event) {
-    renderLoginForm()
-});
-
-function renderRestart() {
-    $('#js-login-form').addClass('hidden');
-    $('#js-sign-up-form').addClass('hidden');
-    $('.cancel-button').addClass('hidden');
-    $('.login-button').removeClass('hidden');
-    $('.sign-up-button').removeClass('hidden');
-    $('.sign-up-opening-button').removeClass('hidden');
-    $('.login-opening-button').removeClass('hidden');
-    $('.thumbs-up').removeClass('hidden');
-    $('.goals').addClass('hidden');
-    $('.employee-list').addClass('hidden');
-    $('.demo-credentials').removeClass('hidden');
-    $('.goals').addClass('hidden');
-    $('row.employee-boxes').empty();
-    $('.employee-list').addClass('hidden');
-    $('.demo-credentials').removeClass('hidden');
-    $('.logout-button').addClass('hidden');
-    $('.js-logged-in-employee').empty();
-}
-$('.cancel-button').on("click", function (event) {
-    renderRestart()
-});
-$('.logout-button').on('click', function (event) {
-    renderRestart()
-});
 $("form[name=login-form]").submit(function (event) {
     event.preventDefault();
     const employeeEmail = $('input[name=email]');
@@ -116,30 +56,6 @@ $("form[name=login-form]").submit(function (event) {
     $('.js-logged-in-employee').append(`You are logged in as ${loggedInUser.firstName} ${loggedInUser.lastName}`);
     document.getElementById("js-login-form").reset();
 });
-$('delete-employee-button').on("click", function (event) {
-    // remove employee
-});
-$('.sign-in-button').on("click", function (event) {
-    renderEmployeeList()
-});
-$('.employee-list-button').click(function (event) {
-    renderEmployeeList()
-});
-
-function renderEmployeeList() {
-    $('#js-login-form').addClass('hidden');
-    $('.goals').removeClass('hidden');
-    $('.employee-list').removeClass('hidden');
-    $('#js-sign-up-form').addClass('hidden');
-    $('.demo-credentials').addClass('hidden');
-    $('section.points-given').empty();
-    $('section.points-received').empty();
-    $('.employee-page-title').empty();
-    $('.employee-list-button').addClass('hidden');
-    $('.cancel-button').removeClass('hidden');
-    $('.individual-recognition-summary').addClass('hidden');
-    $('.individual-info-container').addClass('hidden');
-};
 
 function addNewEmployee(employeeData) {
     employeeData.pointsGiven = 0;
@@ -212,19 +128,12 @@ function displayEmployees() {
     $('.current-employee').click(function (event) {
 
         selectAndDisplayEmployee();
-
+    
         displayEmployeeTransactions();
-
+    
     });
 
-    function renderIndividualEmployeeRecognition() {
-        $('.employee-list').addClass('hidden');
-        $('.sign-in-button').addClass('hidden');
-        $('.employee-list-button').removeClass('hidden');
-        $('.cancel-button').addClass('hidden');
-        $('.individual-recognition-summary').removeClass('hidden');
-    }
-
+    
     function selectAndDisplayEmployee() {
         //get the selected employee and display his / her points
 
@@ -361,11 +270,7 @@ function displayEmployees() {
     }
 
 };
-$('.give-points-button').click(function (event) {
-    $('.individual-info-container').removeClass('hidden');
-    $('.individual-recognition-summary').addClass('hidden');
-    console.log("going to assign points page");
-});
+
 
 $("form[name=add-points-form]").submit(function (event) {
     event.preventDefault();
