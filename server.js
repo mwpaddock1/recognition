@@ -1,15 +1,20 @@
+//These top 6 are needed for mvp
 'use strict';
-//dotenv loads environment variables from a .env file into the process
 
-// require('dotenv').config();
 const express = require('express');
-// //using Mongoose to connect to the server
-// const mongoose = require('mongoose');
-// //using morgan to create logs
 const morgan = require('morgan');
 const app = express();
 app.use(morgan('common'));
-// const passport = require('passport');
+app.use(express.static('public'));
+
+
+//the below are for db
+
+//dotenv loads environment variables from a .env file into the process
+require('dotenv').config();
+//using Mongoose to connect to the server
+const mongoose = require('mongoose');
+const passport = require('passport');
 
 // Here we use destructuring assignment with renaming so the two variables
 // called router (from ./users and ./auth) have different names
@@ -18,63 +23,55 @@ app.use(morgan('common'));
 // const { james: jimmy, robert: bobby } = actorSurnames;
 // console.log(jimmy); // Stewart - the variable name is jimmy, not james
 // console.log(bobby); // De Niro - the variable name is bobby, not robert
-// const {
-//   router: usersRouter
-// } = require('./users');
-// const {
-//   router: authRouter,
-//   localStrategy,
-//   jwtStrategy
-// } = require('./auth');
+const { router: usersRouter } = require('./users');
+const { router: authRouter, localStrategy, jwtStrategy } = require('./auth');
 
-// mongoose.Promise = global.Promise;
-// //get the PORT and the database from config
-// const {
-//   PORT,
-//   DATABASE_URL
-// } = require('./config');
+const bodyParser = require('body-parser');
+const jsonParser = bodyParser.json();
+const {
+  employeeList
+} = require('./models');
+mongoose.Promise = global.Promise;
+//get the PORT and the database from config
+const {
+  PORT,
+  DATABASE_URL
+} = require('./config');
 
-// app.use(express.json());
+app.use(express.json());
 
-// //CORS
-// app.use(function (req, res, next) {
-//   res.header('Access-Control-Allow-Origin', '*');
-//   res.header('Access-Control-Allow-Headers', 'Content-Type');
-//   res.header('Access-Control-Allow-Methods', 'GET,POST,PUT,PATCH,DELETE');
-//   if (req.method === 'OPTIONS') {
-//     return res.send(204);
-//   }
-//   next();
-// });
-// passport.use(localStrategy);
-// passport.use(jwtStrategy);
+//CORS
+app.use(function (req, res, next) {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Headers', 'Content-Type');
+  res.header('Access-Control-Allow-Methods', 'GET,POST,PUT,PATCH,DELETE');
+  if (req.method === 'OPTIONS') {
+    return res.send(204);
+  }
+  next();
+});
+passport.use(localStrategy);
+passport.use(jwtStrategy);
 
-// app.use('/api/users/', usersRouter);
-// app.use('/api/auth/', authRouter);
+app.use('/api/users/', usersRouter);
+app.use('/api/auth/', authRouter);
 
 
-// const jwtAuth = passport.authenticate('jwt', { session: false });
-// // A protected endpoint which needs a valid JWT to access it
-// app.get('/api/protected', jwtAuth, (req, res) => {
-//   return res.json({
-//     data: 'rosebud'
-//   });
-// });
+const jwtAuth = passport.authenticate('jwt', { session: false });
+// A protected endpoint which needs a valid JWT to access it
+app.get('/api/protected', jwtAuth, (req, res) => {
+  return res.json({
+    data: 'success'
+  });
+});
 
-// app.use('*', (req, res) => {
-//   return res.status(404).json({
-//     message: 'Not Found'
-//   });
-// });
+app.use('*', (req, res) => {
+  return res.status(404).json({
+    message: 'Not Found'
+  });
+});
 
-// //let JWT = localStorage.getItem('JWT');
-
-app.use(express.static('public'));
-// const bodyParser = require('body-parser');
-// const jsonParser = bodyParser.json();
-// const {
-//   employeeList
-// } = require('./models');
+// let JWT = localStorage.getItem('JWT');
 // //move these requests
 // // employeeList.create('demo1', 'josephine', 'josey@fizzbuzz.com');
 // // employeeList.create('example', 'mary', 'mary@fizzbuzz.com');
@@ -90,54 +87,59 @@ app.use(express.static('public'));
 
 // // Referenced by both runServer and closeServer. closeServer
 // // assumes runServer has run and set `server` to a server object
-// let server;
+let server;
 
-// function runServer() {
-//   return new Promise((resolve, reject) => {
-    // mongoose.connect(DATABASE_URL, {
+function runServer() {
+  return new Promise((resolve, reject) => {
+    mongoose.connect(DATABASE_URL, 
+    // {
     //   useMongoClient: true
-    // }, err => {
-    //   if (err) {
-    //     return reject(err);
-    //   }
-    //   server = app
-    //     .listen(PORT, () => {
-    //       console.log(`Your app is listening on port ${PORT}`);
-    //       resolve();
-    //     })
-    //     .on('error', err => {
-    //       mongoose.disconnect();
-    //       reject(err);
-    //     });
-    // });
-  // });
-// }
-
-// function closeServer() {
-  // return mongoose.disconnect().then(() => {
-  //   return new Promise((resolve, reject) => {
-      // console.log('Closing server');
-      // server.close(err => {
-      //   if (err) {
-      //     return reject(err);
-      //   }
-      //   resolve();
-      // });
-    // });
-  // });
-// }
-
-// if (require.main === module) {
-//   runServer().catch(err => console.error(err));
-// }
-
-// module.exports = {
-//   // app,
-//   runServer,
-//   closeServer
-// };
-if (require.main === module) {
-  app.listen(process.env.PORT || 8080, function () {
-    console.info(`App listening on ${this.address().port}`);
+    // },
+     err => {
+      if (err) {
+        return reject(err);
+      }
+      server = app
+        .listen(PORT, () => {
+          console.log(`Your app is listening on port ${PORT}`);
+          resolve();
+        })
+        .on('error', err => {
+          mongoose.disconnect();
+          reject(err);
+        });
+    });
   });
 }
+
+function closeServer() {
+  return mongoose.disconnect().then(() => {
+    return new Promise((resolve, reject) => {
+      console.log('Closing server');
+      server.close(err => {
+        if (err) {
+          return reject(err);
+        }
+        resolve();
+      });
+    });
+  });
+}
+
+if (require.main === module) {
+  runServer().catch(err => console.error(err));
+}
+
+module.exports = {
+  app,
+  jwtAuth,
+  runServer,
+  closeServer
+};
+
+//the below is needed for the mvp
+// if (require.main === module) {
+//   app.listen(process.env.PORT || 8080, function () {
+//     console.info(`App listening on ${this.address().port}`);
+//   });
+// }

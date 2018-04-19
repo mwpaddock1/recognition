@@ -17,7 +17,6 @@ $("form[name=sign-up-form]").submit(function (event) {
     });
     const reducingFunction = (obj1, obj2) =>
         Object.assign(obj1, obj2);
-
     let newEmployee = (reformattedArray.reduce(reducingFunction));
     loggedInUser = newEmployee;
 
@@ -126,13 +125,9 @@ function displayEmployees() {
     }
 
     $('.current-employee').click(function (event) {
-
-        selectAndDisplayEmployee();
-    
-        displayEmployeeTransactions();
-    
+        selectAndDisplayEmployee();    
+        displayEmployeeTransactions();    
     });
-
     
     function selectAndDisplayEmployee() {
         //get the selected employee and display his / her points
