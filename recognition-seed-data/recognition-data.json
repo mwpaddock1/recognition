@@ -1,19 +1,17 @@
 {
-    "recognition": {
-        "employees": {
-            "lastName": "Foo",
-            "firstName": "Joseph",
-            "emailAddress": "jfoo@fizzbuzz.com",
-            "pointsGiven": 0,
-            "pointsReceived": 0,
-            "pointsRemaining": 100
-        },
-        "transactions": {
-            "points": "points",
-            "goal": "goal",
-            "reason": "reason",
-            "senderEmail": "senderEmail",
-            "recipientEmail": "recipientEmail"
-        }
+    "employees": {
+        "lastName": "lastName",
+        "firstName": "firstName",
+        "emailAddress": "emailAddress",
+        "pointsGiven": 0,
+        "pointsReceived": 0,
+        "pointsRemaining": 100
+    },
+    "transactions": {
+        "points": "points",
+        "goal": "goal",
+        "reason": "reason",
+        "senderEmail": "senderEmail",
+        "recipientEmail": "recipientEmail"
     }
 }

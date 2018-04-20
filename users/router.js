@@ -13,10 +13,10 @@ const {
   localStrategy,
   jwtStrategy
 } = require('../auth');
-// const { jwtAuth } = require('../auth/router');
-// passport.use(localStrategy);
-// passport.use(jwtStrategy);
-// const jwt = require('jsonwebtoken');
+const { jwtAuth } = require('../auth/router');
+passport.use(localStrategy);
+passport.use(jwtStrategy);
+const jwt = require('jsonwebtoken');
 
 // Post to register a new user
 router.post('/', jsonParser, (req, res) => {
@@ -166,7 +166,6 @@ router.get('/', (req, res) => {
 router.get('/employees', (req, res) => {
   employee
     .find()
-
     .then(employees => {
       res.json({
           employees: employee.map(
@@ -195,7 +194,7 @@ router.post('/employees', (req, res) => {
     })
     .then(employees => res.status(201).json(employee.serialize()))
 });
-
+//**************************************************************************************** */
 //have to figure out if we want a DELETE - would require admin login
 //DELETE ENDPOINT an employee
 // router.delete('/employees/:id', jwtAuth, (req, res) => {
@@ -223,7 +222,6 @@ router.post('/employees', (req, res) => {
 router.get('/transactions', (req, res) => {
   transaction
     .find()
-
     .then(transactions => {
       res.json({
         transactions: transactions.map(
@@ -282,8 +280,6 @@ router.put('/transactions/:id', (req, res) => {
     })
     .catch(err => res.status(500).json(err))
 });
-
-
 module.exports = {
   router
 };

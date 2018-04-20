@@ -6,6 +6,9 @@ const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
 
 const UserSchema = mongoose.Schema({
+//*********************************************************************************** */
+  //have to figure out if this should be username or emailAddress -remember the login form has email and the signup form has emailAddress so we can use the hidden id=recipient input
+
   emailAddress: {
     type: String,
     required: true,
@@ -37,11 +40,12 @@ UserSchema.statics.hashPassword = function (password) {
 UserSchema.methods.serialize = function () {
   return {
     id: this._id,
-    emailAddress: this.emailAddress || '', 
+    emailAddress: this.emailAddress || '',
     firstName: this.firstName || '',
     lastName: this.lastName || ''
   };
 };
+const User = mongoose.model('User', UserSchema);
 
 const TransactionSchema = mongoose.Schema({
   points: {
@@ -66,10 +70,9 @@ const TransactionSchema = mongoose.Schema({
     required: true,
     unique: true
   }
-
 });
 
-TransactionSchema.methods.serialize = function() {
+TransactionSchema.methods.serialize = function () {
   return {
     id: this._id,
     points: this.points,
@@ -79,9 +82,10 @@ TransactionSchema.methods.serialize = function() {
   }
 }
 
-const Transaction = mongoose.model('Transaction', TransactionSchema)
+const Transaction = mongoose.model('Transaction', TransactionSchema);
 
-const User = mongoose.model('User', UserSchema);
+
 module.exports = {
-  User, Transaction
+  User,
+  Transaction
 };

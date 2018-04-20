@@ -17,6 +17,8 @@ $("form[name=sign-up-form]").submit(function (event) {
     });
     const reducingFunction = (obj1, obj2) =>
         Object.assign(obj1, obj2);
+//**************************************************************************** */
+        //we put this newEmployee as an argumennt in the addNewEmployee function which also gives the new employee starting points -but it should really be the serialized employee with no password
     let newEmployee = (reformattedArray.reduce(reducingFunction));
     loggedInUser = newEmployee;
 
@@ -55,7 +57,8 @@ $("form[name=login-form]").submit(function (event) {
     $('.js-logged-in-employee').append(`You are logged in as ${loggedInUser.firstName} ${loggedInUser.lastName}`);
     document.getElementById("js-login-form").reset();
 });
-
+//****************************************
+//this has to be the employee that doesn't have the password.... */
 function addNewEmployee(employeeData) {
     employeeData.pointsGiven = 0;
     employeeData.pointsReceived = 0;
@@ -87,10 +90,19 @@ function loginEmployee(loggedInEmployeeEmail, loggedInEmployeePassword) {
         resolve({
             token,
             loggedInUser
+            
         });
     })
 }
-
+// function signInAuht() {
+//     $('.login-register').on('click', '.signingInAcc', function(event){
+//         event.preventDefault();
+//         console.log("the submit button was pressed.");
+//         const username = $('.username-login').val();
+//         const password = $('.password-login').val();
+//         postAuthLogin(username,password);
+//     });
+// }
 function getMockData() {
     let MOCK_DATA_STRING = localStorage.getItem('MOCK_DATA');
     let MOCK_DATA = JSON.parse(MOCK_DATA_STRING);

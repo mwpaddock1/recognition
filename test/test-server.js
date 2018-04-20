@@ -32,7 +32,7 @@ describe('employee list page', function () {
     //strategy: get back all employees and ensure they have the expected keys
     let resEmployee;
     return chai.request(app)
-    .get('/employee-list')
+    .get('/employees')
     .then(function(res) {
       expect(res).to.be.json;
     })

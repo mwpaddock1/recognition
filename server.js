@@ -1,35 +1,28 @@
-//These top 6 are needed for mvp
-'use strict';
 
+'use strict';
+//dotenv loads environment variables from a .env file into the process
+require('dotenv').config();
 const express = require('express');
 const morgan = require('morgan');
 const app = express();
 app.use(morgan('common'));
 app.use(express.static('public'));
 
-
-//the below are for db
-
-//dotenv loads environment variables from a .env file into the process
-require('dotenv').config();
 //using Mongoose to connect to the server
 const mongoose = require('mongoose');
 const passport = require('passport');
 
 // Here we use destructuring assignment with renaming so the two variables
 // called router (from ./users and ./auth) have different names
-// For example:
-// const actorSurnames = { james: "Stewart", robert: "De Niro" };
-// const { james: jimmy, robert: bobby } = actorSurnames;
-// console.log(jimmy); // Stewart - the variable name is jimmy, not james
-// console.log(bobby); // De Niro - the variable name is bobby, not robert
+
 const { router: usersRouter } = require('./users');
 const { router: authRouter, localStrategy, jwtStrategy } = require('./auth');
 
 const bodyParser = require('body-parser');
+app.use(bodyParser.json());
 const jsonParser = bodyParser.json();
 const {
-  employeeList
+  employees
 } = require('./models');
 mongoose.Promise = global.Promise;
 //get the PORT and the database from config
@@ -61,7 +54,7 @@ const jwtAuth = passport.authenticate('jwt', { session: false });
 // A protected endpoint which needs a valid JWT to access it
 app.get('/api/protected', jwtAuth, (req, res) => {
   return res.json({
-    data: 'success'
+    data: 'success'//'rosebud'
   });
 });
 
@@ -71,22 +64,8 @@ app.use('*', (req, res) => {
   });
 });
 
-// let JWT = localStorage.getItem('JWT');
-// //move these requests
-// // employeeList.create('demo1', 'josephine', 'josey@fizzbuzz.com');
-// // employeeList.create('example', 'mary', 'mary@fizzbuzz.com');
-
-// // app.get('/employee-list', (req, res) => {
-// //   res.json(employeeList.get());
-// // });
-
-
-// // app.post();
-// //app.put();
-// //app.delete();
-
-// // Referenced by both runServer and closeServer. closeServer
-// // assumes runServer has run and set `server` to a server object
+// Referenced by both runServer and closeServer. closeServer
+// assumes runServer has run and set `server` to a server object
 let server;
 
 function runServer() {
@@ -111,6 +90,7 @@ function runServer() {
     });
   });
 }
+
 
 function closeServer() {
   return mongoose.disconnect().then(() => {
@@ -137,9 +117,4 @@ module.exports = {
   closeServer
 };
 
-//the below is needed for the mvp
-// if (require.main === module) {
-//   app.listen(process.env.PORT || 8080, function () {
-//     console.info(`App listening on ${this.address().port}`);
-//   });
-// }
+
