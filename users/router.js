@@ -154,16 +154,8 @@ router.post('/', jsonParser, (req, res) => {
 });
 
 
-router.get('/', (req, res) => {
-  return User.find()
-    .then(users => res.json(users.map(user => user.serialize())))
-    .catch(err => res.status(500).json({
-      message: 'Internal server error'
-    }));
-});
-
 //GET the list of employees
-router.get('/employees', (req, res) => {
+router.get('/employees', jwtAuth, (req, res) => {
   employee
     .find()
     .then(employees => {
@@ -181,11 +173,14 @@ router.get('/employees', (req, res) => {
     });
 });
 //POST a new employee
-router.post('/employees', (req, res) => {
+router.post('/employees', jwtAuth, (req, res) => {
   // console.log(req.body)
   employee
     .create({
       employee: {
+        pointsGiven: 0,
+        pointsReceived: 0,
+        pointsRemaining: 100,
         firstName: req.user.firstName,
         lastName: req.user.lastName,
         emailAddress: req.user.emailAddress
@@ -219,7 +214,7 @@ router.post('/employees', (req, res) => {
 // });
 
 // GET the list of transactions
-router.get('/transactions', (req, res) => {
+router.get('/transactions', jwtAuth, (req, res) => {
   transaction
     .find()
     .then(transactions => {
@@ -236,7 +231,7 @@ router.get('/transactions', (req, res) => {
     });
 });
 //POST a new transaction
-router.post('/transactions', (req, res) => {
+router.post('/transactions', jwtAuth, (req, res) => {
   // console.log(req.body)
   transaction
     .create({
@@ -249,14 +244,16 @@ router.post('/transactions', (req, res) => {
     .then(transactions => res.status(201).json(transaction.serialize()))
 });
 
-//PUT ENDPOINT - the only things that are updated are the score tallies - 
-router.put('/transactions/:id', (req, res) => {
-  PostReview
+//PUT ENDPOINT - the only things that are updated are the score tallies which fall in the employees section- 
+//****************************************  have to get the points from Transactions info, too */
+//do I have to use ID or can I revert to emailAddress?
+router.put('/employees/:id', jwtAuth, (req, res) => {
+  employee
     .findById(req.params.id)
-    .then(transactions => {
-      if (transactions.transaction_id !== req.user.transactionID) {
+    .then(employees => {
+      if (employees.employee_id !== req.user.employee) {
         res.status(403).json({
-          message: `${transactions.transaction_id} does not match ${req.user.transactionID}`
+          message: `${employees.employee_id} does not match ${req.user.employeeID}`
         });
         return null;
       }

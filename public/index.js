@@ -1,6 +1,6 @@
 let globalEmployees;
 let globalTransactions;
-let JWT;
+// let JWT;
 let loggedInUser;
 let selectedIndividual;
 
@@ -20,6 +20,13 @@ $("form[name=sign-up-form]").submit(function (event) {
 //**************************************************************************** */
         //we put this newEmployee as an argumennt in the addNewEmployee function which also gives the new employee starting points -but it should really be the serialized employee with no password
     let newEmployee = (reformattedArray.reduce(reducingFunction));
+    console.log(newEmployee);
+
+   
+    if (newEmployee.password !== newEmployee['retype-password']) {
+        alert('Passwords must match!')
+    }
+    else {
     loggedInUser = newEmployee;
 
     console.log(reformattedArray.reduce(reducingFunction));
@@ -33,6 +40,7 @@ $("form[name=sign-up-form]").submit(function (event) {
     $('.demo-credentials').addClass('hidden');
 
     $('.js-logged-in-employee').append(`You are logged in as ${loggedInUser.firstName} ${loggedInUser.lastName}`);
+   }
     document.getElementById("js-sign-up-form").reset();
 });
 
@@ -94,15 +102,7 @@ function loginEmployee(loggedInEmployeeEmail, loggedInEmployeePassword) {
         });
     })
 }
-// function signInAuht() {
-//     $('.login-register').on('click', '.signingInAcc', function(event){
-//         event.preventDefault();
-//         console.log("the submit button was pressed.");
-//         const username = $('.username-login').val();
-//         const password = $('.password-login').val();
-//         postAuthLogin(username,password);
-//     });
-// }
+
 function getMockData() {
     let MOCK_DATA_STRING = localStorage.getItem('MOCK_DATA');
     let MOCK_DATA = JSON.parse(MOCK_DATA_STRING);
@@ -322,7 +322,6 @@ function updateEmployeePoints(newTransaction) {
     function findRecipient(employee) {
         return employee.emailAddress === newTransaction.recipientEmailAddress;
     }
-
     let recipient = globalEmployees.find(findRecipient);
     recipient.pointsReceived = (recipient.pointsReceived + newTransaction.points);
 
@@ -333,7 +332,7 @@ function updateEmployeePoints(newTransaction) {
     sender.pointsGiven = sender.pointsGiven + newTransaction.points;
     sender.pointsRemaining = sender.pointsRemaining - newTransaction.points;
 }
-
+//this function has both MOCK_DATA and TRANX_DATA  *****************************************
 function addNewTranx(tranxData) {
     return new Promise((resolve, reject) => {
         let TRANX_DATA = getTranxData();

@@ -6,7 +6,8 @@ const jwt = require('jsonwebtoken');
 
 const config = require('../config');
 const router = express.Router();
-
+//************************ */
+//where is the token stored?
 const createAuthToken = function(user) {
   return jwt.sign({user}, config.JWT_SECRET, {
     subject: user.username,
