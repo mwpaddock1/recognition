@@ -6,14 +6,16 @@ const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
 
 const UserSchema = mongoose.Schema({
-//*********************************************************************************** */
-  //have to figure out if this should be username or emailAddress -remember the login form has email and the signup form has emailAddress so we can use the hidden id=recipient input
+  //*********************************************************************************** */
+  //have to figure out if this should be username or emailAddress (remember the login form has email and the signup form has emailAddress so we can use the hidden id=recipient input)
 
   emailAddress: {
     type: String,
     required: true,
     unique: true
   },
+  //********************************************************************* */
+  //password is only for the auth so does it belong here?
   password: {
     type: String,
     required: true
@@ -26,6 +28,20 @@ const UserSchema = mongoose.Schema({
     type: String,
     default: ''
   },
+  //****************************************************************************************** */
+  //so if the password belongs in the UserSchema, do these?
+  pointsGiven: {
+    type: String,
+    required: true
+  },
+  pointsRecevied: {
+    type: String,
+    required: true
+  },
+  pointsRemaining: {
+    type: String,
+    required: true
+  }
 });
 
 //validates the password
@@ -40,9 +56,12 @@ UserSchema.statics.hashPassword = function (password) {
 UserSchema.methods.serialize = function () {
   return {
     id: this._id,
-    emailAddress: this.emailAddress || '',
-    firstName: this.firstName || '',
-    lastName: this.lastName || ''
+    emailAddress: this.emailAddress,
+    firstName: this.firstName,
+    lastName: this.lastName,
+    pointsGiven: this.pointsGiven,
+    pointsReceived: this.pointsReceived,
+    pointsRemaining: this.pointsRemaining
   };
 };
 const User = mongoose.model('User', UserSchema);
@@ -63,13 +82,12 @@ const TransactionSchema = mongoose.Schema({
   recipientEmailAddress: {
     type: String,
     required: true,
-    unique: true
+    
   },
   senderEmailAddress: {
     type: String,
     required: true,
-    unique: true
-  }
+    }
 });
 
 TransactionSchema.methods.serialize = function () {
@@ -83,7 +101,6 @@ TransactionSchema.methods.serialize = function () {
 }
 
 const Transaction = mongoose.model('Transaction', TransactionSchema);
-
 
 module.exports = {
   User,

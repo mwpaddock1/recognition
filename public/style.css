@@ -1,6 +1,6 @@
 body {
     font-size: 8px;
-    background-image: url("./images/white-934556_1920.jpg"); 
+    background-image: url("./images/white-934556_1920.jpg");
     box-sizing: border-box;
     background-size: cover;
     background-repeat: no-repeat;
@@ -24,7 +24,7 @@ img.logo {
 }
 
 h1 {
-    color:#0B7FBF ;
+    color: #0B7FBF;
 }
 
 .hidden {
@@ -38,21 +38,21 @@ h1 {
 .logged-in-employee {
     text-align: center;
     color: #0B7FBF;
+    font-size: 20px;
 }
 
 .banner-button {
     margin-right: 25px;
-   }
+}
 
 header {
     background-color: #0B7FBF;
     width: 100%;
     height: 125px;
 }
-button.delete-employee-button
-button.logout-button,
-button.login-banner-button
-button.employee-list-button,
+
+button.delete-employee-button button.logout-button,
+button.login-banner-button button.employee-list-button,
 button.login-opening-button,
 button.sign-up-opening-button,
 button.employee-list-button,
@@ -75,12 +75,15 @@ button.add-points-button {
     padding-left: 5%;
     padding-right: 5%;
 }
+
 .demo-credentials {
     text-align: center;
 }
+
 form {
     border: 2px solid #0B7FBF;
 }
+
 fieldset {
     margin: 0 auto;
     padding-left: 10px;
@@ -182,9 +185,11 @@ img.thumbs-up {
     /* height: 147px; */
     box-sizing: border-box;
 }
+
 .employee-boxes {
- white-space: nowrap;   
+    white-space: nowrap;
 }
+
 p {
     font-size: 18px;
 }
@@ -233,9 +238,12 @@ p {
     width: 150px;
     display: inline-block;
 }
-.points-received, .points-given {
+
+.points-received,
+.points-given {
     font-size: 26px;
 }
+
 .points-given-box h1,
 .points-received-box h1 {
     font-size: 32px;
@@ -337,7 +345,6 @@ button {
     transition-duration: 0.4s;
 }
 
-
 .transaction-log {
     text-align: left;
     padding-left: 50px;
@@ -387,33 +394,26 @@ section.points-given h2 {
 
 .title-box {
     background-color: #FFF9AD;
-    min-height: 93px;
+    min-height: 105px;
     /* padding: 8px; */
 }
+
 .title-box h2 {
     display: flex;
     box-sizing: border-box;
-    padding-left: 10px;
-    /* text-align: center; */
-    /* font-size: 12px; */
-    /* width: 90%; */
-    /* flex-wrap: wrap; */
-    /* flex: initial; */
-}
+    /* font-size: 15px; */
+    
+  }
+
 .employee-box {
     background-color: #F2f2f2;
-    padding: 4px;
-}
+   }
 
 .title-box,
 .employee-box {
-    /* margin: auto; */
     box-sizing: border-box;
     display: inline-block;
-    /* text-align: center; */
-    width: 42px;
-    /* padding-bottom: 0px; */
-    /* padding: 8px; */
+    width: 63px;
     padding-top: 5px;
     padding-bottom: 5px;
 }
@@ -444,11 +444,7 @@ section.points-given h2 {
     .logo-text {
         font-size: 2rem;
     }
-   
-    /* input,
-    .input-label { */
-        /* margin-left: 75px; */
-    /* } */
+    
     .program-name {
         font-size: 2.5rem;
     }
@@ -462,7 +458,6 @@ section.points-given h2 {
     .employee-list {
         font-size: 16px;
         font-weight: bold;
-        /* width: 50%; */
         padding-bottom: 50px;
     }
     .goal {
@@ -477,30 +472,25 @@ section.points-given h2 {
     }
     .goal-container {
         width: 50%;
-        display: flex;
+        /* display: flex; */
         /* align-content: center; */
         margin: auto;
-        justify-content: space-around;
+        /* justify-content: space-around; */
         /* flex-direction: column; */
         /* justify-content: space-around; */
     }
-    
     .employee-container,
     .individual-info-container {
         width: 75%;
         background-color: #E0E0E0;
         border: 5px solid #F2f2f2;
     }
-    .title-box,
-    .employee-box {
-        width: 42px;
-    }
     fieldset {
         width: 60%;
     }
-}
-@media only screen and (min-width: 1200px) {
-    .employee-box, .title-box {
-        width: 200px;
-    }  
+    .employee-box,
+    .title-box {
+        width: 126px;
+        padding-left: 10px;
+    }
 }

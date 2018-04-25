@@ -21,7 +21,6 @@ $("form[name=sign-up-form]").submit(function (event) {
         //we put this newEmployee as an argumennt in the addNewEmployee function which also gives the new employee starting points -but it should really be the serialized employee with no password
     let newEmployee = (reformattedArray.reduce(reducingFunction));
     console.log(newEmployee);
-
    
     if (newEmployee.password !== newEmployee['retype-password']) {
         alert('Passwords must match!')
@@ -29,7 +28,6 @@ $("form[name=sign-up-form]").submit(function (event) {
     else {
     loggedInUser = newEmployee;
 
-    console.log(reformattedArray.reduce(reducingFunction));
     addNewEmployee(newEmployee)
         .then(getAllEmployees)
         .then((employeesGet) => {
@@ -66,11 +64,26 @@ $("form[name=login-form]").submit(function (event) {
     document.getElementById("js-login-form").reset();
 });
 //****************************************
-//this has to be the employee that doesn't have the password.... */
+//this has to be the employee that doesn't have the password in its schema.... */
 function addNewEmployee(employeeData) {
     employeeData.pointsGiven = 0;
     employeeData.pointsReceived = 0;
     employeeData.pointsRemaining = 100;
+
+    //do i need something like this or does the router handle?
+    //**************************************************************************************************** */
+    //     $.ajax({
+//       method: 'POST',
+//       if we do need something like this, do I need the URL since it's in .env?
+//       url: BLOGS_URL,
+//       data: JSON.stringify(blog),
+//       success: function (data) {
+//         getAndDisplayBlogs();
+//       },
+//       dataType: 'json',
+//       contentType: 'application/json'
+//     });
+//   }
     return new Promise((resolve, reject) => {
         let MOCK_DATA = getMockData();
         //also include the new employee
@@ -79,6 +92,8 @@ function addNewEmployee(employeeData) {
         resolve(employeeData);
     })
 }
+// function addBlog(blog) {
+//     console.log('Adding blog: ' + blog);
 
 function loginEmployee(loggedInEmployeeEmail, loggedInEmployeePassword) {
     let token = "thisisastring";
@@ -108,6 +123,7 @@ function getMockData() {
     let MOCK_DATA = JSON.parse(MOCK_DATA_STRING);
     return MOCK_DATA;
 }
+
 
 function setMockData(MOCK_DATA) {
     let MOCK_DATA_STRING = JSON.stringify(MOCK_DATA);
@@ -254,8 +270,6 @@ function displayEmployees() {
                 }
             });
     };
-
-
     function formatSenderInfo(sentTransactionInfo) {
         const sentInfoHTML = (
             `<section class ="points-given" role="region">                                
@@ -275,9 +289,7 @@ function displayEmployees() {
         $("row.points-received-box").append(recipientInfoHTML);
         return recipientInfoHTML;
     }
-
 };
-
 
 $("form[name=add-points-form]").submit(function (event) {
     event.preventDefault();
@@ -290,7 +302,8 @@ $("form[name=add-points-form]").submit(function (event) {
     const goal = corpGoal.val();
     const pointsDropdown = $('select[name=points]');
     const points = parseInt(pointsDropdown.val());
-
+//************************************************************************************** */
+//do I still use the loggedInUser?
     let newTransaction = {
         senderFirstName: loggedInUser.firstName,
         senderLastName: loggedInUser.lastName,

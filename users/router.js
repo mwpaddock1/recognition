@@ -3,6 +3,7 @@ const express = require('express');
 const passport = require('passport');
 const bodyParser = require('body-parser');
 const {
+  //why are these capitalized, here and in models? is it the UserSchema is a specific thing?
   User,
   Transaction
 } = require('./models');
@@ -20,6 +21,9 @@ const jwt = require('jsonwebtoken');
 
 // Post to register a new user
 router.post('/', jsonParser, (req, res) => {
+
+  //************************************************************************************************* */
+  //have to translate loggedInUser.emailAddress to 'username' -where?
   const requiredFields = ['username', 'password'];
   const missingField = requiredFields.find(field => !(field in req.body));
 
@@ -153,7 +157,8 @@ router.post('/', jsonParser, (req, res) => {
     });
 });
 
-
+//should this just be '/' without the '/employees'?
+//And, should there be a separate router for the transactions?
 //GET the list of employees
 router.get('/employees', jwtAuth, (req, res) => {
   employee
@@ -174,7 +179,9 @@ router.get('/employees', jwtAuth, (req, res) => {
 });
 //POST a new employee
 router.post('/employees', jwtAuth, (req, res) => {
-  // console.log(req.body)
+console.log(req.body)
+//************************************************************************ */
+//should this be User as in users/model?
   employee
     .create({
       employee: {

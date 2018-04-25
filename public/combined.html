@@ -165,11 +165,9 @@
             </row>
             <row class="employee-boxes">
             </row>
-
         </section>
         <section class="js-individual-info-container individual-recognition-summary hidden" role="region">
             <h1 role="presentation" class="employee-page-title"></h1>
-
             <row class="points-status">
                 <row class="points-received-box">
                     <h1>Points Received</h1>
@@ -178,15 +176,13 @@
                     <h1>Points Given</h1>
                 </row>
             </row>
-
             <div class="points-section hidden" role="region">
                 <h2>Give additional points to this employee for supporting the corporate goals!</h>
                     <button class="give-points-button">Give points!</button>
                     <button class="delete-employee-button button hidden">Delete Employee</button>
         </section>
-
         <section class="individual-info-container individual-info hidden">
-            <h1 role="presentation" class="employee-page-title"></h1>
+            <h1 role="presentation" class="employee-page-title" aria-live="assertive"></h1>
             <section class="add-points-section" role="region">
                 <form name="add-points-form" id="js-add-points-form" class="add-points-form">
                     <fieldset>
@@ -200,7 +196,6 @@
                             title="employee-action" aria-label="employee-action" required>
                         <label for="employee-action" class="input-label reason js-reason">Employee Action</label>
                         <h2>Which Fizz Buzz corporate goal was supported?</h2>
-
                         <select name="goal" class="goal-dropdown" title="goal">
                             <option value=""></option>
                             <option value="Ideas">Ideas</option>
@@ -212,7 +207,6 @@
                             Goal
                         </label>
                         <h2>How many points would you like to give for this action?</h2>
-
                         <select name="points" class="points-dropdown required" title="points">
                             <option value=""></option>
                             <option value=5>5</option>
