@@ -159,8 +159,7 @@ router.post('/', jsonParser, (req, res) => {
     });
 });
 
-//should this just be '/' without the '/employees'?
-//And, should there be a separate router for the transactions?
+
 //GET the list of employees
 router.get('/employees', jwtAuth, (req, res) => {
   employee

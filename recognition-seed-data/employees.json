@@ -1,35 +1,29 @@
 {
-    "employees": [{
-            "lastName": "Perkins",
-            "firstName": "Tony",
-            "emailAddress": "tperkins@fizzbuzz.com",
-            "pointsGiven": 25,
-            "pointsReceived": 15,
-            "pointsRemaining": 75
-        },
-        {
-            "lastName": "Bar",
-            "firstName": "Mary",
-            "emailAddress": "mbar@fizzbuzz.com",
-            "pointsGiven": 40,
-            "pointsReceived": 10,
-            "pointsRemaining": 60
-        },
-        {
-            "lastName": "Foo",
-            "firstName": "Joseph",
-            "emailAddress": "jfoo@fizzbuzz.com",
-            "pointsGiven": 0,
-            "pointsReceived": 0,
-            "pointsRemaining": 100
-        },
-        {
-            "lastName": "User",
-            "firstName": "Demo",
-            "emailAddress": "duser@fizzbuzz.com",
-            "pointsGiven": 5,
-            "pointsReceived": 30,
-            "pointsRemaining": 95
-        }
-    ]
+    "lastName": "Perkins",
+    "firstName": "Tony",
+    "emailAddress": "tperkins@fizzbuzz.com",
+    "pointsGiven": 25,
+    "pointsReceived": 15,
+    "pointsRemaining": 75
+} {
+    "lastName": "Bar",
+    "firstName": "Mary",
+    "emailAddress": "mbar@fizzbuzz.com",
+    "pointsGiven": 40,
+    "pointsReceived": 10,
+    "pointsRemaining": 60
+} {
+    "lastName": "Foo",
+    "firstName": "Joseph",
+    "emailAddress": "jfoo@fizzbuzz.com",
+    "pointsGiven": 0,
+    "pointsReceived": 0,
+    "pointsRemaining": 100
+} {
+    "lastName": "User",
+    "firstName": "Demo",
+    "emailAddress": "duser@fizzbuzz.com",
+    "pointsGiven": 5,
+    "pointsReceived": 30,
+    "pointsRemaining": 95
 }

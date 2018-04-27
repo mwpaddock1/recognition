@@ -1,7 +1,7 @@
 'use strict';
 const express = require('express');
 const {Employee} = require('./models');
-const {Transactions} = require('./models');
+const {Transaction} = require('./models');
 const {router} = require('./router');
 
-module.exports = {Employee, Transactions, router};
+module.exports = {Employee, Transaction, router};

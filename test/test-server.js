@@ -3,7 +3,7 @@
 const chai = require('chai');
 const chaiHttp = require('chai-http');
 const faker = require('faker');
-const {Employees, Transaction} = require('../users/models');
+const {Employee, Transaction} = require('../users/models');
 const {app, runServer, closeServer} = require('../server.js');
 
 const expect = chai.expect;
@@ -12,7 +12,7 @@ chai.should();
 
 chai.use(chaiHttp);
 
-describe('Employees', function () {
+describe('Employee', function () {
   // Before our tests run, we activate the server. Our `runServer`
   // function returns a promise, and we return the promise by
   // doing `return runServer`. If we didn't return a promise here,
@@ -32,6 +32,7 @@ describe('Employees', function () {
   it('should add an employee on POST', function() {
     // const newItem = {firstName: 'Joe', lastName: 'Schmoe', emailAddress: 'jschmoe@fizzbuzz.com', pointsGiven: 0, pointsReceived: 0, pointsRemaining: 100};
      const newItem = {firstName: faker.firstName, lastName: faker.lastName, emailAddress: faker.emailAddress, password: faker.password};
+     
     return chai.request(app)
       .post('/employees')
       .send(newItem)

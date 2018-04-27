@@ -11,7 +11,7 @@ const EmployeeSchema = mongoose.Schema({
   emailAddress: {
     type: String,
     required: true,
-    unique: true
+    // unique: true
   },
   password: {
     type: String,
@@ -95,9 +95,7 @@ TransactionSchema.methods.serialize = function () {
     senderEmailAddress: this.senderEmailAddress
   }
 }
-
 const Transaction = mongoose.model('Transaction', TransactionSchema);
-
 module.exports = {
   Employee,
   Transaction
