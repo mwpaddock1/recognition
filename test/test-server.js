@@ -3,7 +3,7 @@
 const chai = require('chai');
 const chaiHttp = require('chai-http');
 const faker = require('faker');
-const {Employee, Transaction} = require('../users/models');
+const {Employee, Transaction} = require('../users');
 const {app, runServer, closeServer} = require('../server.js');
 
 const expect = chai.expect;
