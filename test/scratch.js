@@ -1,24 +1,6 @@
-// //Do I need Faker so the database can be torn down?
 
 
-// //Here's the test for POST requests to /employees.
 
-// it('should add an employee on POST', function() {
-//   const newItem = {firstName: 'Joe', lastName: 'Schmoe', emailAddress: 'jschmoe@fizzbuzz.com', pointsGiven: 0, pointsReceived: 0, pointsRemaining: 100};
-//   return chai.request(app)
-//     .post('/employees')
-//     .send(newItem)
-//     .then(function(res) {
-//       expect(res).to.have.status(201);
-//       expect(res).to.be.json;
-//       expect(res.body).to.be.a('object');
-//       expect(res.body).to.include.keys('id', 'firstName', 'lastName', 'emailAddress', 'pointsGiven', 'pointsReceived', 'pointsRemaining');
-//       expect(res.body.id).to.not.equal(null);
-//       // response should be deep equal to `newItem` from above if we assign
-//       // `id` to it from `res.body.id`
-//       expect(res.body).to.deep.equal(Object.assign(newItem, {id: res.body.id}));
-//     });
-// });
 // //Here's the test for POST requests to /transactions.
 // it('should add a transaction on POST', function() {
 //     const newItem = {reason: 'helping', goal: 'Sales', points: 10, senderEmailAddress: 'jschmoe@fizzbuzz.com', recipientEmailAddress: 'tperkins@fizzbuzz.com'};

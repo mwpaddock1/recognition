@@ -3,8 +3,7 @@ const express = require('express');
 const passport = require('passport');
 const bodyParser = require('body-parser');
 const {
-  //why are these capitalized, here and in models? is it the UserSchema is a specific thing?
-  User,
+  Employee,
   Transaction
 } = require('./models');
 const router = express.Router();
@@ -21,11 +20,8 @@ passport.use(localStrategy);
 passport.use(jwtStrategy);
 const jwt = require('jsonwebtoken');
 
-// Post to register a new user
+// Post to register a new employee
 router.post('/', jsonParser, (req, res) => {
-
-  //************************************************************************************************* */
-  //have to translate loggedInUser.emailAddress to 'username' -where?
   const requiredFields = ['emailAddress', 'password', 'lastName', 'firstName'];
   const missingField = requiredFields.find(field => !(field in req.body));
 
@@ -52,11 +48,11 @@ router.post('/', jsonParser, (req, res) => {
     });
   }
 
-  // If the username and password aren't trimmed we give an error.  Users might
+  // If the email address and password aren't trimmed we give an error.  Employees might
   // expect that these will work without trimming (i.e. they want the password
   // "foobar ", including the space at the end).  We need to reject such values
-  // explicitly so the users know what's happening, rather than silently
-  // trimming them and expecting the user to understand.
+  // explicitly so the employees know what's happening, rather than silently
+  // trimming them and expecting the employee to understand.
   // We'll silently trim the other fields, because they aren't credentials used
   // to log in, so it's less of a problem.
   const explicityTrimmedFields = ['emailAddress', 'password'];
@@ -121,18 +117,14 @@ router.post('/', jsonParser, (req, res) => {
     firstName,
     lastName
   } = req.body;
-  // Username(emailAddress) and password come in pre-trimmed, otherwise we throw an error
-  // before this
-  // firstName = firstName.trim();
-  // lastName = lastName.trim();
 
-  return User.find({
+  return Employee.find({
       'emailAddress': emailAddress
     })
     .count()
     .then(count => {
       if (count > 0) {
-        // There is an existing user with the same username
+        // There is an existing employee with the same email address
         return Promise.reject({
           code: 422,
           reason: 'ValidationError',
@@ -140,19 +132,19 @@ router.post('/', jsonParser, (req, res) => {
           location: 'emailAddress'
         });
       }
-      // If there is no existing user, hash the password
-      return User.hashPassword(password);
+      // If there is no existing employee, hash the password
+      return Employee.hashPassword(password);
     })
     .then(hash => {
-      return User.create({
+      return Employee.create({
         emailAddress: emailAddress,
         password: hash,
         firstName: firstName,
         lastName: lastName
       });
     })
-    .then(user => {
-      return res.status(201).json(user.serialize());
+    .then(employee => {
+      return res.status(201).json(employee.serialize());
     })
     .catch(err => {
       // Forward validation errors on to the client, otherwise give a 500
@@ -190,17 +182,15 @@ router.get('/employees', jwtAuth, (req, res) => {
 //POST a new employee
 router.post('/employees', jwtAuth, (req, res) => {
   console.log(req.body)
-  //************************************************************************ */
-  //should this be User as in users/model?
-  employee
+   employee
     .create({
       employee: {
         pointsGiven: 0,
         pointsReceived: 0,
         pointsRemaining: 100,
-        firstName: req.user.firstName,
-        lastName: req.user.lastName,
-        emailAddress: req.user.emailAddress
+        firstName: req.employee.firstName,
+        lastName: req.employee.lastName,
+        emailAddress: req.employee.emailAddress
       },
 
     })
@@ -213,10 +203,10 @@ router.post('/employees', jwtAuth, (req, res) => {
 //     employee
 //         .findById(req.params.id)
 //         .then(review => {
-//             if (employees.employee_id !== req.user.userID) {
+//             if (employees.employee_id !== req.employee.employeeID) {
 //                 console.log("Ids don't match");
 //                 res.status(403).json({
-//                     message: `${employees.employee_id} does not match ${req.user.userID}`
+//                     message: `${employees.employee_id} does not match ${req.employee.employeeID}`
 //                 });
 //                 return null;
 //             } else {
@@ -252,25 +242,24 @@ router.post('/transactions', jwtAuth, (req, res) => {
   // console.log(req.body)
   transaction
     .create({
-      points: req.user.points,
-      goal: req.user.goal,
-      reason: req.user.reason,
-      senderEmailAddress: req.user.senderEmailAddress,
-      recipientEmailAddress: req.user.recipientEmailAddress
+      points: req.employee.points,
+      goal: req.employee.goal,
+      reason: req.employee.reason,
+      senderEmailAddress: req.employee.senderEmailAddress,
+      recipientEmailAddress: req.employee.recipientEmailAddress
     })
     .then(transactions => res.status(201).json(transaction.serialize()))
 });
 
 //PUT ENDPOINT - the only things that are updated are the score tallies which fall in the employees section- 
-//****************************************  have to get the points from Transactions info, too */
-//do I have to use ID or can I revert to emailAddress?
+
 router.put('/employees/:id', jwtAuth, (req, res) => {
   employee
     .findById(req.params.id)
     .then(employees => {
-      if (employees.employee_id !== req.user.employee) {
+      if (employees.employee_id !== req.body.employee) {
         res.status(403).json({
-          message: `${employees.employee_id} does not match ${req.user.employeeID}`
+          message: `${employees.employee_id} does not match ${req.body.employeeID}`
         });
         return null;
       }

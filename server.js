@@ -15,7 +15,7 @@ const passport = require('passport');
 // Here we use destructuring assignment with renaming so the two variables
 // called router (from ./users and ./auth) have different names
 
-const { router: usersRouter } = require('./users');
+const { router: usersRouter }=require('./users');
 const { router: authRouter, localStrategy, jwtStrategy } = require('./auth');
 
 const bodyParser = require('body-parser');
@@ -88,7 +88,6 @@ function runServer() {
     });
   });
 }
-
 
 function closeServer() {
   return mongoose.disconnect().then(() => {
