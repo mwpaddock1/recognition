@@ -416,6 +416,7 @@ section.points-given h2 {
     width: 63px;
     padding-top: 5px;
     padding-bottom: 5px;
+    font-size: 12px;
 }
 
 /*For non-mobile devices*/
@@ -452,7 +453,7 @@ section.points-given h2 {
     .goals,
     .individual-info,
     .individual-recognition-summary {
-        width: 60%;
+        width: 70%;
         padding: 20px;
     }
     .employee-list {
@@ -490,7 +491,15 @@ section.points-given h2 {
     }
     .employee-box,
     .title-box {
-        width: 126px;
+        width: 95px;
         padding-left: 10px;
+    }
+}
+@media only screen and (min-width: 1200px) {
+    .title-boxes, .employee-boxes {
+        width: 100%;
+    }
+    .employee-box, .title-box {
+        width: 145px;
     }
 }

@@ -1,0 +1,78 @@
+{
+    "employees": [{
+            "lastName": "Perkins",
+            "firstName": "Tony",
+            "emailAddress": "tperkins@fizzbuzz.com",
+            "pointsGiven": 25,
+            "pointsReceived": 15,
+            "pointsRemaining": 75
+        },
+        {
+            "lastName": "Bar",
+            "firstName": "Mary",
+            "emailAddress": "mbar@fizzbuzz.com",
+            "pointsGiven": 40,
+            "pointsReceived": 10,
+            "pointsRemaining": 60
+        },
+        {
+            "lastName": "Foo",
+            "firstName": "Joseph",
+            "emailAddress": "jfoo@fizzbuzz.com",
+            "pointsGiven": 0,
+            "pointsReceived": 0,
+            "pointsRemaining": 100
+        },
+        {
+            "lastName": "User",
+            "firstName": "Demo",
+            "emailAddress": "duser@fizzbuzz.com",
+            "pointsGiven": 5,
+            "pointsReceived": 30,
+            "pointsRemaining": 95
+        }
+    ],
+    "transactions": [{
+            "points": "10",
+            "goal": "Sales",
+            "reason": "landing a new client at the conference",
+            "senderEmail": "tperkins@fizzbuzz.com",
+            "recipientEmail": "mbar@fizzbuzz.com"
+        },
+        {
+            "points": "15",
+            "goal": "Costs",
+            "reason": "sourcing a new paper vendor",
+            "senderEmail": "tperkins@fizzbuzz.com",
+            "recipientEmail": "duser@fizzbuzz.com"
+        },
+        {
+            "points": "5",
+            "goal": "Costs",
+            "reason": "moved paper files to electronic",
+            "senderEmail": "duser@fizzbuzz.com",
+            "recipientEmail": "tperkins@fizzbuzz.com"
+        },
+        {
+            "points": "10",
+            "goal": "Ideas",
+            "reason": "redesigned the inventory system",
+            "senderEmail": "mbar@fizzbuzz.com",
+            "recipientEmail": "tperkins@fizzbuzz.com"
+        },
+        {
+            "points": "20",
+            "goal": "Service",
+            "reason": "served dinner at the homeless shelter",
+            "senderEmail": "mbar@fizzbuzz.com",
+            "recipientEmail": "duser@fizzbuzz.com"
+        },
+        {
+            "points": "10",
+            "goal": "Service",
+            "reason": "organized the toy drive",
+            "senderEmail": "mbar@fizzbuzz.com",
+            "recipientEmail": "duser@fizzbuzz.com"
+        }
+    ]
+}

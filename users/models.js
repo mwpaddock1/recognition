@@ -6,41 +6,36 @@ const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
 
 const UserSchema = mongoose.Schema({
-  //*********************************************************************************** */
-  //have to figure out if this should be username or emailAddress (remember the login form has email and the signup form has emailAddress so we can use the hidden id=recipient input)
+  //(remember the login form has email and the signup form has emailAddress so we can use the hidden id=recipient input)
 
   emailAddress: {
     type: String,
     required: true,
     unique: true
   },
-  //********************************************************************* */
-  //password is only for the auth so does it belong here?
   password: {
     type: String,
     required: true
   },
   firstName: {
     type: String,
-    default: ''
+    required: true
   },
   lastName: {
     type: String,
-    default: ''
+    required: true
   },
-  //****************************************************************************************** */
-  //so if the password belongs in the UserSchema, do these?
   pointsGiven: {
     type: String,
-    required: true
+    default: '0'
   },
-  pointsRecevied: {
+  pointsReceived: {
     type: String,
-    required: true
+    default: '0'
   },
   pointsRemaining: {
     type: String,
-    required: true
+    default: '100'
   }
 });
 
@@ -82,12 +77,12 @@ const TransactionSchema = mongoose.Schema({
   recipientEmailAddress: {
     type: String,
     required: true,
-    
+
   },
   senderEmailAddress: {
     type: String,
     required: true,
-    }
+  }
 });
 
 TransactionSchema.methods.serialize = function () {
@@ -95,6 +90,7 @@ TransactionSchema.methods.serialize = function () {
     id: this._id,
     points: this.points,
     reason: this.reason,
+    goal: this.goal,
     recipientEmailAddress: this.recipientEmailAddress,
     senderEmailAddress: this.senderEmailAddress
   }

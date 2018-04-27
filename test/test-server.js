@@ -2,6 +2,7 @@
 
 const chai = require('chai');
 const chaiHttp = require('chai-http');
+const faker = require('faker');
 const app = require('../server.js');
 const expect = chai.expect;
 
@@ -26,50 +27,70 @@ describe('Users', function () {
   after(function () {
     return closeServer();
   });
-  describe('employee list page', function () {
-    it('should exist', function () {
-      return chai.request(app)
-        .get('/')
-        .then(function (res) {
-          //so subsequent .then blocks can access the response object
-          res = _res;
-          res.should.have.status(200);
 
-        });
-    });
-  });
-  it('should return a list of employees with the right fields on GET', function () {
+  it('should add a user on POST', function() {
+    // const newItem = {firstName: 'Joe', lastName: 'Schmoe', emailAddress: 'jschmoe@fizzbuzz.com', pointsGiven: 0, pointsReceived: 0, pointsRemaining: 100};
+     const newItem = {firstName: faker.firstName, lastName: faker.lastName, emailAddress: faker.emailAddress, password: faker.password};
     return chai.request(app)
-      .get('/employees')
-      .then(function (res) {
-        expect(res).to.have.status(200);
+      .post('/users')
+      .send(newItem)
+      .then(function(res) {
+        expect(res).to.have.status(201);
         expect(res).to.be.json;
-        expect(res.body).to.be.a('array');
-        expect(res.body.length).to.be.above(0);
-        res.body.forEach(function (item) {
-          expect(item).to.be.a('object');
-          expect(item).to.have.all.keys(
-            'id', 'firstName', 'lastName', 'emailAddress', 'pointsGiven', 'pointsReceived', 'pointsRemaining');
-        });
+        expect(res.body).to.be.a('object');
+        expect(res.body).to.include.keys('id', 'firstName', 'lastName', 'emailAddress', 'pointsGiven', 'pointsReceived', 'pointsRemaining');
+        expect(res.body.id).to.not.equal(null);
+        // response should be deep equal to `newItem` from above if we assign
+        // `id` to it from `res.body.id`
+        expect(res.body).to.deep.equal(Object.assign(newItem, {id: res.body.id}));
       });
   });
-
-it('should return a list of transactions with the right fields on GET', function () {
-  return chai.request(app)
-    .get('/transactions')
-    .then(function (res) {
-      expect(res).to.have.status(200);
-      expect(res).to.be.json;
-      expect(res.body).to.be.a('array');
-      expect(res.body.length).to.be.above(0);
-      res.body.forEach(function (item) {
-        expect(item).to.be.a('object');
-        expect(item).to.have.all.keys(
-          'id', 'reason', 'goal', 'points', 'senderEmailAddress', 'recipientEmailAddress');
-      });
-    });
 });
-})
+
+//   describe('employee list page', function () {
+//     it('should exist', function () {
+//       return chai.request(app)
+//         .get('/')
+//         .then(function (res) {
+//           //so subsequent .then blocks can access the response object
+//           res = _res;
+//           res.should.have.status(200);
+
+//         });
+//     });
+//   });
+//   it('should return a list of employees with the right fields on GET', function () {
+//     return chai.request(app)
+//       .get('/employees')
+//       .then(function (res) {
+//         expect(res).to.have.status(200);
+//         expect(res).to.be.json;
+//         expect(res.body).to.be.a('array');
+//         expect(res.body.length).to.be.above(0);
+//         res.body.forEach(function (item) {
+//           expect(item).to.be.a('object');
+//           expect(item).to.have.all.keys(
+//             'id', 'firstName', 'lastName', 'emailAddress', 'pointsGiven', 'pointsReceived', 'pointsRemaining');
+//         });
+//       });
+//   });
+
+// it('should return a list of transactions with the right fields on GET', function () {
+//   return chai.request(app)
+//     .get('/transactions')
+//     .then(function (res) {
+//       expect(res).to.have.status(200);
+//       expect(res).to.be.json;
+//       expect(res.body).to.be.a('array');
+//       expect(res.body.length).to.be.above(0);
+//       res.body.forEach(function (item) {
+//         expect(item).to.be.a('object');
+//         expect(item).to.have.all.keys(
+//           'id', 'reason', 'goal', 'points', 'senderEmailAddress', 'recipientEmailAddress');
+//       });
+//     });
+// });
+// })
 
 //describe('recognition page', function () {
 //   it('should exist', function () {
