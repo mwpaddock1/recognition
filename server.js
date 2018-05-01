@@ -34,6 +34,8 @@ const {
 app.use(express.json());
 
 //CORS
+
+//Pink square means that the source line is on the execution path of a failing test
 app.use(function (req, res, next) {
   res.header('Access-Control-Allow-Origin', '*');
   res.header('Access-Control-Allow-Headers', 'Content-Type');
