@@ -22,7 +22,7 @@ const jwt = require('jsonwebtoken');
 
 // Post to register a new employee
 router.post('/', jsonParser, (req, res) => {
-  console.log(req.body);
+  // console.log(req.body);
   const requiredFields = ['emailAddress', 'password', 'lastName', 'firstName'];
   const missingField = requiredFields.find(field => !(field in req.body));
   if (missingField) {
@@ -124,9 +124,12 @@ router.post('/', jsonParser, (req, res) => {
   console.log(emailAddress);
   return Employee.find({
       emailAddress: emailAddress
-    })
+    },
+    (err, employee) =>{
+      if (err) return res.status(500).send(err)})
     .count()
     .then(count => {
+      console.log(count);
       if (count > 0) {
         // There is an existing employee with the same email address
         return Promise.reject({
@@ -189,17 +192,17 @@ router.post('/', jsonParser, (req, res) => {
 //     });
 // });
 //POST a new employee
-router.post('/employees', jwtAuth, (req, res) => {
-  console.log(req.body)
-  Employee
-    .create({
-      firstName: req.employee.firstName,
-      lastName: req.employee.lastName,
-      emailAddress: req.employee.emailAddress
+// router.post('/employees', jwtAuth, (req, res) => {
+//   console.log(req.body)
+//   Employee
+//     .create({
+//       firstName: req.employee.firstName,
+//       lastName: req.employee.lastName,
+//       emailAddress: req.employee.emailAddress
 
-    })
-    .then(employees => res.status(201).json(employee.serialize()))
-});
+//     })
+//     .then(employees => res.status(201).json(employee.serialize()))
+// });
 //**************************************************************************************** */
 //have to figure out if we want a DELETE - would require admin login
 //DELETE ENDPOINT an employee

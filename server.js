@@ -53,7 +53,7 @@ app.use(function (req, res, next) {
 passport.use(localStrategy);
 passport.use(jwtStrategy);
 //should this be employees or users?
-app.use('api/employees/', usersRouter);
+app.use('/employees/', usersRouter);
 app.use('api/auth/', authRouter);
 
 const jwtAuth = passport.authenticate('jwt', {
