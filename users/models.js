@@ -11,7 +11,7 @@ const EmployeeSchema = mongoose.Schema({
   emailAddress: {
     type: String,
     required: true,
-    // unique: true
+    unique: true
   },
   password: {
     type: String,
@@ -38,7 +38,7 @@ const EmployeeSchema = mongoose.Schema({
     default: '100'
   }
 });
-
+console.log('made it here - EmployeeSchema is set up');
 //validates the password
 EmployeeSchema.methods.validatePassword = function (password) {
   return bcrypt.compare(password, this.password);
@@ -57,46 +57,49 @@ EmployeeSchema.methods.serialize = function () {
     pointsGiven: this.pointsGiven,
     pointsReceived: this.pointsReceived,
     pointsRemaining: this.pointsRemaining
-  };
+  }; 
+  console.log(emailAddress);
 };
 const Employee = mongoose.model('Employee', EmployeeSchema);
+console.log('made it here after serialize:');
 
-const TransactionSchema = mongoose.Schema({
-  points: {
-    type: Number,
-    required: true
-  },
-  goal: {
-    type: String,
-    required: true
-  },
-  reason: {
-    type: String,
-    required: true
-  },
-  recipientEmailAddress: {
-    type: String,
-    required: true,
 
-  },
-  senderEmailAddress: {
-    type: String,
-    required: true,
-  }
-});
+// const TransactionSchema = mongoose.Schema({
+//   points: {
+//     type: Number,
+//     required: true
+//   },
+//   goal: {
+//     type: String,
+//     required: true
+//   },
+//   reason: {
+//     type: String,
+//     required: true
+//   },
+//   recipientEmailAddress: {
+//     type: String,
+//     required: true,
 
-TransactionSchema.methods.serialize = function () {
-  return {
-    id: this._id,
-    points: this.points,
-    reason: this.reason,
-    goal: this.goal,
-    recipientEmailAddress: this.recipientEmailAddress,
-    senderEmailAddress: this.senderEmailAddress
-  }
-}
-const Transaction = mongoose.model('Transaction', TransactionSchema);
-module.exports = {
-  Employee,
-  Transaction
-};
+//   },
+//   senderEmailAddress: {
+//     type: String,
+//     required: true,
+//   }
+// });
+
+// TransactionSchema.methods.serialize = function () {
+//   return {
+//     id: this._id,
+//     points: this.points,
+//     reason: this.reason,
+//     goal: this.goal,
+//     recipientEmailAddress: this.recipientEmailAddress,
+//     senderEmailAddress: this.senderEmailAddress
+//   }
+// }
+// const Transaction = mongoose.model('Transaction', TransactionSchema);
+ module.exports = {
+   Employee,
+//   Transaction
+ };

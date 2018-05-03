@@ -1,11 +1,13 @@
 // 'use strict';
-
+//DATABASE_URL=mongodb://legal:staffer@ds111188.mlab.com:11188/recognitiondb
 const chai = require('chai');
 const chaiHttp = require('chai-http');
+const jwt = require('jsonwebtoken');
+const { JWT_SECRET } = require('../config');
 const faker = require('faker');
 const {Employee, Transaction} = require('../users');
 const {app, runServer, closeServer} = require('../server.js');
-
+const express = require('express');
 const expect = chai.expect;
 
 chai.should();
@@ -30,10 +32,12 @@ describe('Employee', function () {
   });
 
   it('should add an employee on POST', function() {
-    // const newItem = {firstName: 'Joe', lastName: 'Schmoe', emailAddress: 'jschmoe@fizzbuzz.com', pointsGiven: 0, pointsReceived: 0, pointsRemaining: 100};
-     const newItem = {firstName: faker.firstName, lastName: faker.lastName, emailAddress: faker.emailAddress, password: faker.password};
-     
+    const newItem = {firstName: 'Joe', lastName: 'Schmoe', emailAddress: 'jschmoe@fizzbuzz.com', password: 'password1', pointsGiven: '0', pointsReceived: '0', pointsRemaining: '100'};
+    //  const newItem = {firstName: faker.firstName, lastName: faker.lastName, emailAddress: faker.emailAddress, password: faker.password};
+     console.log("this is the newItem in test-server.js:")
+     console.log(newItem);
     return chai.request(app)
+    //should this be post to /log-in?
       .post('/employees')
       .send(newItem)
       .then(function(res) {

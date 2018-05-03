@@ -8,10 +8,11 @@ const config = require('../config');
 const router = express.Router();
 const createAuthToken = function(employee) {
   return jwt.sign({employee}, config.JWT_SECRET, {
-    subject: employee.emailAddress,
+    subject: employee.emailAddress,  
     expiresIn: config.JWT_EXPIRY,
     algorithm: 'HS256'
   });
+  console.log(employee.emailAddress);
 };
 
 const localAuth = passport.authenticate('local', {session: false});

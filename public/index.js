@@ -110,11 +110,11 @@ function loginEmployee(loggedInEmployeeEmail, loggedInEmployeePassword) {
             }
         }
         loggedInUser = getUser();
-        resolve({
-            token,
-            loggedInUser
+        // resolve({
+        //     token,
+        //     loggedInUser
             
-        });
+        // });
     })
 }
 

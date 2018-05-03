@@ -22,9 +22,9 @@ const jwt = require('jsonwebtoken');
 
 // Post to register a new employee
 router.post('/', jsonParser, (req, res) => {
+  console.log(req.body);
   const requiredFields = ['emailAddress', 'password', 'lastName', 'firstName'];
   const missingField = requiredFields.find(field => !(field in req.body));
-
   if (missingField) {
     return res.status(422).json({
       code: 422,
@@ -32,6 +32,7 @@ router.post('/', jsonParser, (req, res) => {
       message: 'Missing field',
       location: missingField
     });
+    console.log('missingField');
   }
 
   const stringFields = ['emailAddress', 'password', 'firstName', 'lastName'];
@@ -46,6 +47,7 @@ router.post('/', jsonParser, (req, res) => {
       message: 'Incorrect field type: expected string',
       location: nonStringField
     });
+    console.log('not a string field')
   }
 
   // If the email address and password aren't trimmed we give an error.  Employees might
@@ -67,6 +69,7 @@ router.post('/', jsonParser, (req, res) => {
       message: 'Cannot start or end with whitespace',
       location: nonTrimmedField
     });
+    console.log('nontrimmed field');
   }
 
   const sizedFields = {
@@ -109,6 +112,7 @@ router.post('/', jsonParser, (req, res) => {
           .max} characters long`,
       location: tooSmallField || tooLargeField
     });
+    console.log('wrong size field');
   }
 
   let {
@@ -117,9 +121,9 @@ router.post('/', jsonParser, (req, res) => {
     firstName,
     lastName
   } = req.body;
-
+  console.log(emailAddress);
   return Employee.find({
-      'emailAddress': emailAddress
+      emailAddress: emailAddress
     })
     .count()
     .then(count => {
@@ -133,17 +137,23 @@ router.post('/', jsonParser, (req, res) => {
         });
       }
       // If there is no existing employee, hash the password
+      console.log(password);
       return Employee.hashPassword(password);
     })
     .then(hash => {
+      console.log(hash);
       return Employee.create({
         emailAddress: emailAddress,
         password: hash,
         firstName: firstName,
-        lastName: lastName
+        lastName: lastName,
+        pointsGiven: '0',
+        pointsReceived: '0',
+        pointsRemaining: '100'
       });
     })
     .then(employee => {
+      console.log(employee);
       return res.status(201).json(employee.serialize());
     })
     .catch(err => {
@@ -161,36 +171,31 @@ router.post('/', jsonParser, (req, res) => {
 
 
 //GET the list of employees
-router.get('/employees', jwtAuth, (req, res) => {
-  employee
-    .find()
-    .then(employees => {
-      res.json({
-          employees: employee.map(
-            (employee => employee.serialize()))
+// router.get('/employees', jwtAuth, (req, res) => {
+//   Employee
+//     .find()
+//     .then(employees => {
+//       res.json({
+//           employees: employee.map(
+//             (employee => employee.serialize()))
 
-        })
-        .catch(err => {
-          console.error(err);
-          res.status(500).json({
-            message: 'Internal Server Error'
-          })
-        });
-    });
-});
+//         })
+//         .catch(err => {
+//           console.error(err);
+//           res.status(500).json({
+//             message: 'Internal Server Error'
+//           })
+//         });
+//     });
+// });
 //POST a new employee
 router.post('/employees', jwtAuth, (req, res) => {
   console.log(req.body)
-   employee
+  Employee
     .create({
-      employee: {
-        pointsGiven: 0,
-        pointsReceived: 0,
-        pointsRemaining: 100,
-        firstName: req.employee.firstName,
-        lastName: req.employee.lastName,
-        emailAddress: req.employee.emailAddress
-      },
+      firstName: req.employee.firstName,
+      lastName: req.employee.lastName,
+      emailAddress: req.employee.emailAddress
 
     })
     .then(employees => res.status(201).json(employee.serialize()))
@@ -220,68 +225,68 @@ router.post('/employees', jwtAuth, (req, res) => {
 // });
 
 // GET the list of transactions
-router.get('/transactions', jwtAuth, (req, res) => {
-  transaction
-    .find()
-    .then(transactions => {
-      res.json({
-        transactions: transactions.map(
-          (transactions) => transaction.serialize())
-      });
-    })
-    .catch(err => {
-      console.error(err);
-      res.status(500).json({
-        message: 'Internal Server Error'
-      })
-    });
-});
+// router.get('/transactions', jwtAuth, (req, res) => {
+//   transaction
+//     .find()
+//     .then(transactions => {
+//       res.json({
+//         transactions: transactions.map(
+//           (transactions) => transaction.serialize())
+//       });
+//     })
+//     .catch(err => {
+//       console.error(err);
+//       res.status(500).json({
+//         message: 'Internal Server Error'
+//       })
+//     });
+// });
 //POST a new transaction
-router.post('/transactions', jwtAuth, (req, res) => {
-  // console.log(req.body)
-  transaction
-    .create({
-      points: req.employee.points,
-      goal: req.employee.goal,
-      reason: req.employee.reason,
-      senderEmailAddress: req.employee.senderEmailAddress,
-      recipientEmailAddress: req.employee.recipientEmailAddress
-    })
-    .then(transactions => res.status(201).json(transaction.serialize()))
-});
+// router.post('/transactions', jwtAuth, (req, res) => {
+//   // console.log(req.body)
+//   transaction
+//     .create({
+//       points: req.employee.points,
+//       goal: req.employee.goal,
+//       reason: req.employee.reason,
+//       senderEmailAddress: req.employee.senderEmailAddress,
+//       recipientEmailAddress: req.employee.recipientEmailAddress
+//     })
+//     .then(transactions => res.status(201).json(transaction.serialize()))
+// });
 
 //PUT ENDPOINT - the only things that are updated are the score tallies which fall in the employees section- 
 
-router.put('/employees/:id', jwtAuth, (req, res) => {
-  employee
-    .findById(req.params.id)
-    .then(employees => {
-      if (employees.employee_id !== req.body.employee) {
-        res.status(403).json({
-          message: `${employees.employee_id} does not match ${req.body.employeeID}`
-        });
-        return null;
-      }
-      const updated = {};
-      const updatedFields = ["pointsReceived", "pointsGiven", "pointsRemaining"];
+// router.put('/employees/:id', jwtAuth, (req, res) => {
+//   employee
+//     .findById(req.params.id)
+//     .then(employees => {
+//       if (employees.employee_id !== req.body.employee) {
+//         res.status(403).json({
+//           message: `${employees.employee_id} does not match ${req.body.employeeID}`
+//         });
+//         return null;
+//       }
+//       const updated = {};
+//       const updatedFields = ["pointsReceived", "pointsGiven", "pointsRemaining"];
 
-      updatedFields.forEach(field => {
-        if (field in req.body) {
-          updated[field] = req.body[field];
-        }
-      });
-      return updatedTrans.findByIdAndUpdate(req.params.id, {
-        $set: updated
-      }, {
-        new: true
-      });
-    })
-    .then(updatedTransaction => {
-      if (updatedTransaction != null)
-        return res.status(200).json(updatedTransaction.serialize())
-    })
-    .catch(err => res.status(500).json(err))
-});
+//       updatedFields.forEach(field => {
+//         if (field in req.body) {
+//           updated[field] = req.body[field];
+//         }
+//       });
+//       return updatedTrans.findByIdAndUpdate(req.params.id, {
+//         $set: updated
+//       }, {
+//         new: true
+//       });
+//     })
+//     .then(updatedTransaction => {
+//       if (updatedTransaction != null)
+//         return res.status(200).json(updatedTransaction.serialize())
+//     })
+//     .catch(err => res.status(500).json(err))
+// });
 module.exports = {
   router
 };

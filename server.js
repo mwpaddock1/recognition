@@ -1,4 +1,3 @@
-
 'use strict';
 //dotenv loads environment variables from a .env file into the process
 require('dotenv').config();
@@ -15,8 +14,14 @@ const passport = require('passport');
 // Here we use destructuring assignment with renaming so the two variables
 // called router (from ./users and ./auth) have different names
 
-const { router: usersRouter }=require('./users');
-const { router: authRouter, localStrategy, jwtStrategy } = require('./auth');
+const {
+  router: usersRouter
+} = require('./users');
+const {
+  router: authRouter,
+  localStrategy,
+  jwtStrategy
+} = require('./auth');
 
 const bodyParser = require('body-parser');
 app.use(bodyParser.json());
@@ -47,16 +52,17 @@ app.use(function (req, res, next) {
 });
 passport.use(localStrategy);
 passport.use(jwtStrategy);
+//should this be employees or users?
+app.use('api/employees/', usersRouter);
+app.use('api/auth/', authRouter);
 
-app.use('/users/', usersRouter);
-app.use('/auth/', authRouter);
-
-
-const jwtAuth = passport.authenticate('jwt', { session: false });
+const jwtAuth = passport.authenticate('jwt', {
+  session: false
+});
 // A protected endpoint which needs a valid JWT to access it
 app.get('/api/protected', jwtAuth, (req, res) => {
   return res.json({
-    data: 'success'//'rosebud'
+    data: 'success' //'rosebud'
   });
 });
 
@@ -72,22 +78,21 @@ let server;
 //starts express server and connects to the db
 function runServer() {
   return new Promise((resolve, reject) => {
-    mongoose.connect(DATABASE_URL, 
-   
-     err => {
-      if (err) {
-        return reject(err);
-      }
-      server = app
-        .listen(PORT, () => {
-          console.log(`Your app is listening on port ${PORT}`);
-          resolve();
-        })
-        .on('error', err => {
-          mongoose.disconnect();
-          reject(err);
-        });
-    });
+    mongoose.connect(DATABASE_URL,
+      err => {
+        if (err) {
+          return reject(err);
+        }
+        server = app
+          .listen(PORT, () => {
+            console.log(`Your app is listening on port ${PORT}`);
+            resolve();
+          })
+          .on('error', err => {
+            mongoose.disconnect();
+            reject(err);
+          });
+      });
   });
 }
 
@@ -115,5 +120,3 @@ module.exports = {
   runServer,
   closeServer
 };
-
-
