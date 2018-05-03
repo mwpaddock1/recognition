@@ -47,8 +47,8 @@ describe('Employee', function () {
   });
 
   it('should add an employee on POST', function() {
-    const newItem = {firstName: 'Joe', lastName: 'Schmoe', emailAddress: 'janeFonda@fizzbuzz.com', password: 'password1', pointsGiven: '0', pointsReceived: '0', pointsRemaining: '100'};
-    //  const newItem = {firstName: faker.firstName, lastName: faker.lastName, emailAddress: faker.emailAddress, password: faker.password};
+    // const newItem = {firstName: 'Joe', lastName: 'Schmoe', emailAddress: 'janeFonda@fizzbuzz.com', password: 'password1', pointsGiven: '0', pointsReceived: '0', pointsRemaining: '100'};
+     const newItem = {firstName: faker.name.firstName(), lastName: faker.name.lastName(), emailAddress: faker.internet.email(), password: faker.internet.password()};
      console.log("this is the newItem in test-server.js:")
      console.log(newItem);
     return chai.request(app)
