@@ -3,10 +3,19 @@
 const chai = require('chai');
 const chaiHttp = require('chai-http');
 const jwt = require('jsonwebtoken');
-const { JWT_SECRET } = require('../config');
+const {
+  JWT_SECRET
+} = require('../config');
 const faker = require('faker');
-const {Employee, Transaction} = require('../users');
-const {app, runServer, closeServer} = require('../server.js');
+const {
+  Employee,
+  Transaction
+} = require('../users');
+const {
+  app,
+  runServer,
+  closeServer
+} = require('../server.js');
 const express = require('express');
 const expect = chai.expect;
 const mongoose = require('mongoose');
@@ -21,6 +30,26 @@ function tearDownDb() {
       .then(result => resolve(result))
       .catch(err => reject(err));
   });
+}
+
+// used to put randomish documents in db
+// so we have data to work with and assert about.
+// we use the Faker library to automatically
+// generate placeholder values for author, title, content
+// and then we insert that data into mongo
+function seedRecognitionData() {
+  console.info('seeding recognition data');
+  const seedData = [];
+  for (let i = 1; i <= 10; i++) {
+    seedData.push({
+      firstName: faker.name.firstName(),
+      lastName: faker.name.lastName(),
+      emailAddress: faker.internet.email(),
+      password: faker.internet.password()
+    });
+  }
+  // this will return a promise
+  return Employee.insertMany(seedData);
 }
 
 describe('Employee', function () {
@@ -38,6 +67,10 @@ describe('Employee', function () {
   before(function () {
     return runServer();
   });
+
+  beforeEach(function(){
+    return seedRecognitionData()
+  });
   // Close server after these tests run in case
   // we have other test modules that need to 
   // call `runServer`. If server is already running,
@@ -46,16 +79,21 @@ describe('Employee', function () {
     return closeServer();
   });
 
-  it('should add an employee on POST', function() {
+  it('should add an employee on POST', function () {
     // const newItem = {firstName: 'Joe', lastName: 'Schmoe', emailAddress: 'janeFonda@fizzbuzz.com', password: 'password1', pointsGiven: '0', pointsReceived: '0', pointsRemaining: '100'};
-     const newItem = {firstName: faker.name.firstName(), lastName: faker.name.lastName(), emailAddress: faker.internet.email(), password: faker.internet.password()};
-     console.log("this is the newItem in test-server.js:")
-     console.log(newItem);
+    const newItem = {
+      firstName: faker.name.firstName(),
+      lastName: faker.name.lastName(),
+      emailAddress: faker.internet.email(),
+      password: faker.internet.password()
+    };
+    console.log("this is the newItem in test-server.js:")
+    console.log(newItem);
     return chai.request(app)
-    //should this be post to /log-in?
+      //should this be post to /log-in?
       .post('/employees')
       .send(newItem)
-      .then(function(res) {
+      .then(function (res) {
         expect(res).to.have.status(201);
         expect(res).to.be.json;
         expect(res.body).to.be.a('object');
