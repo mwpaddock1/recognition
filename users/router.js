@@ -121,7 +121,7 @@ router.post('/', jsonParser, (req, res) => {
     firstName,
     lastName
   } = req.body;
-  console.log(emailAddress);
+  // console.log(emailAddress);
   return Employee.find({
       emailAddress: emailAddress
     },
@@ -129,7 +129,7 @@ router.post('/', jsonParser, (req, res) => {
       if (err) return res.status(500).send(err)})
     .count()
     .then(count => {
-      console.log(count);
+      // console.log(count);
       if (count > 0) {
         // There is an existing employee with the same email address
         return Promise.reject({
@@ -140,11 +140,11 @@ router.post('/', jsonParser, (req, res) => {
         });
       }
       // If there is no existing employee, hash the password
-      console.log(password);
+      // console.log(password);
       return Employee.hashPassword(password);
     })
     .then(hash => {
-      console.log(hash);
+      // console.log(hash);
       return Employee.create({
         emailAddress: emailAddress,
         password: hash,
@@ -156,7 +156,7 @@ router.post('/', jsonParser, (req, res) => {
       });
     })
     .then(employee => {
-      console.log(employee);
+      // console.log(employee);
       return res.status(201).json(employee.serialize());
     })
     .catch(err => {
@@ -172,37 +172,36 @@ router.post('/', jsonParser, (req, res) => {
     });
 });
 
-
 //GET the list of employees
-// router.get('/employees', jwtAuth, (req, res) => {
-//   Employee
-//     .find()
-//     .then(employees => {
-//       res.json({
-//           employees: employee.map(
-//             (employee => employee.serialize()))
+router.get('/', (req, res) => {
+  Employee
+    .find()
+    .then(employees => {
+      res.json({
+           employees: employees.map(        
+            (employee => employee.serialize()))
+        })
+        .catch(err => {
+          console.error(err);
+          res.status(500).json({
+            message: 'Internal Server Error'
+          })
+        });
+    });
+});
+router.get('/:emailAddress', (req, res) => {
+  Employee
+    // .findById(req.params.id - but we want emailAddress)
+    .findOne({emailAddress: req.params.emailAddress})
+    .then(employee => {
+        console.log(employee);
+      res.json(employee.serialize())})
+    .catch(err => {
+      console.error(err);
+      res.status(500).json({ error: 'something went horribly awry' });
+    });
+});
 
-//         })
-//         .catch(err => {
-//           console.error(err);
-//           res.status(500).json({
-//             message: 'Internal Server Error'
-//           })
-//         });
-//     });
-// });
-//POST a new employee
-// router.post('/employees', jwtAuth, (req, res) => {
-//   console.log(req.body)
-//   Employee
-//     .create({
-//       firstName: req.employee.firstName,
-//       lastName: req.employee.lastName,
-//       emailAddress: req.employee.emailAddress
-
-//     })
-//     .then(employees => res.status(201).json(employee.serialize()))
-// });
 //**************************************************************************************** */
 //have to figure out if we want a DELETE - would require admin login
 //DELETE ENDPOINT an employee
@@ -245,9 +244,9 @@ router.post('/', jsonParser, (req, res) => {
 //     });
 // });
 //POST a new transaction
-// router.post('/transactions', jwtAuth, (req, res) => {
-//   // console.log(req.body)
-//   transaction
+// router.post('/', (req, res) => {
+//   console.log(req.body)
+//   Transaction
 //     .create({
 //       points: req.employee.points,
 //       goal: req.employee.goal,

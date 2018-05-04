@@ -38,7 +38,7 @@ const EmployeeSchema = mongoose.Schema({
     default: '100'
   }
 });
-console.log('made it here - EmployeeSchema is set up');
+// console.log('made it here - EmployeeSchema is set up');
 //validates the password
 EmployeeSchema.methods.validatePassword = function (password) {
   return bcrypt.compare(password, this.password);
@@ -57,49 +57,47 @@ EmployeeSchema.methods.serialize = function () {
     pointsGiven: this.pointsGiven,
     pointsReceived: this.pointsReceived,
     pointsRemaining: this.pointsRemaining
-  }; 
-  console.log(emailAddress);
+  };
 };
 const Employee = mongoose.model('Employee', EmployeeSchema);
-console.log('made it here after serialize:');
-
-
+// console.log('made it here after serialize:');
 // const TransactionSchema = mongoose.Schema({
-//   points: {
-//     type: Number,
+//   reason: {
+//     type: String,
 //     required: true
 //   },
 //   goal: {
 //     type: String,
 //     required: true
 //   },
-//   reason: {
+//   points: {
 //     type: String,
 //     required: true
 //   },
 //   recipientEmailAddress: {
 //     type: String,
 //     required: true,
-
 //   },
 //   senderEmailAddress: {
 //     type: String,
 //     required: true,
 //   }
 // });
-
+// console.log('made it here - TransactionSchema is set up');
 // TransactionSchema.methods.serialize = function () {
 //   return {
-//     id: this._id,
-//     points: this.points,
+//     id: this._id,    
 //     reason: this.reason,
 //     goal: this.goal,
+//     points: this.points,
 //     recipientEmailAddress: this.recipientEmailAddress,
 //     senderEmailAddress: this.senderEmailAddress
-//   }
-// }
+//   };
+// };
 // const Transaction = mongoose.model('Transaction', TransactionSchema);
- module.exports = {
-   Employee,
-//   Transaction
- };
+
+// console.log('made it here after Transaction serialized:');
+module.exports = {
+  Employee
+  // Transaction
+};
