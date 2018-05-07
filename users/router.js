@@ -123,10 +123,11 @@ router.post('/', jsonParser, (req, res) => {
   } = req.body;
   // console.log(emailAddress);
   return Employee.find({
-      emailAddress: emailAddress
-    },
-    (err, employee) =>{
-      if (err) return res.status(500).send(err)})
+        emailAddress: emailAddress
+      },
+      (err, employee) => {
+        if (err) return res.status(500).send(err)
+      })
     .count()
     .then(count => {
       // console.log(count);
@@ -178,7 +179,7 @@ router.get('/', (req, res) => {
     .find()
     .then(employees => {
       res.json({
-           employees: employees.map(        
+          employees: employees.map(
             (employee => employee.serialize()))
         })
         .catch(err => {
@@ -189,105 +190,153 @@ router.get('/', (req, res) => {
         });
     });
 });
+//GET a specific employee
 router.get('/:emailAddress', (req, res) => {
   Employee
-    // .findById(req.params.id - but we want emailAddress)
-    .findOne({emailAddress: req.params.emailAddress})
+    // .findById(req.params.id - but we want to use emailAddress)
+    .findOne({
+      emailAddress: req.params.emailAddress
+    })
     .then(employee => {
-        console.log(employee);
-      res.json(employee.serialize())})
+      res.json(employee.serialize())
+    })
     .catch(err => {
       console.error(err);
-      res.status(500).json({ error: 'something went horribly awry' });
+      res.status(500).json({
+        error: 'something went horribly awry'
+      });
     });
 });
 
-//**************************************************************************************** */
-//have to figure out if we want a DELETE - would require admin login
 //DELETE ENDPOINT an employee
-// router.delete('/employees/:id', jwtAuth, (req, res) => {
-//     employee
-//         .findById(req.params.id)
-//         .then(review => {
-//             if (employees.employee_id !== req.employee.employeeID) {
-//                 console.log("Ids don't match");
-//                 res.status(403).json({
-//                     message: `${employees.employee_id} does not match ${req.employee.employeeID}`
-//                 });
-//                 return null;
-//             } else {
-//                 return employee
-//                     .findByIdAndRemove(req.params.id);
-//             }
-//         })
-//         .then(deletedReview => {
-//             if (deletedReview != null)
-//                 return res.sendStatus(204);
-//         });
+router.delete('/:emailAddress', (req, res) => {
+  Employee
+    // .findById(req.params.id - but we want emailAddress)
+    .findOne({
+      emailAddress: req.params.emailAddress
+    })
+    .then(employee => {
+      Employee
+        .findByIdAndRemove(employee.id)
+        .then(() => {
+          console.log(`Deleted employee with id\`${employee.id}\``);
+          res.status(204).json({
+            message: 'success'
+          });
+        })
+    })
+    .catch(err => {
+      console.error(err);
+      res.status(500).json({
+        error: 'something went terribly wrong'
+      });
+    });
+});
+// //POST a new transaction
+// router.post('/', (req, res) => {
+//   console.log(req.body);
+//   const requiredFields = ['points', 'goal', 'reason', 'recipientEmailAddress', 'senderEmailAddress'];
+//   let {
+//     points,
+//     goal,
+//     recipientEmailAddress,
+//     senderEmailAddress
+//   } = req.body;
+//   return Transaction.create({
+//       points: points,
+//       goal: goal,
+//       reason: reason,
+//       recipientEmailAddress: recipientEmailAddress,
+//       senderEmailAddress: senderEmailAddress
+//     })
+//     .then(transaction => res.status(201).json(transaction.serialize()))
 // });
 
-// GET the list of transactions
-// router.get('/transactions', jwtAuth, (req, res) => {
-//   transaction
+// //GET the list of transactions
+// router.get('/', (req, res) => {
+//   Transaction
 //     .find()
 //     .then(transactions => {
 //       res.json({
-//         transactions: transactions.map(
-//           (transactions) => transaction.serialize())
-//       });
-//     })
-//     .catch(err => {
-//       console.error(err);
-//       res.status(500).json({
-//         message: 'Internal Server Error'
-//       })
+//           transactions: transactions.map(
+//             (transaction) => transaction.serialize())
+//         })
+//         .catch(err => {
+//           res.status(500).json({
+//             message: 'Internal TransactionServer Error'
+//           })
+//         });
 //     });
 // });
-//POST a new transaction
-// router.post('/', (req, res) => {
-//   console.log(req.body)
+// //GET a list of specific transactions by sender
+// router.get('/GetBySender/:senderEmailAddress', (req, res) => {
 //   Transaction
-//     .create({
-//       points: req.employee.points,
-//       goal: req.employee.goal,
-//       reason: req.employee.reason,
-//       senderEmailAddress: req.employee.senderEmailAddress,
-//       recipientEmailAddress: req.employee.recipientEmailAddress
+//     .find({
+//       senderEmailAddress: req.params.senderEmailAddress
 //     })
-//     .then(transactions => res.status(201).json(transaction.serialize()))
+//     .then(transactions => {
+//       res.json({
+//           transactions: transactions.map(
+//             //does this work for multiple transactions??
+//             (transaction) => transaction.serialize())
+//         })
+//         .catch(err => {
+//           res.status(500).json({
+//             message: 'Internal TransactionServer Error'
+//           })
+//         });
+//     });
+// });
+// //GET a list of specific transactions by recipient
+// router.get('/GetByRecipient/:recipientEmailAddress', (req, res) => {
+//   Transaction
+//     .find({
+//       senderEmailAddress: req.params.recipientEmailAddress
+//     })
+//     .then(transactions => {
+//       res.json({
+//           transactions: transactions.map(
+//             //does this work for multiple transactions or is the response a different format when it's more than one?
+//             (transaction) => transaction.serialize())
+//         })
+//         .catch(err => {
+//           res.status(500).json({
+//             message: 'Internal TransactionServer Error'
+//           })
+//         });
+//     });
 // });
 
-//PUT ENDPOINT - the only things that are updated are the score tallies which fall in the employees section- 
+// PUT ENDPOINT - the only things that are updated are the score tallies which fall in the employees section- 
 
-// router.put('/employees/:id', jwtAuth, (req, res) => {
-//   employee
-//     .findById(req.params.id)
-//     .then(employees => {
-//       if (employees.employee_id !== req.body.employee) {
-//         res.status(403).json({
-//           message: `${employees.employee_id} does not match ${req.body.employeeID}`
-//         });
-//         return null;
+// router.put('/:senderEmailAddress', (req, res) => {
+//     Employee
+//       .findOne({
+//         senderEmailAddress: req.params.senderEmailAddress
+//       })
+//       .then(employee => {
+//         res.json(employee.serialize())
+//       })
+//     const updated = {};
+//     const updatedFields = ["pointsReceived", "pointsGiven", "pointsRemaining"];
+
+//     updatedFields.forEach(field => {
+//       if (field in req.body) {
+//         updated[field] = req.body[field];
 //       }
-//       const updated = {};
-//       const updatedFields = ["pointsReceived", "pointsGiven", "pointsRemaining"];
-
-//       updatedFields.forEach(field => {
-//         if (field in req.body) {
-//           updated[field] = req.body[field];
-//         }
-//       });
-//       return updatedTrans.findByIdAndUpdate(req.params.id, {
-//         $set: updated
-//       }, {
-//         new: true
-//       });
-//     })
-//     .then(updatedTransaction => {
-//       if (updatedTransaction != null)
-//         return res.status(200).json(updatedTransaction.serialize())
-//     })
-//     .catch(err => res.status(500).json(err))
+//     });
+//     return updatedTrans.findOneAndUpdate(req.params.senderEmailAddress, {
+//       $set: updated
+//     }, {
+//       new: true
+//     });
+//   })
+//   .then(updatedTransaction => {
+//     if (updatedTransaction != null)
+//       return res.status(200).json(updatedTransaction.serialize())
+//   })
+//   .catch(err => res.status(500).json(err))
+// })
 // });
 module.exports = {
   router

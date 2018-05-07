@@ -54,7 +54,7 @@ passport.use(localStrategy);
 passport.use(jwtStrategy);
 
 app.use('/employees', usersRouter);
-app.use('/transactions/', usersRouter);
+app.use('/transactions', usersRouter);
 app.use('api/auth/', authRouter);
 
 const jwtAuth = passport.authenticate('jwt', {

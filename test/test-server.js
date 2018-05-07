@@ -15,7 +15,7 @@ const {
   app,
   runServer,
   closeServer
-} = require('../server.js');
+} = require('../server');
 const express = require('express');
 const expect = chai.expect;
 const mongoose = require('mongoose');
@@ -46,9 +46,6 @@ function seedRecognitionData() {
       lastName: faker.name.lastName(),
       emailAddress: faker.internet.email(),
       password: faker.internet.password()
-      // pointsGiven: faker.lorem.words(),
-      // pointsReceived: faker.lorem.words(),
-      // pointsRemaining: faker.lorem.words(),
     });
     //console.log(seedData);
   }
@@ -65,10 +62,10 @@ describe('employees API resource', function () {
   before(function () {
     return runServer();
   });
-
   beforeEach(function () {
     return seedRecognitionData()
   });
+
   // Close server after these tests run in case
   // we have other test modules that need to 
   // call `runServer`. If server is already running,
@@ -98,34 +95,6 @@ describe('employees API resource', function () {
         })
     });
   });
-  // POST requests to /transactions.
-  // describe('transactions POST endpoint', function () {
-  //   it('should add a transaction on POST', function () {
-  //     const newTrans = {reason: 'helping', goal: 'Sales', points: '10', senderEmailAddress: 'janechmoe@fizzbuzz.com', recipientEmailAddress: 'tperkins@fizzbuzz.com'};
-  //     // const newTrans = {
-  //     //   reason: faker.lorem.words(),
-  //     //   goal: faker.lorem.words(),
-  //     //   points: faker.lorem.words(),
-  //     //   senderEmailAddress: faker.internet.email(),
-  //     //   recipientEmailAddress: faker.internet.email()
-  //     // };
-  //     console.log (newTrans);
-  //     return chai.request(app)
-  //       .post('/transactions')
-  //       .send(newTrans)
-  //       .then(function (res) {
-  //         expect(res).to.have.status(201);
-  //         expect(res).to.be.json;
-  //         expect(res.body).to.be.a('object');
-  //         expect(res.body).to.include.keys('id', 'reason', 'goal', 'points', 'senderEmailAddress', 'recipientEmailAddress');
-  //         expect(res.body.id).to.not.equal(null);
-  //         // response should be deep equal to `newItem` from above if we assign
-  //         // `id` to it from `res.body.id`
-  //         // expect(res.body).to.deep.equal(Object.assign(newTrans, {
-  //         //   id: res.body.id
-  //         });
-  //       });
-  //   });
 
   describe('employees GET endpoint', function () {
     it('should return all employees', function () {
@@ -137,11 +106,8 @@ describe('employees API resource', function () {
           res = _res;
           res.should.have.status(200);
           res.body.employees.should.have.length.of.at.least(1);
-          // console.log(res.body.length);
-          // console.log(Employee.count);
           return Employee.count();
         })
-
         .then(count => {
           res.body.employees.should.have.lengthOf(count);
         });
@@ -149,7 +115,6 @@ describe('employees API resource', function () {
   });
   describe('single employee GET endpoint', function () {
     it('should return a single employee', function () {
-
       let testEmployee;
       return Employee.findOne()
         .then(employee => {
@@ -158,28 +123,176 @@ describe('employees API resource', function () {
             .get('/employees/' + employee.emailAddress)
             .then(function (res) {
               res.should.have.status(200);
-              expect(res.body.emailAddress).to.equal(testEmployee.emailAddress);  
+              expect(res.body.emailAddress).to.equal(testEmployee.emailAddress);
             })
         })
     })
+  });
+
+  // describe('employee PUT endpoint', function () {
+  //   it('should update employee points tallies', function () {
+  //     const updateData = {
+  //       pointsGiven: '10',
+  //       pointsReceived: '20',
+  //       pointsRemaining: '90'
+  //     };
+
+  //     return Employee
+  //       .findOne()
+  //       .then(employee => {
+  //         updateData.id = employee.id;
+
+  //         return chai.request(app)
+  //           .put(`/employees/${employee.id}`)
+  //           .send(updateData);
+  //       })
+  //       .then(res => {
+  //         res.should.have.status(204);
+  //         return Employee.findById(updateData.id);
+  //       })
+  //       .then(employee => {
+  //         employee.pointsGiven.should.equal(updateData.pointsGiven);
+  //         employee.pointsGiven.should.equal(updateData.pointsGiven);
+  //         employee.pointsGiven.should.equal(updateData.pointsGiven);
+  //       });
+  //   });
+  // });
+
+  describe('employee DELETE endpoint', function () {
+    it('should delete an employee on DELETE', function () {
+      let testEmployee;    
+      return Employee       
+      .findOne()
+        .then(_employee => {
+          testEmployee = _employee;
+          console.log(testEmployee);
+          return chai.request(app).delete(`/employees/${testEmployee.emailAddress}`);
+        })
+        .then(function (res) {
+          res.should.have.status(204);
+          return Employee.findById(testEmployee.id);
+        })
+        .then(_testEmployee => {         
+          expect(_testEmployee).to.be.null;
+        });
+    });
   })
+})
+//https://stackoverflow.com/questions/32010910/faker-js-random-number-between-2-values
+// function seedTransactionData() {
+//   console.info('seeding transaction data');
+//   const seedData = [];
+//   for (let i = 1; i <= 10; i++) {
+//     seedData.push({
+//       reason: faker.lorem.words(),
+//       goal: faker.lorem.words(),
+//faker.random.number({min:5, max:10});
+//       points: faker.random.number(),
+//       senderEmailAddress: faker.internet.email(),
+//       recipientEmailAddress: faker.internet.email()
+//     });
+//   }
+//   // this will return a promise
+//   return Transaction.insertMany(seedData);
+// }
+// describe('transactions API resource', function () {
+//   afterEach(function () {
+//     // tear down database so we ensure no state from this test
+//     // effects any coming after.
+//     return tearDownDb();
+//   });
+//   before(function () {
+//     return runServer();
+//   });
+//   beforeEach(function () {
+//     return seedTransactionData()
+//   });
+  // Close server after these tests run in case
+  // we have other test modules that need to 
+  // call `runServer`. If server is already running,
+  // `runServer` will error out.
+  // after(function () {
+  //   return closeServer();
+  // });
 
-
+  // //POST requests to /transactions.
+  // describe('transactions POST endpoint', function () {
+  //   it('should add a transaction on POST', function () {
+  //     // const newTrans = {
+  //     //   reason: 'helping',
+  //     //   goal: 'Sales',
+  //     //   points: '10',
+  //     //   recipientEmailAddress: 'tperkins@fizzbuzz.com',
+  //     //   senderEmailAddress: 'janechmoe@fizzbuzz.com'
+  //     // };
+  //     const newTrans = {
+  //       reason: faker.lorem.words(),
+  //       goal: faker.lorem.words(),
+  //       points: faker.lorem.words(),
+  //       senderEmailAddress: faker.internet.email(),
+  //       recipientEmailAddress: faker.internet.email()
+  //     };
+  //     console.log(newTrans);
+  //     return chai.request(app)
+  //       .post('/transactions')
+  //       .send(newTrans)
+  //       .then(function (res) {
+  //         expect(res).to.have.status(201);
+  //         expect(res).to.be.json;
+  //         expect(res.body).to.be.a('object');
+  //         expect(res.body).to.include.keys('id', 'reason', 'goal', 'points', 'senderEmailAddress', 'recipientEmailAddress');
+  //         expect(res.body.id).to.not.equal(null);
+  //       })
+  //   });
+  // });
 
   // describe('transactions GET endpoint', function () {
-  // it('should return a list of transactions with the right fields on GET', function () {
-  //   return chai.request(app)
-  //     .get('/transactions')
-  //     .then(function (res) {
-  //       expect(res).to.have.status(200);
-  //       expect(res).to.be.json;
-  //       expect(res.body).to.be.a('array');
-  //       expect(res.body.length).to.be.above(0);
-  //       res.body.forEach(function (item) {
-  //         expect(item).to.be.a('object');
-  //         expect(item).to.have.all.keys(
-  //           'id', 'reason', 'goal', 'points', 'senderEmailAddress', 'recipientEmailAddress');
+  //   it('should return a list of transactions with the right fields on GET', function () {
+  //     let res;
+  //     return chai.request(app)
+  //       .get('/transactions')
+  //       .then(_res => {
+  //         //so subsequent .then blocks can access the response object
+  //         res = _res;
+  //         res.should.have.status(200);
+  //         res.body.transactions.should.have.length.of.at.least(1);
+  //         return Transaction.count();
+  //       })
+  //       .then(count => {
+  //         res.body.transactions.should.have.lengthOf(count);
   //       });
-  //     });
-  // });
-});
+      // expect(item).to.have.all.keys(
+      //   'id', 'reason', 'goal', 'points', 'senderEmailAddress', 'recipientEmailAddress');
+//     });
+//   });
+//    describe('transactions GET by senderEmailAddress', function () {
+//     it('should return a list of all transactions sent by a particular employee on GET', function (){
+//       let testTransactions;
+//       return Transaction.find()
+//       .then(transactions => {
+//         testEmployees = employees;
+//         return chai.request(app)
+//         .get('/transactions/' + transaction.senderEmailAddress)
+//         .then(function (res) {
+//           res.should.have.status(200);
+//           expect(res.body.senderEmailAddress).to.equal(testEmployees.senderEmailAddress)
+//         })
+//       })
+//     })
+//   })
+//   describe('transactions GET by recipientEmailAddress', function () {
+//     it('should return a list of all transactions received by a particular employee on GET', function (){
+//       let testTransactions;
+//       return Transaction.find()
+//       .then(transactions => {
+//         testEmployees = employees;
+//         return chai.request(app)
+//         .get('/transactions/' + transaction.recipientEmailAddress)
+//         .then(function (res) {
+//           res.should.have.status(200);
+//           expect(res.body.recipientEmailAddress).to.equal(testEmployees.recipientEmailAddress)
+//         })
+//       })
+//     })
+//   })
+ //})
