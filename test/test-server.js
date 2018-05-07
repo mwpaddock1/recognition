@@ -160,9 +160,9 @@ describe('employees API resource', function () {
 
   describe('employee DELETE endpoint', function () {
     it('should delete an employee on DELETE', function () {
-      let testEmployee;    
-      return Employee       
-      .findOne()
+      let testEmployee;
+      return Employee
+        .findOne()
         .then(_employee => {
           testEmployee = _employee;
           console.log(testEmployee);
@@ -172,48 +172,51 @@ describe('employees API resource', function () {
           res.should.have.status(204);
           return Employee.findById(testEmployee.id);
         })
-        .then(_testEmployee => {         
+        .then(_testEmployee => {
           expect(_testEmployee).to.be.null;
         });
     });
   })
-})
+
 //https://stackoverflow.com/questions/32010910/faker-js-random-number-between-2-values
-// function seedTransactionData() {
-//   console.info('seeding transaction data');
-//   const seedData = [];
-//   for (let i = 1; i <= 10; i++) {
-//     seedData.push({
-//       reason: faker.lorem.words(),
-//       goal: faker.lorem.words(),
-//faker.random.number({min:5, max:10});
-//       points: faker.random.number(),
-//       senderEmailAddress: faker.internet.email(),
-//       recipientEmailAddress: faker.internet.email()
-//     });
-//   }
-//   // this will return a promise
-//   return Transaction.insertMany(seedData);
-// }
-// describe('transactions API resource', function () {
-//   afterEach(function () {
-//     // tear down database so we ensure no state from this test
-//     // effects any coming after.
-//     return tearDownDb();
-//   });
-//   before(function () {
-//     return runServer();
-//   });
-//   beforeEach(function () {
-//     return seedTransactionData()
-//   });
+function seedTransactionData() {
+  console.info('seeding transaction data');
+  const seedData = [];
+  for (let i = 1; i <= 10; i++) {
+    seedData.push({
+      reason: faker.lorem.words(),
+      goal: faker.lorem.words(),
+      points: faker.random.number({
+        min: 5,
+        max: 10
+      }),
+      points: faker.random.number(),
+      senderEmailAddress: faker.internet.email(),
+      recipientEmailAddress: faker.internet.email()
+    });
+  }
+ // this will return a promise
+    return Transaction.insertMany(seedData);
+  }
+  describe('transactions API resource', function () {
+    afterEach(function () {
+      // tear down database so we ensure no state from this test
+      // effects any coming after.
+      return tearDownDb();
+    });
+    before(function () {
+      return runServer();
+    });
+    beforeEach(function () {
+      return seedTransactionData()
+    });
   // Close server after these tests run in case
   // we have other test modules that need to 
   // call `runServer`. If server is already running,
   // `runServer` will error out.
-  // after(function () {
-  //   return closeServer();
-  // });
+  after(function () {
+    return closeServer();
+  });
 
   // //POST requests to /transactions.
   // describe('transactions POST endpoint', function () {
@@ -261,38 +264,39 @@ describe('employees API resource', function () {
   //       .then(count => {
   //         res.body.transactions.should.have.lengthOf(count);
   //       });
-      // expect(item).to.have.all.keys(
-      //   'id', 'reason', 'goal', 'points', 'senderEmailAddress', 'recipientEmailAddress');
-//     });
-//   });
-//    describe('transactions GET by senderEmailAddress', function () {
-//     it('should return a list of all transactions sent by a particular employee on GET', function (){
-//       let testTransactions;
-//       return Transaction.find()
-//       .then(transactions => {
-//         testEmployees = employees;
-//         return chai.request(app)
-//         .get('/transactions/' + transaction.senderEmailAddress)
-//         .then(function (res) {
-//           res.should.have.status(200);
-//           expect(res.body.senderEmailAddress).to.equal(testEmployees.senderEmailAddress)
-//         })
-//       })
-//     })
-//   })
-//   describe('transactions GET by recipientEmailAddress', function () {
-//     it('should return a list of all transactions received by a particular employee on GET', function (){
-//       let testTransactions;
-//       return Transaction.find()
-//       .then(transactions => {
-//         testEmployees = employees;
-//         return chai.request(app)
-//         .get('/transactions/' + transaction.recipientEmailAddress)
-//         .then(function (res) {
-//           res.should.have.status(200);
-//           expect(res.body.recipientEmailAddress).to.equal(testEmployees.recipientEmailAddress)
-//         })
-//       })
-//     })
-//   })
- //})
+  // expect(item).to.have.all.keys(
+  //   'id', 'reason', 'goal', 'points', 'senderEmailAddress', 'recipientEmailAddress');
+  //     });
+  //   });
+  //    describe('transactions GET by senderEmailAddress', function () {
+  //     it('should return a list of all transactions sent by a particular employee on GET', function (){
+  //       let testTransactions;
+  //       return Transaction.find()
+  //       .then(transactions => {
+  //         testEmployees = employees;
+  //         return chai.request(app)
+  //         .get('/transactions/' + transaction.senderEmailAddress)
+  //         .then(function (res) {
+  //           res.should.have.status(200);
+  //           expect(res.body.senderEmailAddress).to.equal(testEmployees.senderEmailAddress)
+  //         })
+  //       })
+  //     })
+  //   })
+  //   describe('transactions GET by recipientEmailAddress', function () {
+  //     it('should return a list of all transactions received by a particular employee on GET', function (){
+  //       let testTransactions;
+  //       return Transaction.find()
+  //       .then(transactions => {
+  //         testEmployees = employees;
+  //         return chai.request(app)
+  //         .get('/transactions/' + transaction.recipientEmailAddress)
+  //         .then(function (res) {
+  //           res.should.have.status(200);
+  //           expect(res.body.recipientEmailAddress).to.equal(testEmployees.recipientEmailAddress)
+  //         })
+  //       })
+  //     })
+  //   })
+  });
+})

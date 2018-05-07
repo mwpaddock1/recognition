@@ -15,8 +15,11 @@ const passport = require('passport');
 // called router (from ./users and ./auth) have different names
 
 const {
-  router: usersRouter
+  router: usersRouter 
 } = require('./users');
+const {
+  router: transactionsRouter
+} = require('./transactions');
 const {
   router: authRouter,
   localStrategy,
@@ -29,6 +32,9 @@ const jsonParser = bodyParser.json();
 const {
   employees
 } = require('./models');
+const {
+  transactions
+} = require('./transactions');
 mongoose.Promise = global.Promise;
 //get the PORT and the database from config
 const {
@@ -54,7 +60,7 @@ passport.use(localStrategy);
 passport.use(jwtStrategy);
 
 app.use('/employees', usersRouter);
-app.use('/transactions', usersRouter);
+app.use('/transactions', transactionsRouter);
 app.use('api/auth/', authRouter);
 
 const jwtAuth = passport.authenticate('jwt', {
