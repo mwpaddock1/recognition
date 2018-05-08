@@ -20,7 +20,7 @@ passport.use(jwtStrategy);
 const jwt = require('jsonwebtoken');
 //POST a new transaction
 router.post('/', (req, res) => {
-  console.log(req.body);
+  // console.log(req.body);
   const requiredFields = ['points', 'goal', 'action', 'recipientEmailAddress', 'senderEmailAddress'];
   let {
     points,
@@ -38,46 +38,62 @@ router.post('/', (req, res) => {
     })
     .then(transaction => res.status(201).json(transaction.serialize()));
 });
+//GET the list of transactions
+router.get('/', (req, res) => {
+  Transaction
+    .find()
+    .then(transactions => {
+      res.json({
+          transactions: transactions.map(
+            (transaction => transaction.serialize()))
+           
+        })
+        .catch(err => {
+          console.error(err);
+          res.status(500).json({
+            message: 'Internal Server Error'
+          })
+       
+        });
+        console.log(`this is a ${transaction}`);
+    });
+});
 
 //GET a list of specific transactions by sender
-router.get('/GetBySender/:senderEmailAddress', (req, res) => {
-  console.log(senderEmailAddress);
+// 
+router.get('/:senderEmailAddress', (req, res) => {
   Transaction
-    .find({
+    .findOne({
       senderEmailAddress: req.params.senderEmailAddress
     })
-    .then(transactions => {
-      res.json({
-          transactions: transactions.map(
-            //does this work for multiple transactions??
-            (transaction) => transaction.serialize())
-        })
-        .catch(err => {
-          res.status(500).json({
-            message: 'Internal TransactionServer Error'
-          })
-        });
-    });
-});
-//GET a list of specific transactions by recipient
-router.get('/GetByRecipient/:recipientEmailAddress', (req, res) => {
-  Transaction
-    .find({
-      senderEmailAddress: req.params.recipientEmailAddress
+    .then(transaction => {
+      res.json(transaction.serialize());
+      console.log(senderEmailAddress);
     })
-    .then(transactions => {
-      res.json({
-          transactions: transactions.map(
-            //does this work for multiple transactions or is the response a different format when it's more than one?
-            (transaction) => transaction.serialize())
-        })
-        .catch(err => {
-          res.status(500).json({
-            message: 'Internal TransactionServer Error'
-          })
-        });
+   
+    .catch(err => {
+      res.status(500).json({
+        message: 'Internal TransactionServer Error'
+      })
     });
 });
+
+// //GET a list of specific transactions by recipient
+// router.get('/GetByRecipient/:recipientEmailAddress', (req, res) => {
+//   Transaction
+//     .find({
+//       senderEmailAddress: req.params.recipientEmailAddress
+//     })
+//     .then(transaction => {
+//       res.json(transaction.serialize())
+//     })
+//     .catch(err => {
+//       res.status(500).json({
+//         message: 'Internal TransactionServer Error'
+//       })
+//     });
+// });
+
 
 // //PUT ENDPOINT - the only things that are updated are the score tallies which fall in the employees section- 
 

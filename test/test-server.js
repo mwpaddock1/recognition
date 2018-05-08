@@ -112,6 +112,8 @@ describe('employees API resource', function () {
         })
         .then(count => {
           res.body.employees.should.have.lengthOf(count);
+          
+          
         });
     });
   });
@@ -192,10 +194,10 @@ function seedTransactionData() {
         min: 5,
         max: 10
       }),
-      points: faker.random.number(),
       senderEmailAddress: faker.internet.email(),
       recipientEmailAddress: faker.internet.email()
     });
+   
   }
   // this will return a promise
   return Transaction.insertMany(seedTrxData);
@@ -250,19 +252,37 @@ describe('transactions API resource', function () {
         })
     });
   });
-
+  describe('transactions GET endpoint', function () {
+    it('should return all transactions', function () {
+      let res;
+      return chai.request(app)
+        .get('/transactions')
+        .then(_res => {
+          //so subsequent .then blocks can access the response object
+          res = _res;
+          res.should.have.status(200);
+          res.body.transactions.should.have.length.of.at.least(1);
+          return Transaction.count();
+        })
+        .then(count => {
+          res.body.transactions.should.have.lengthOf(count);
+          
+        });
+        
+    });
+  });
   
      describe('transactions GET by senderEmailAddress', function () {
       it('should return a list of all transactions sent by a particular employee on GET', function (){
-        let testTransactions;
+        let testTransaction;
         return Transaction.find()
-        .then(transactions => {
-          testEmployees = employees;
+        .then(transaction => {
+          testTransaction = transaction;
           return chai.request(app)
           .get('/transactions/' + transaction.senderEmailAddress)
           .then(function (res) {
             res.should.have.status(200);
-            expect(res.body.senderEmailAddress).to.equal(testEmployees.senderEmailAddress)
+            expect(res.body.senderEmailAddress).to.equal(testTransaction.senderEmailAddress)
           })
         })
       })

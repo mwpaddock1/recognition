@@ -31,7 +31,7 @@ app.use(bodyParser.json());
 const jsonParser = bodyParser.json();
 const {
   employees
-} = require('./models');
+} = require('./users');
 const {
   transactions
 } = require('./transactions');
