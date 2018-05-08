@@ -265,17 +265,15 @@ describe('transactions API resource', function () {
           return Transaction.count();
         })
         .then(count => {
-          res.body.transactions.should.have.lengthOf(count);
-          
-        });
-        
+          res.body.transactions.should.have.lengthOf(count);          
+        });        
     });
   });
   
      describe('transactions GET by senderEmailAddress', function () {
       it('should return a list of all transactions sent by a particular employee on GET', function (){
         let testTransaction;
-        return Transaction.find()
+        return Transaction.findOne()
         .then(transaction => {
           testTransaction = transaction;
           return chai.request(app)
