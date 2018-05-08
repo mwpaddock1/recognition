@@ -11,8 +11,8 @@ app.use(express.static('public'));
 const mongoose = require('mongoose');
 const passport = require('passport');
 
-// Here we use destructuring assignment with renaming so the two variables
-// called router (from ./users and ./auth) have different names
+// Here we use destructuring assignment with renaming so the three variables
+// called router (from ./users, ./transactions and ./auth) have different names
 
 const {
   router: usersRouter 

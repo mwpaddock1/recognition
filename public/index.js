@@ -209,7 +209,7 @@ function displayEmployees() {
                         sentTransactionInfo = {
                             goal: sortedSentTransactions[i][j].goal,
                             points: sortedSentTransactions[i][j].points,
-                            reason: sortedSentTransactions[i][j].reason,
+                            action: sortedSentTransactions[i][j].action,
                             recipientEmailAddress: sortedSentTransactions[i][j].recipientEmailAddress,
                             senderFirstName: sortedSender.firstName,
                             senderLastName: sortedSender.lastName,
@@ -251,7 +251,7 @@ function displayEmployees() {
                         recipientTransactionInfo = {
                             goal: sortedRecipientTransactions[i][j].goal,
                             points: sortedRecipientTransactions[i][j].points,
-                            reason: sortedRecipientTransactions[i][j].reason,
+                            action: sortedRecipientTransactions[i][j].action,
                             senderEmailAddress: sortedRecipientTransactions[i][j].senderEmailAddress,
                             recipientFirstName: sortedRecipient.firstName,
                             recipientLastName: sortedRecipient.lastName
@@ -273,7 +273,7 @@ function displayEmployees() {
     function formatSenderInfo(sentTransactionInfo) {
         const sentInfoHTML = (
             `<section class ="points-given" role="region">                                
-                <h2> ${sentTransactionInfo.points} points to ${sentTransactionInfo.senderFirstName} ${sentTransactionInfo.senderLastName} for:  <i>${sentTransactionInfo.reason}</i><h2> 
+                <h2> ${sentTransactionInfo.points} points to ${sentTransactionInfo.senderFirstName} ${sentTransactionInfo.senderLastName} for:  <i>${sentTransactionInfo.action}</i><h2> 
              </section>`
         );
         $("row.points-given-box").append(sentInfoHTML);
@@ -283,7 +283,7 @@ function displayEmployees() {
     function formatRecipientInfo(recipientTransactionInfo) {
         const recipientInfoHTML = (
             `<section class ="points-received" role="region">                                                      
-               <h2> ${recipientTransactionInfo.points} points from ${recipientTransactionInfo.recipientFirstName} ${recipientTransactionInfo.recipientLastName} for: <i>${recipientTransactionInfo.reason}</i><h2>                                       
+               <h2> ${recipientTransactionInfo.points} points from ${recipientTransactionInfo.recipientFirstName} ${recipientTransactionInfo.recipientLastName} for: <i>${recipientTransactionInfo.action}</i><h2>                                       
              </section>`
         );
         $("row.points-received-box").append(recipientInfoHTML);
@@ -297,7 +297,7 @@ $("form[name=add-points-form]").submit(function (event) {
 
     //grab the inputs and update the transactions
     const employeeAction = $('input[name=employee-action]');
-    const reason = employeeAction.val();
+    const action = employeeAction.val();
     const corpGoal = $('select[name=goal]');
     const goal = corpGoal.val();
     const pointsDropdown = $('select[name=points]');
@@ -310,10 +310,10 @@ $("form[name=add-points-form]").submit(function (event) {
         senderEmailAddress: loggedInUser.emailAddress,
         goal: goal,
         points: points,
-        reason: reason,
+        action: action,
         recipientEmailAddress: $("#recipient").val()
     }
-    console.log(reason);
+    console.log(action);
     console.log(goal);
     console.log(points);
 

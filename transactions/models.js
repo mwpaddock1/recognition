@@ -5,7 +5,7 @@ const mongoose = require('mongoose');
 
 mongoose.Promise = global.Promise;
 const TransactionSchema = mongoose.Schema({
-    reason: {
+    action: {
       type: String,
       required: true
     },
@@ -30,7 +30,7 @@ const TransactionSchema = mongoose.Schema({
   TransactionSchema.methods.serialize = function () {
     return {
       id: this._id,
-      reason: this.reason,
+      action: this.action,
       goal: this.goal,
       points: this.points,
       recipientEmailAddress: this.recipientEmailAddress,

@@ -8,9 +8,11 @@ const {
 } = require('../config');
 const faker = require('faker');
 const {
-  Employee,
-  Transaction
-} = require('../users');
+  Employee
+  } = require('../users');
+  const {
+    Transaction
+    } = require('../transactions');
 const {
   app,
   runServer,
@@ -177,14 +179,14 @@ describe('employees API resource', function () {
         });
     });
   })
+})
 
-//https://stackoverflow.com/questions/32010910/faker-js-random-number-between-2-values
 function seedTransactionData() {
   console.info('seeding transaction data');
-  const seedData = [];
+  const seedTrxData = [];
   for (let i = 1; i <= 10; i++) {
-    seedData.push({
-      reason: faker.lorem.words(),
+    seedTrxData.push({
+      action: faker.lorem.words(),
       goal: faker.lorem.words(),
       points: faker.random.number({
         min: 5,
@@ -195,21 +197,21 @@ function seedTransactionData() {
       recipientEmailAddress: faker.internet.email()
     });
   }
- // this will return a promise
-    return Transaction.insertMany(seedData);
-  }
-  describe('transactions API resource', function () {
-    afterEach(function () {
-      // tear down database so we ensure no state from this test
-      // effects any coming after.
-      return tearDownDb();
-    });
-    before(function () {
-      return runServer();
-    });
-    beforeEach(function () {
-      return seedTransactionData()
-    });
+  // this will return a promise
+  return Transaction.insertMany(seedTrxData);
+}
+describe('transactions API resource', function () {
+  afterEach(function () {
+    // tear down database so we ensure no state from this test
+    // effects any coming after.
+    return tearDownDb();
+  });
+  before(function () {
+    return runServer();
+  });
+  beforeEach(function () {
+    return seedTransactionData()
+  });
   // Close server after these tests run in case
   // we have other test modules that need to 
   // call `runServer`. If server is already running,
@@ -218,71 +220,53 @@ function seedTransactionData() {
     return closeServer();
   });
 
-  // //POST requests to /transactions.
-  // describe('transactions POST endpoint', function () {
-  //   it('should add a transaction on POST', function () {
-  //     // const newTrans = {
-  //     //   reason: 'helping',
-  //     //   goal: 'Sales',
-  //     //   points: '10',
-  //     //   recipientEmailAddress: 'tperkins@fizzbuzz.com',
-  //     //   senderEmailAddress: 'janechmoe@fizzbuzz.com'
-  //     // };
-  //     const newTrans = {
-  //       reason: faker.lorem.words(),
-  //       goal: faker.lorem.words(),
-  //       points: faker.lorem.words(),
-  //       senderEmailAddress: faker.internet.email(),
-  //       recipientEmailAddress: faker.internet.email()
-  //     };
-  //     console.log(newTrans);
-  //     return chai.request(app)
-  //       .post('/transactions')
-  //       .send(newTrans)
-  //       .then(function (res) {
-  //         expect(res).to.have.status(201);
-  //         expect(res).to.be.json;
-  //         expect(res.body).to.be.a('object');
-  //         expect(res.body).to.include.keys('id', 'reason', 'goal', 'points', 'senderEmailAddress', 'recipientEmailAddress');
-  //         expect(res.body.id).to.not.equal(null);
-  //       })
-  //   });
-  // });
+  //POST requests to /transactions.
+  describe('transactions POST endpoint', function () {
+    it('should add a transaction on POST', function () {
+      // const newTrans = {
+      //   action: 'helping',
+      //   goal: 'Sales',
+      //   points: '10',
+      //   recipientEmailAddress: 'tperkins@fizzbuzz.com',
+      //   senderEmailAddress: 'janechmoe@fizzbuzz.com'
+      // };
+      const newTrans = {
+        action: faker.lorem.words(),
+        goal: faker.lorem.words(),
+        points: faker.lorem.words(),
+        senderEmailAddress: faker.internet.email(),
+        recipientEmailAddress: faker.internet.email()
+      };
+      console.log(newTrans);
+      return chai.request(app)
+        .post('/transactions')
+        .send(newTrans)
+        .then(function (res) {
+          expect(res).to.have.status(201);
+          expect(res).to.be.json;
+          expect(res.body).to.be.a('object');
+          expect(res.body).to.include.keys('id', 'action', 'goal', 'points', 'senderEmailAddress', 'recipientEmailAddress');
+          expect(res.body.id).to.not.equal(null);
+        })
+    });
+  });
 
-  // describe('transactions GET endpoint', function () {
-  //   it('should return a list of transactions with the right fields on GET', function () {
-  //     let res;
-  //     return chai.request(app)
-  //       .get('/transactions')
-  //       .then(_res => {
-  //         //so subsequent .then blocks can access the response object
-  //         res = _res;
-  //         res.should.have.status(200);
-  //         res.body.transactions.should.have.length.of.at.least(1);
-  //         return Transaction.count();
-  //       })
-  //       .then(count => {
-  //         res.body.transactions.should.have.lengthOf(count);
-  //       });
-  // expect(item).to.have.all.keys(
-  //   'id', 'reason', 'goal', 'points', 'senderEmailAddress', 'recipientEmailAddress');
-  //     });
-  //   });
-  //    describe('transactions GET by senderEmailAddress', function () {
-  //     it('should return a list of all transactions sent by a particular employee on GET', function (){
-  //       let testTransactions;
-  //       return Transaction.find()
-  //       .then(transactions => {
-  //         testEmployees = employees;
-  //         return chai.request(app)
-  //         .get('/transactions/' + transaction.senderEmailAddress)
-  //         .then(function (res) {
-  //           res.should.have.status(200);
-  //           expect(res.body.senderEmailAddress).to.equal(testEmployees.senderEmailAddress)
-  //         })
-  //       })
-  //     })
-  //   })
+  
+     describe('transactions GET by senderEmailAddress', function () {
+      it('should return a list of all transactions sent by a particular employee on GET', function (){
+        let testTransactions;
+        return Transaction.find()
+        .then(transactions => {
+          testEmployees = employees;
+          return chai.request(app)
+          .get('/transactions/' + transaction.senderEmailAddress)
+          .then(function (res) {
+            res.should.have.status(200);
+            expect(res.body.senderEmailAddress).to.equal(testEmployees.senderEmailAddress)
+          })
+        })
+      })
+    })
   //   describe('transactions GET by recipientEmailAddress', function () {
   //     it('should return a list of all transactions received by a particular employee on GET', function (){
   //       let testTransactions;
@@ -298,5 +282,5 @@ function seedTransactionData() {
   //       })
   //     })
   //   })
-  });
+
 })
