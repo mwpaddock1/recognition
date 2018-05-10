@@ -3,20 +3,21 @@ const express = require('express');
 const passport = require('passport');
 const bodyParser = require('body-parser');
 const {
-  Employee} = require('./models');
+  Employee
+} = require('./models');
 const router = express.Router();
 const jsonParser = bodyParser.json();
-const {
-  router: authRouter,
-  localStrategy,
-  jwtStrategy
-} = require('../auth');
-const {
-  jwtAuth
-} = require('../auth/router');
-passport.use(localStrategy);
-passport.use(jwtStrategy);
-const jwt = require('jsonwebtoken');
+// const {
+//   router: authRouter,
+//   localStrategy,
+//   jwtStrategy
+// } = require('../auth');
+// const {
+//   jwtAuth
+// } = require('../auth/router');
+// passport.use(localStrategy);
+// passport.use(jwtStrategy);
+// const jwt = require('jsonwebtoken');
 
 // Post to register a new employee
 router.post('/', jsonParser, (req, res) => {
@@ -191,7 +192,6 @@ router.get('/', (req, res) => {
 //GET a specific employee
 router.get('/:emailAddress', (req, res) => {
   Employee
-    // .findById(req.params.id - but we want to use emailAddress)
     .findOne({
       emailAddress: req.params.emailAddress
     })

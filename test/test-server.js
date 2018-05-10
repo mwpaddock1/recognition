@@ -9,10 +9,10 @@ const {
 const faker = require('faker');
 const {
   Employee
-  } = require('../users');
-  const {
-    Transaction
-    } = require('../transactions');
+} = require('../users');
+const {
+  Transaction
+} = require('../transactions');
 const {
   app,
   runServer,
@@ -112,8 +112,8 @@ describe('employees API resource', function () {
         })
         .then(count => {
           res.body.employees.should.have.lengthOf(count);
-          
-          
+
+
         });
     });
   });
@@ -197,7 +197,7 @@ function seedTransactionData() {
       senderEmailAddress: faker.internet.email(),
       recipientEmailAddress: faker.internet.email()
     });
-   
+
   }
   // this will return a promise
   return Transaction.insertMany(seedTrxData);
@@ -265,26 +265,43 @@ describe('transactions API resource', function () {
           return Transaction.count();
         })
         .then(count => {
-          res.body.transactions.should.have.lengthOf(count);          
-        });        
+          res.body.transactions.should.have.lengthOf(count);
+        });
     });
   });
-  
-     describe('transactions GET by senderEmailAddress', function () {
-      it('should return a list of all transactions sent by a particular employee on GET', function (){
-        let testTransaction;
-        return Transaction.findOne()
+
+  describe('GET a single transaction by senderEmailAddress', function () {
+    it('should return a transaction sent by a particular employee on GET', function () {
+      let testTransaction;
+      return Transaction.findOne()
         .then(transaction => {
           testTransaction = transaction;
           return chai.request(app)
-          .get('/transactions/' + transaction.senderEmailAddress)
-          .then(function (res) {
-            res.should.have.status(200);
-            expect(res.body.senderEmailAddress).to.equal(testTransaction.senderEmailAddress)
-          })
-        })
-      })
-    })
+            .get('/transactions/' + transaction.senderEmailAddress)
+            .then(function (res) {
+              res.should.have.status(200);
+              expect(res.body.senderEmailAddress).to.equal(testTransaction.senderEmailAddress)
+            })
+        });
+    });
+  });
+  describe('GET all transactions from a senderEmailAddress', function () {
+    it('should GET all of the transactions sent by a particular employee on GET', function () {
+      let testTransaction;
+      return Transaction.findOne()
+        .then(transaction => {
+          testTransaction = transaction;         
+          return chai.request(app)
+            .get('/transactions/GetBySender/' + testTransaction.senderEmailAddress)
+            .then(function (res) {
+              res.should.have.status(200);
+              console.log(res.body);
+              expect(res.body[0].senderEmailAddress).to.equal(testTransaction.senderEmailAddress)
+            })
+        });
+    });
+  });
+
   //   describe('transactions GET by recipientEmailAddress', function () {
   //     it('should return a list of all transactions received by a particular employee on GET', function (){
   //       let testTransactions;
@@ -300,5 +317,30 @@ describe('transactions API resource', function () {
   //       })
   //     })
   //   })
+//   describe('transactions PUT endpoint', function () {
+//     it('should update an employee point totals on POST', function () {
 
-})
+//       const updateData = {
+//         pointsGiven: '10',
+//         pointsRemaining: '90',
+//       };
+//       return Employee
+//         .findOne()
+//         .then(employee => {
+//           updateData.id = employee.id;
+
+//           return chai.request(app)
+//             .put(`/employees/${employee.id}`)
+//             .send(updateData);
+//         })
+//         .then(res => {
+//           res.should.have.status(204);
+//           return Employee.findById(updateData.id);
+//         })
+//         .then(employee => {
+//           employee.pointsGiven.should.equal(updateData.pointsGiven);
+//           employee.pointsRemaining.should.equal(updateData);
+//         });
+//     });
+//   });
+});
