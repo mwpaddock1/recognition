@@ -83,7 +83,9 @@ router.get('/GetBySender/:senderEmailAddress', (req, res) => {
       senderEmailAddress: req.params.senderEmailAddress
     })
     .then(transactions => {
-      res.json(transactions.map(transaction => { return transaction.serialize()}));
+      res.json(transactions.map(transaction => {
+        return transaction.serialize()
+      }));
 
     })
     .catch(err => {
@@ -93,21 +95,23 @@ router.get('/GetBySender/:senderEmailAddress', (req, res) => {
     });
 });
 
-// //GET a list of specific transactions by recipient
-// router.get('/GetByRecipient/:recipientEmailAddress', (req, res) => {
-//   Transaction
-//     .find({
-//       senderEmailAddress: req.params.recipientEmailAddress
-//     })
-//     .then(transaction => {
-//       res.json(transaction.serialize())
-//     })
-//     .catch(err => {
-//       res.status(500).json({
-//         message: 'Internal TransactionServer Error'
-//       })
-//     });
-// });
+//GET all the transactions for a recipient
+router.get('/GetByRecipient/:recipientEmailAddress', (req, res) => {
+    Transaction
+      .find({
+        recipientEmailAddress: req.params.recipientEmailAddress
+      })
+      .then(transactions => {
+        res.json(transactions.map(transaction => {
+        return transaction.serialize()
+      }));
+  })
+  .catch(err => {
+    res.status(500).json({
+      message: 'Internal TransactionServer Error'
+    })
+  });
+});
 
 
 //PUT ENDPOINT - the only things that are updated are the score tallies which fall in the employees section- 

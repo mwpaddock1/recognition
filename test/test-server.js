@@ -302,21 +302,21 @@ describe('transactions API resource', function () {
     });
   });
 
-  //   describe('transactions GET by recipientEmailAddress', function () {
-  //     it('should return a list of all transactions received by a particular employee on GET', function (){
-  //       let testTransactions;
-  //       return Transaction.find()
-  //       .then(transactions => {
-  //         testEmployees = employees;
-  //         return chai.request(app)
-  //         .get('/transactions/' + transaction.recipientEmailAddress)
-  //         .then(function (res) {
-  //           res.should.have.status(200);
-  //           expect(res.body.recipientEmailAddress).to.equal(testEmployees.recipientEmailAddress)
-  //         })
-  //       })
-  //     })
-  //   })
+    describe('GET all transactions for a recipientEmailAddress', function () {
+      it('should return a list of all transactions received by a particular employee on GET', function () {
+        let testTransaction;
+        return Transaction.findOne()
+        .then(transaction => {
+          testTransaction = transaction;
+          return chai.request(app)
+          .get('/transactions/GetByRecipient/' + testTransaction.recipientEmailAddress)
+          .then(function (res) {
+            res.should.have.status(200);
+            expect(res.body[0].recipientEmailAddress).to.equal(testTransaction.recipientEmailAddress)
+          })
+        })
+      })
+    })
 //   describe('transactions PUT endpoint', function () {
 //     it('should update an employee point totals on POST', function () {
 
