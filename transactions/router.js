@@ -113,36 +113,6 @@ router.get('/GetByRecipient/:recipientEmailAddress', (req, res) => {
   });
 });
 
-
-//PUT ENDPOINT - the only things that are updated are the score tallies which fall in the employees section- 
-
-// router.put('/:senderEmailAddress', (req, res) => {
-//     Employee
-//       .findOne({
-//         senderEmailAddress: req.params.senderEmailAddress
-//       })
-//       .then(employee => {
-//         res.json(employee.serialize())
-//       })
-//     const updated = {};
-//     const updatedFields = ["pointsReceived", "pointsRemaining"];
-
-//     updatedFields.forEach(field => {
-//       if (field in req.body) {
-//         updated[field] = req.body[field];
-//       }
-//     });
-//     return updatedTrans.findOneAndUpdate(req.params.senderEmailAddress, {
-//       $set: updated
-//     }, {
-//       new: true
-//     });
-//   })
-//   .then(updatedTransaction => {
-//     if (updatedTransaction != null)
-//       return res.status(200).json(updatedTransaction.serialize())
-//   })
-//   .catch(err => res.status(500).json(err))
 module.exports = {
   router
 };

@@ -133,35 +133,56 @@ describe('employees API resource', function () {
     })
   });
 
-  // describe('employee PUT endpoint', function () {
-  //   it('should update employee points tallies', function () {
-  //     const updateData = {
-  //       pointsGiven: '10',
-  //       pointsReceived: '20',
-  //       pointsRemaining: '90'
-  //     };
+  describe('employee PUT to Recipient endpoint', function () {
+    it('should update employee points received tally', function () {
+      let testUpdateData = {
+        pointsReceived: '10',
+      };
+      return Employee
+        .findOne()
+        .then(employee => {
+          console.log(employee);
+          testUpdateData.emailAddress = employee.emailAddress;
+          testUpdateData.id = employee.id;
+          return chai.request(app)
+            .put('/employees/PutPointsGivenToRecipient/' + employee.emailAddress)
+            .send(testUpdateData);
+        })
 
-  //     return Employee
-  //       .findOne()
-  //       .then(employee => {
-  //         updateData.id = employee.id;
+        .then(res => {
+          let updatedEmployee = Employee.findById(testUpdateData.id);
+          res.should.have.status(204);
+         expect(res.body.pointsReceived).to.equal(updatedEmployee.pointsReceived);         
+        });
+    });
+  });
 
-  //         return chai.request(app)
-  //           .put(`/employees/${employee.id}`)
-  //           .send(updateData);
-  //       })
-  //       .then(res => {
-  //         res.should.have.status(204);
-  //         return Employee.findById(updateData.id);
-  //       })
-  //       .then(employee => {
-  //         employee.pointsGiven.should.equal(updateData.pointsGiven);
-  //         employee.pointsGiven.should.equal(updateData.pointsGiven);
-  //         employee.pointsGiven.should.equal(updateData.pointsGiven);
-  //       });
-  //   });
-  // });
+   describe('employee PUT by Sender endpoint', function () {
+    it('should update employee points given/remaining tallies', function () {
+    let testUpdateData = {
+      pointsGiven: '10',
+      pointsRemaining: '90'
+    };
+    return Employee
+      .findOne()
+      .then(employee => {
+        console.log(employee);
+        testUpdateData.emailAddress = employee.emailAddress;
+        testUpdateData.id = employee.id;
+        return chai.request(app)
+          .put('/employees/PutPointsSentBy/' + employee.emailAddress)
+          .send(testUpdateData);
+      })
 
+      .then(res => {
+        let updatedEmployee = Employee.findById(testUpdateData.id);
+        res.should.have.status(204);
+       expect(res.body.pointsGiven).to.equal(updatedEmployee.pointsGiven); 
+       expect(res.body.pointsRemaining).to.equal(updatedEmployee.pointsRemaining);           
+      });
+    });
+  });
+  
   describe('employee DELETE endpoint', function () {
     it('should delete an employee on DELETE', function () {
       let testEmployee;
@@ -290,7 +311,7 @@ describe('transactions API resource', function () {
       let testTransaction;
       return Transaction.findOne()
         .then(transaction => {
-          testTransaction = transaction;         
+          testTransaction = transaction;
           return chai.request(app)
             .get('/transactions/GetBySender/' + testTransaction.senderEmailAddress)
             .then(function (res) {
@@ -302,45 +323,19 @@ describe('transactions API resource', function () {
     });
   });
 
-    describe('GET all transactions for a recipientEmailAddress', function () {
-      it('should return a list of all transactions received by a particular employee on GET', function () {
-        let testTransaction;
-        return Transaction.findOne()
+  describe('GET all transactions for a recipientEmailAddress', function () {
+    it('should return a list of all transactions received by a particular employee on GET', function () {
+      let testTransaction;
+      return Transaction.findOne()
         .then(transaction => {
           testTransaction = transaction;
           return chai.request(app)
-          .get('/transactions/GetByRecipient/' + testTransaction.recipientEmailAddress)
-          .then(function (res) {
-            res.should.have.status(200);
-            expect(res.body[0].recipientEmailAddress).to.equal(testTransaction.recipientEmailAddress)
-          })
+            .get('/transactions/GetByRecipient/' + testTransaction.recipientEmailAddress)
+            .then(function (res) {
+              res.should.have.status(200);
+              expect(res.body[0].recipientEmailAddress).to.equal(testTransaction.recipientEmailAddress)
+            })
         })
-      })
     })
-//   describe('transactions PUT endpoint', function () {
-//     it('should update an employee point totals on POST', function () {
-
-//       const updateData = {
-//         pointsGiven: '10',
-//         pointsRemaining: '90',
-//       };
-//       return Employee
-//         .findOne()
-//         .then(employee => {
-//           updateData.id = employee.id;
-
-//           return chai.request(app)
-//             .put(`/employees/${employee.id}`)
-//             .send(updateData);
-//         })
-//         .then(res => {
-//           res.should.have.status(204);
-//           return Employee.findById(updateData.id);
-//         })
-//         .then(employee => {
-//           employee.pointsGiven.should.equal(updateData.pointsGiven);
-//           employee.pointsRemaining.should.equal(updateData);
-//         });
-//     });
-//   });
+  })
 });

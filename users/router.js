@@ -120,7 +120,7 @@ router.post('/', jsonParser, (req, res) => {
     firstName,
     lastName
   } = req.body;
-  // console.log(emailAddress);
+  
   return Employee.find({
         emailAddress: emailAddress
       },
@@ -205,6 +205,54 @@ router.get('/:emailAddress', (req, res) => {
       });
     });
 });
+
+//PUT ENDPOINT -Points Given the only things that are updated are the score tallies which fall in the employees section- 
+router.put('/PutPointsSentBy/:emailAddress', (req, res) => {
+  const updated = {};
+  const updateableFields = ['pointsGiven', 'pointsRemaining'];
+
+  updateableFields.forEach(field => {
+    if (field in req.body) {
+      updated[field] = req.body[field];
+    }
+  });
+  Employee
+      .findOneAndUpdate(req.params.emailAddress, {
+    $set: updated
+  }, {
+    new: true
+  })
+
+.then(updatedEmployee => {
+  if (updatedEmployee != null)
+    return res.status(204).json(updatedEmployee.serialize())
+})
+.catch(err => res.status(500).json(err))
+})
+
+//PUT ENDPOINT -Points Received - the only things that are updated are the score tallies which fall in the employees section- 
+router.put('/PutPointsGivenToRecipient/:emailAddress', (req, res) => {
+  const updated = {};
+  const updateableFields = ['pointsReceived'];
+
+  updateableFields.forEach(field => {
+    if (field in req.body) {
+      updated[field] = req.body[field];
+    }
+  });
+  Employee
+      .findOneAndUpdate(req.params.emailAddress, {
+    $set: updated
+  }, {
+    new: true
+  })
+
+.then(updatedEmployee => {
+  if (updatedEmployee != null)
+    return res.status(204).json(updatedEmployee.serialize())
+})
+.catch(err => res.status(500).json(err))
+})
 
 //DELETE ENDPOINT an employee
 router.delete('/:emailAddress', (req, res) => {
