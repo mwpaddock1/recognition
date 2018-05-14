@@ -64,7 +64,7 @@ describe('Auth endpoints', function () {
                 //     'password': password
                 // })
                 .send({
-                    emailAddress: emailAddress,
+                    emailAddress: 'wrong email address',
                     password: password,
                 })
                 // .then(() =>
@@ -72,7 +72,7 @@ describe('Auth endpoints', function () {
                 // )
                 .then((res) => {
                     expect(res).to.have.status(401);
-                  })
+                })
                 .catch(err => {
                     if (err instanceof chai.AssertionError) {
                         throw err;
@@ -81,13 +81,30 @@ describe('Auth endpoints', function () {
                     // expect(res).to.have.status(401);
                 });
         });
+        it('Should reject requests with incorrect passwords', function () {
+            return chai
+                .request(app)
+                .post('/api/auth/login')
+                .send({
+                    emailAddress: emailAddress,
+                    password: 'wrongPassword'
+                })
+                .then((res) => {
+                    expect(res).to.have.status(401);
+                })
+                .catch(err => {
+                    if (err instanceof chai.AssertionError) {
+                        throw err;
+                    }
+                });
+        });
         // it('Should reject requests with incorrect passwords', function () {
         //     return chai
         //         .request(app)
         //         .post('/api/auth/login')
         //         .send({
         //             emailAddress: emailAddress,
-        //             password: password
+        //             password: 'wrongpassword'
         //         })
         //         then((res) => {
         //             expect(res).to.have.status(401);
