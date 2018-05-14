@@ -55,7 +55,6 @@ EmployeeSchema.methods.serialize = function () {
 //validates the password
 EmployeeSchema.methods.validatePassword = function (password) {
   return bcrypt.compare(password, this.password);
-  console.log(password);
 };
 
 //applies the hashes to the password

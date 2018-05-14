@@ -30,6 +30,7 @@ describe('Auth endpoints', function () {
     const password = 'testPass';
     const firstName = 'testJohn';
     const lastName = 'testDoe';
+
     before(function () {
         return runServer();
     });
@@ -58,21 +59,26 @@ describe('Auth endpoints', function () {
             return chai
                 .request(app)
                 .post('/api/auth/login')
+                // .send({
+                //     'emailAddress': emailAddress,
+                //     'password': password
+                // })
                 .send({
-                    'emailAddress': emailAddress,
-                    'password': password
+                    emailAddress: emailAddress,
+                    password: password,
                 })
-
-                .then(() =>
-                    expect.fail(null, null, 'Request should not succeed')
-                )
+                // .then(() =>
+                //     expect.fail(null, null, 'Request should not succeed')
+                // )
+                .then((res) => {
+                    expect(res).to.have.status(401);
+                  })
                 .catch(err => {
                     if (err instanceof chai.AssertionError) {
                         throw err;
                     }
-
-                    const res = err.response;
-                    expect(res).to.have.status(401);
+                    // const res = err.response;
+                    // expect(res).to.have.status(401);
                 });
         });
         // it('Should reject requests with incorrect passwords', function () {
@@ -80,19 +86,22 @@ describe('Auth endpoints', function () {
         //         .request(app)
         //         .post('/api/auth/login')
         //         .send({
-        //             emailAddress,
-        //             password: 'wrongPassword'
+        //             emailAddress: emailAddress,
+        //             password: password
         //         })
-        //         .then(() =>
-        //             expect.fail(null, null, 'Request should not succeed')
-        //         )
+        //         then((res) => {
+        //             expect(res).to.have.status(401);
+        //           })
+        //         // .then(() =>
+        //         //     expect.fail(null, null, 'Request should not succeed')
+        //         // )
         //         .catch(err => {
         //             if (err instanceof chai.AssertionError) {
         //                 throw err;
         //             }
 
-        //             const res = err.response;
-        //             expect(res).to.have.status(401);
+        //             // const res = err.response;
+        //             // expect(res).to.have.status(401);
         //         });
         // });
         // it('Should return a valid auth token', function () {
