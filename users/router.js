@@ -1,4 +1,4 @@
-'use strict';
+// 'use strict';
 const express = require('express');
 const passport = require('passport');
 const bodyParser = require('body-parser');
@@ -120,13 +120,15 @@ router.post('/', jsonParser, (req, res) => {
     firstName,
     lastName
   } = req.body;
-  
+
   return Employee.find({
-        emailAddress: emailAddress
-      },
-      (err, employee) => {
-        if (err) return res.status(500).send(err)
-      })
+        // emailAddress: emailAddress
+        emailAddress
+      }
+      // ,
+      // (err, employee) => {
+      //   if (err) return res.status(500).send(err)}
+    )
     .count()
     .then(count => {
       // console.log(count);
@@ -144,12 +146,20 @@ router.post('/', jsonParser, (req, res) => {
       return Employee.hashPassword(password);
     })
     .then(hash => {
-      // console.log(hash);
+      console.log(hash);
+      // return Employee.create({
+      //   emailAddress: emailAddress,
+      //   password: hash,
+      //   firstName: firstName,
+      //   lastName: lastName,
+      //   pointsGiven: '0',
+      //   pointsReceived: '0',
+      //   pointsRemaining: '100'
       return Employee.create({
-        emailAddress: emailAddress,
+        emailAddress,
         password: hash,
-        firstName: firstName,
-        lastName: lastName,
+        firstName,
+        lastName,
         pointsGiven: '0',
         pointsReceived: '0',
         pointsRemaining: '100'
@@ -171,7 +181,6 @@ router.post('/', jsonParser, (req, res) => {
       });
     });
 });
-
 //GET the list of employees
 router.get('/', (req, res) => {
   Employee
@@ -189,6 +198,7 @@ router.get('/', (req, res) => {
         });
     });
 });
+
 //GET a specific employee
 router.get('/:emailAddress', (req, res) => {
   Employee
@@ -217,17 +227,17 @@ router.put('/PutPointsSentBy/:emailAddress', (req, res) => {
     }
   });
   Employee
-      .findOneAndUpdate(req.params.emailAddress, {
-    $set: updated
-  }, {
-    new: true
-  })
+    .findOneAndUpdate(req.params.emailAddress, {
+      $set: updated
+    }, {
+      new: true
+    })
 
-.then(updatedEmployee => {
-  if (updatedEmployee != null)
-    return res.status(204).json(updatedEmployee.serialize())
-})
-.catch(err => res.status(500).json(err))
+    .then(updatedEmployee => {
+      if (updatedEmployee != null)
+        return res.status(204).json(updatedEmployee.serialize())
+    })
+    .catch(err => res.status(500).json(err))
 })
 
 //PUT ENDPOINT -Points Received - the only things that are updated are the score tallies which fall in the employees section- 
@@ -241,17 +251,17 @@ router.put('/PutPointsGivenToRecipient/:emailAddress', (req, res) => {
     }
   });
   Employee
-      .findOneAndUpdate(req.params.emailAddress, {
-    $set: updated
-  }, {
-    new: true
-  })
+    .findOneAndUpdate(req.params.emailAddress, {
+      $set: updated
+    }, {
+      new: true
+    })
 
-.then(updatedEmployee => {
-  if (updatedEmployee != null)
-    return res.status(204).json(updatedEmployee.serialize())
-})
-.catch(err => res.status(500).json(err))
+    .then(updatedEmployee => {
+      if (updatedEmployee != null)
+        return res.status(204).json(updatedEmployee.serialize())
+    })
+    .catch(err => res.status(500).json(err))
 })
 
 //DELETE ENDPOINT an employee
@@ -278,7 +288,7 @@ router.delete('/:emailAddress', (req, res) => {
       });
     });
 });
-
+//There is no PUT for Transactions as they are not changed
 module.exports = {
   router
 };

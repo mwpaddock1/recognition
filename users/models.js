@@ -19,11 +19,13 @@ const EmployeeSchema = mongoose.Schema({
   },
   firstName: {
     type: String,
-    required: true
+    // required: true
+    default: ''
   },
   lastName: {
     type: String,
-    required: true
+    // required: true
+    default: ''
   },
   pointsGiven: {
     type: String,
@@ -38,15 +40,6 @@ const EmployeeSchema = mongoose.Schema({
     default: '100'
   }
 });
-// console.log('made it here - EmployeeSchema is set up');
-//validates the password
-EmployeeSchema.methods.validatePassword = function (password) {
-  return bcrypt.compare(password, this.password);
-};
-//applies the hashes to the password
-EmployeeSchema.statics.hashPassword = function (password) {
-  return bcrypt.hash(password, 10);
-};
 //This schema doesn't include the password - only the parts we want
 EmployeeSchema.methods.serialize = function () {
   return {
@@ -59,8 +52,18 @@ EmployeeSchema.methods.serialize = function () {
     pointsRemaining: this.pointsRemaining
   };
 };
-const Employee = mongoose.model('Employee', EmployeeSchema);
+//validates the password
+EmployeeSchema.methods.validatePassword = function (password) {
+  return bcrypt.compare(password, this.password);
+  console.log(password);
+};
 
+//applies the hashes to the password
+EmployeeSchema.statics.hashPassword = function(password) {
+  return bcrypt.hash(password, 10);
+};
+
+const Employee = mongoose.model('Employee', EmployeeSchema);
 
 module.exports = {
   Employee

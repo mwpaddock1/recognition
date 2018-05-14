@@ -16,21 +16,18 @@ $('.cancel-button').on("click", function (event) {
 $('.logout-button').on('click', function (event) {
     renderRestart()
 });
-$('delete-employee-button').on("click", function (event) {
-    // remove employee
-});
+// $('delete-employee-button').on("click", function (event) {});
 $('.sign-in-button').on("click", function (event) {
-    renderEmployeeList()
+    renderEmployeeList();
+    console.log('going to Employee list page')
 });
 $('.employee-list-button').click(function (event) {
     renderEmployeeList()
 });
 
-
 $('.give-points-button').click(function (event) {
     $('.individual-info-container').removeClass('hidden');
     $('.individual-recognition-summary').addClass('hidden');
-    console.log("going to assign points page");
 });
 //render
 function renderSignUpForm() {
@@ -42,6 +39,7 @@ function renderSignUpForm() {
     $('.login-opening-button').addClass('hidden');
     $('.sign-up-opening-button').addClass('hidden');
 }
+
 function renderLoginForm() {
     $('.thumbs-up').addClass('hidden');
     $('#js-login-form').removeClass('hidden');
@@ -76,6 +74,7 @@ function renderRestart() {
 }
 
 function renderEmployeeList() {
+    console.log('listing the employees');
     $('#js-login-form').addClass('hidden');
     $('.goals').removeClass('hidden');
     $('.employee-list').removeClass('hidden');

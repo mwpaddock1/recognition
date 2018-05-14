@@ -20,7 +20,6 @@ const jsonParser = bodyParser.json();
 // const jwt = require('jsonwebtoken');
 //POST a new transaction
 router.post('/', (req, res) => {
-  // console.log(req.body);
   const requiredFields = ['points', 'goal', 'action', 'recipientEmailAddress', 'senderEmailAddress'];
   let {
     points,
@@ -54,7 +53,7 @@ router.get('/', (req, res) => {
           })
 
         });
-      console.log(`this is a ${transaction}`);
+      // console.log(`this is a ${transaction}`);
     });
 });
 
@@ -67,7 +66,6 @@ router.get('/:senderEmailAddress', (req, res) => {
     })
     .then(transaction => {
       res.json(transaction.serialize());
-      console.log(senderEmailAddress);
     })
     .catch(err => {
       res.status(500).json({
@@ -97,20 +95,20 @@ router.get('/GetBySender/:senderEmailAddress', (req, res) => {
 
 //GET all the transactions for a recipient
 router.get('/GetByRecipient/:recipientEmailAddress', (req, res) => {
-    Transaction
-      .find({
-        recipientEmailAddress: req.params.recipientEmailAddress
-      })
-      .then(transactions => {
-        res.json(transactions.map(transaction => {
+  Transaction
+    .find({
+      recipientEmailAddress: req.params.recipientEmailAddress
+    })
+    .then(transactions => {
+      res.json(transactions.map(transaction => {
         return transaction.serialize()
       }));
-  })
-  .catch(err => {
-    res.status(500).json({
-      message: 'Internal TransactionServer Error'
     })
-  });
+    .catch(err => {
+      res.status(500).json({
+        message: 'Internal TransactionServer Error'
+      })
+    });
 });
 
 module.exports = {

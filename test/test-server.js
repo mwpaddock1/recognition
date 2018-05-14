@@ -49,7 +49,6 @@ function seedRecognitionData() {
       emailAddress: faker.internet.email(),
       password: faker.internet.password()
     });
-    //console.log(seedData);
   }
   // this will return a promise
   return Employee.insertMany(seedData);
@@ -141,7 +140,6 @@ describe('employees API resource', function () {
       return Employee
         .findOne()
         .then(employee => {
-          console.log(employee);
           testUpdateData.emailAddress = employee.emailAddress;
           testUpdateData.id = employee.id;
           return chai.request(app)
@@ -152,37 +150,36 @@ describe('employees API resource', function () {
         .then(res => {
           let updatedEmployee = Employee.findById(testUpdateData.id);
           res.should.have.status(204);
-         expect(res.body.pointsReceived).to.equal(updatedEmployee.pointsReceived);         
+          expect(res.body.pointsReceived).to.equal(updatedEmployee.pointsReceived);
         });
     });
   });
 
-   describe('employee PUT by Sender endpoint', function () {
+  describe('employee PUT by Sender endpoint', function () {
     it('should update employee points given/remaining tallies', function () {
-    let testUpdateData = {
-      pointsGiven: '10',
-      pointsRemaining: '90'
-    };
-    return Employee
-      .findOne()
-      .then(employee => {
-        console.log(employee);
-        testUpdateData.emailAddress = employee.emailAddress;
-        testUpdateData.id = employee.id;
-        return chai.request(app)
-          .put('/employees/PutPointsSentBy/' + employee.emailAddress)
-          .send(testUpdateData);
-      })
+      let testUpdateData = {
+        pointsGiven: '10',
+        pointsRemaining: '90'
+      };
+      return Employee
+        .findOne()
+        .then(employee => {
+          testUpdateData.emailAddress = employee.emailAddress;
+          testUpdateData.id = employee.id;
+          return chai.request(app)
+            .put('/employees/PutPointsSentBy/' + employee.emailAddress)
+            .send(testUpdateData);
+        })
 
-      .then(res => {
-        let updatedEmployee = Employee.findById(testUpdateData.id);
-        res.should.have.status(204);
-       expect(res.body.pointsGiven).to.equal(updatedEmployee.pointsGiven); 
-       expect(res.body.pointsRemaining).to.equal(updatedEmployee.pointsRemaining);           
-      });
+        .then(res => {
+          let updatedEmployee = Employee.findById(testUpdateData.id);
+          res.should.have.status(204);
+          expect(res.body.pointsGiven).to.equal(updatedEmployee.pointsGiven);
+          expect(res.body.pointsRemaining).to.equal(updatedEmployee.pointsRemaining);
+        });
     });
   });
-  
+
   describe('employee DELETE endpoint', function () {
     it('should delete an employee on DELETE', function () {
       let testEmployee;
@@ -190,7 +187,6 @@ describe('employees API resource', function () {
         .findOne()
         .then(_employee => {
           testEmployee = _employee;
-          console.log(testEmployee);
           return chai.request(app).delete(`/employees/${testEmployee.emailAddress}`);
         })
         .then(function (res) {
@@ -260,7 +256,7 @@ describe('transactions API resource', function () {
         senderEmailAddress: faker.internet.email(),
         recipientEmailAddress: faker.internet.email()
       };
-      console.log(newTrans);
+
       return chai.request(app)
         .post('/transactions')
         .send(newTrans)
@@ -316,7 +312,6 @@ describe('transactions API resource', function () {
             .get('/transactions/GetBySender/' + testTransaction.senderEmailAddress)
             .then(function (res) {
               res.should.have.status(200);
-              console.log(res.body);
               expect(res.body[0].senderEmailAddress).to.equal(testTransaction.senderEmailAddress)
             })
         });

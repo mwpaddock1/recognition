@@ -1,6 +1,5 @@
 let globalEmployees;
 let globalTransactions;
-// let JWT;
 let loggedInUser;
 let selectedIndividual;
 
@@ -56,9 +55,9 @@ $("form[name=login-form]").submit(function (event) {
             return globalEmployees
         })
         .then(displayEmployees);
-    if (loggedInUser.emailAddress === 'hr@fizzbuzz.com') {
-        $('.delete-employee-button').removeClass('hidden')
-    }
+    // if (loggedInUser.emailAddress === 'hr@fizzbuzz.com') {
+    //     $('.delete-employee-button').removeClass('hidden')
+    // }
 
     $('.js-logged-in-employee').append(`You are logged in as ${loggedInUser.firstName} ${loggedInUser.lastName}`);
     document.getElementById("js-login-form").reset();
@@ -70,20 +69,6 @@ function addNewEmployee(employeeData) {
     employeeData.pointsReceived = 0;
     employeeData.pointsRemaining = 100;
 
-    //do i need something like this or does the router handle?
-    //**************************************************************************************************** */
-    //     $.ajax({
-//       method: 'POST',
-//       if we do need something like this, do I need the URL since it's in .env?
-//       url: BLOGS_URL,
-//       data: JSON.stringify(blog),
-//       success: function (data) {
-//         getAndDisplayBlogs();
-//       },
-//       dataType: 'json',
-//       contentType: 'application/json'
-//     });
-//   }
     return new Promise((resolve, reject) => {
         let MOCK_DATA = getMockData();
         //also include the new employee
@@ -92,8 +77,6 @@ function addNewEmployee(employeeData) {
         resolve(employeeData);
     })
 }
-// function addBlog(blog) {
-//     console.log('Adding blog: ' + blog);
 
 function loginEmployee(loggedInEmployeeEmail, loggedInEmployeePassword) {
     let token = "thisisastring";
