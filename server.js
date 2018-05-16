@@ -15,7 +15,7 @@ const passport = require('passport');
 // called router (from ./users, ./transactions and ./auth) have different names
 
 const {
-  router: usersRouter 
+  router: usersRouter
 } = require('./users');
 const {
   router: transactionsRouter
@@ -46,7 +46,6 @@ app.use(express.json());
 
 //CORS
 
-//Pink square means that the source line is on the execution path of a failing test
 app.use(function (req, res, next) {
   res.header('Access-Control-Allow-Origin', '*');
   res.header('Access-Control-Allow-Headers', 'Content-Type');
@@ -62,13 +61,13 @@ passport.use(jwtStrategy);
 app.use('/employees', usersRouter);
 app.use('/transactions', transactionsRouter);
 app.use('/api/auth', authRouter);
-// app.use('/auth', authRouter);
+
 const jwtAuth = passport.authenticate('jwt', {
   session: false
 });
 // A protected endpoint which needs a valid JWT to access it
 // app.get('api/protected', jwtAuth, (req, res) => {
-  app.get('/protected', jwtAuth, (req, res) => {
+app.get('/protected', jwtAuth, (req, res) => {
   return res.json({
     data: 'successfulAuth' //'rosebud'
   });
@@ -124,7 +123,6 @@ if (require.main === module) {
 
 module.exports = {
   app,
-  jwtAuth,
   runServer,
   closeServer
 };

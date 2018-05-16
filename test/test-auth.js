@@ -1,5 +1,6 @@
 'use strict';
 //DATABASE_URL=mongodb://legal:staffer@ds111188.mlab.com:11188/recognitiondb
+global.DATABASE_URL = 'mongodb://localhost/recognitiondb';
 const chai = require('chai');
 const chaiHttp = require('chai-http');
 const jwt = require('jsonwebtoken');
@@ -13,9 +14,10 @@ const {
     Employee
 } = require('../users');
 const {
-    JWT_SECRET,
-    TEST_DATABASE_URL,
-    PORT
+    JWT_SECRET
+    //,
+    // TEST_DATABASE_URL,
+    // PORT
 } = require('../config');
 
 const expect = chai.expect;
@@ -59,44 +61,29 @@ describe('Auth endpoints', function () {
             return chai
                 .request(app)
                 .post('/api/auth/login')
-                // .send({
-                //     'emailAddress': emailAddress,
-                //     'password': password
+                .send({ emailAddress: 'wrongEmailAddress', password })
+                .then(() =>
+                    expect.fail(null, null, 'Request should not succeed')
+                )
+                // .then((res) => {
+                //     expect(res).to.have.status(401);
                 // })
-                .send({
-                    emailAddress: 'wrong email address',
-                    password: password,
-                })
-                // .then(() =>
-                //     expect.fail(null, null, 'Request should not succeed')
-                // )
-                .then((res) => {
-                    expect(res).to.have.status(401);
-                })
                 .catch(err => {
                     if (err instanceof chai.AssertionError) {
                         throw err;
                     }
-                    // const res = err.response;
-                    // expect(res).to.have.status(401);
-                });
-        });
-        it('Should reject requests with incorrect passwords', function () {
-            return chai
-                .request(app)
-                .post('/api/auth/login')
-                .send({
-                    emailAddress: emailAddress,
-                    password: 'wrongPassword'
-                })
-                .then((res) => {
+
+                    const res = err.response;
+                    console.log(res);
                     expect(res).to.have.status(401);
-                })
-                .catch(err => {
-                    if (err instanceof chai.AssertionError) {
-                        throw err;
-                    }
                 });
+            // .catch(err => {
+            //     if (err instanceof chai.AssertionError) {
+            //         throw err;
+            //     }
+            //     const res = err.response;
+            //     expect(res).to.have.status(401);
+            // });
         });
         // it('Should reject requests with incorrect passwords', function () {
         //     return chai
@@ -104,46 +91,66 @@ describe('Auth endpoints', function () {
         //         .post('/api/auth/login')
         //         .send({
         //             emailAddress: emailAddress,
-        //             password: 'wrongpassword'
+        //             password: 'wrongPassword'
         //         })
-        //         then((res) => {
+        //         .then((res) => {
         //             expect(res).to.have.status(401);
-        //           })
-        //         // .then(() =>
-        //         //     expect.fail(null, null, 'Request should not succeed')
-        //         // )
+        //         })
         //         .catch(err => {
         //             if (err instanceof chai.AssertionError) {
         //                 throw err;
         //             }
+        //         });
+        it('Should reject requests with incorrect passwords', function () {
+            return chai
+                .request(app)
+                .post('/api/auth/login')
+                .send({
+                    emailAddress,
+                    password: 'wrongPassword'
+                })
+                .then(() =>
+                    expect.fail(null, null, 'Request should not succeed')
+                )
+                .catch(err => {
+                    if (err instanceof chai.AssertionError) {
+                        throw err;
+                    }
 
-        //             // const res = err.response;
-        //             // expect(res).to.have.status(401);
-        //         });
-        // });
-        // it('Should return a valid auth token', function () {
-        //     return chai
-        //         .request(app)
-        //         .post('/api/auth/login')
-        //         .send({
-        //             emailAddress,
-        //             password
-        //         })
-        //         .then(res => {
-        //             expect(res).to.have.status(200);
-        //             expect(res.body).to.be.an('object');
-        //             const token = res.body.authToken;
-        //             expect(token).to.be.a('string');
-        //             const payload = jwt.verify(token, JWT_SECRET, {
-        //                 algorithm: ['HS256']
-        //             });
-        //             expect(payload.employee).to.deep.equal({
-        //                 emailAddress,
-        //                 firstName,
-        //                 lastName
-        //             });
-        //         });
-        // });
+                    const res = err.response;
+                    expect(res).to.have.status(401);
+                });
+        });
+
+
+        it('Should return a valid auth token', function () {
+            return chai
+                .request(app)
+                .post('/api/auth/login')
+                .send({
+                    emailAddress: emailAddress,
+                    password: password
+                })
+                .then(res => {
+                    expect(res).to.have.status(200);
+                    expect(res.body).to.be.an('object');
+                    const token = res.body.authToken;
+                    // const token = res.body.token;
+                    console.log(res.body);
+                    expect(token).to.be.a('string');
+                    const payload = jwt.verify(token, JWT_SECRET, {
+                        algorithm: ['HS256']
+                    });
+                    expect(payload.employee).to.deep.equal({
+                        emailAddress,
+                        firstName,
+                        lastName
+                        // pointsGiven,
+                        // pointsReceived,
+                        // pointsRemaining
+                    });
+                });
+        });
     });
 
 

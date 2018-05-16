@@ -79,7 +79,7 @@ function addNewEmployee(employeeData) {
 }
 
 function loginEmployee(loggedInEmployeeEmail, loggedInEmployeePassword) {
-    let token = "thisisastring";
+    // let token = "thisisastring";
     return new Promise((resolve, reject) => {
         let MOCK_DATA = getMockData();
 

@@ -121,6 +121,9 @@ router.post('/', jsonParser, (req, res) => {
     lastName
   } = req.body;
 
+  firstName = firstName.trim();
+  lastName = lastName.trim();
+
   return Employee.find({
         // emailAddress: emailAddress
         emailAddress
@@ -131,7 +134,7 @@ router.post('/', jsonParser, (req, res) => {
     )
     .count()
     .then(count => {
-      // console.log(count);
+      console.log(count);
       if (count > 0) {
         // There is an existing employee with the same email address
         return Promise.reject({
