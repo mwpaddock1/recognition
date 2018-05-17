@@ -1,19 +1,30 @@
 'use strict';
-const { Strategy: LocalStrategy } = require('passport-local');
+const {
+  Strategy: LocalStrategy
+} = require('passport-local');
 
 // Assigns the Strategy export to the name JwtStrategy using object destructuring
 // https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment#Assigning_to_new_variable_names
-const { Strategy: JwtStrategy, ExtractJwt } = require('passport-jwt');
+const {
+  Strategy: JwtStrategy,
+  ExtractJwt
+} = require('passport-jwt');
 
-const { Employee } = require('../users/models');
-const { JWT_SECRET } = require('../config');
+const {
+  User
+} = require('../users/models');
+const {
+  JWT_SECRET
+} = require('../config');
 
-const localStrategy = new LocalStrategy((emailAddress, password, callback) => {
-  let employee;
-  Employee.findOne({ emailAddress: emailAddress })
-    .then(_employee => {
-      employee = _employee;
-      if (!employee) {
+const localStrategy = new LocalStrategy((username, password, callback) => {
+  let user;
+  User.findOne({
+      username: username
+    })
+    .then(_user => {
+      user = _user;
+      if (!user) {
         // Return a rejected promise so we break out of the chain of .thens.
         // Any errors like this will be handled in the catch block.
         return Promise.reject({
@@ -21,7 +32,7 @@ const localStrategy = new LocalStrategy((emailAddress, password, callback) => {
           message: 'Incorrect email address or password'
         });
       }
-      return employee.validatePassword(password);
+      return user.validatePassword(password);
     })
     .then(isValid => {
       if (!isValid) {
@@ -30,7 +41,7 @@ const localStrategy = new LocalStrategy((emailAddress, password, callback) => {
           message: 'Incorrect email address or password'
         });
       }
-      return callback(null, employee);
+      return callback(null, user);
     })
     .catch(err => {
       if (err.reason === 'LoginError') {
@@ -40,20 +51,23 @@ const localStrategy = new LocalStrategy((emailAddress, password, callback) => {
     });
 });
 
-const jwtStrategy = new JwtStrategy(
-  {
+const jwtStrategy = new JwtStrategy({
     secretOrKey: JWT_SECRET,
     // Look for the JWT as a Bearer auth header
     jwtFromRequest: ExtractJwt.fromAuthHeaderWithScheme('Bearer'),
-    
+
     // Only allow HS256 tokens - the same as the ones we issue
     //from slack:
-   // xhr.setRequestHeader('Authorization', ('BEARER '+ data.authToken)); 
+    // xhr.setRequestHeader('Authorization', ('BEARER '+ data.authToken)); 
     algorithms: ['HS256']
   },
   (payload, done) => {
-    done(null, payload.employee);
+
+    done(null, payload.user);
   }
 );
 
-module.exports = { localStrategy, jwtStrategy };
+module.exports = {
+  localStrategy,
+  jwtStrategy
+};

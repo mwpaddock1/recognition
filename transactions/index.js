@@ -1,6 +1,6 @@
 'use strict';
 const express = require('express');
-const { Employee } = require('../users');
+const { User } = require('../users');
 const { Transaction } = require('./models');
 const {router} = require('./router');
 

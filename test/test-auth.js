@@ -1,6 +1,6 @@
 'use strict';
 //DATABASE_URL=mongodb://legal:staffer@ds111188.mlab.com:11188/recognitiondb
-global.DATABASE_URL = 'mongodb://localhost/recognitiondb';
+// global.DATABASE_URL = 'mongodb://localhost/recognitiondb';
 const chai = require('chai');
 const chaiHttp = require('chai-http');
 const jwt = require('jsonwebtoken');
@@ -11,7 +11,7 @@ const {
     closeServer
 } = require('../server');
 const {
-    Employee
+    User
 } = require('../users');
 const {
     JWT_SECRET
@@ -28,7 +28,7 @@ const expect = chai.expect;
 chai.use(chaiHttp);
 
 describe('Auth endpoints', function () {
-    const emailAddress = 'testEmail@joe.com';
+    const username = 'testEmail@john.com';
     const password = 'testPass';
     const firstName = 'testJohn';
     const lastName = 'testDoe';
@@ -42,9 +42,9 @@ describe('Auth endpoints', function () {
     });
 
     beforeEach(function () {
-        return Employee.hashPassword(password).then(password =>
-            Employee.create({
-                emailAddress,
+        return User.hashPassword(password).then(password =>
+            User.create({
+                username,
                 password,
                 firstName,
                 lastName
@@ -53,7 +53,7 @@ describe('Auth endpoints', function () {
     });
 
     afterEach(function () {
-        return Employee.remove({});
+        return User.remove({});
     });
 
     describe('/login POST endpoint', function () {
@@ -61,13 +61,13 @@ describe('Auth endpoints', function () {
             return chai
                 .request(app)
                 .post('/api/auth/login')
-                .send({ emailAddress: 'wrongEmailAddress', password })
+                .send({
+                    username: 'wrongEmailAddress',
+                    password
+                })
                 .then(() =>
                     expect.fail(null, null, 'Request should not succeed')
                 )
-                // .then((res) => {
-                //     expect(res).to.have.status(401);
-                // })
                 .catch(err => {
                     if (err instanceof chai.AssertionError) {
                         throw err;
@@ -77,36 +77,14 @@ describe('Auth endpoints', function () {
                     console.log(res);
                     expect(res).to.have.status(401);
                 });
-            // .catch(err => {
-            //     if (err instanceof chai.AssertionError) {
-            //         throw err;
-            //     }
-            //     const res = err.response;
-            //     expect(res).to.have.status(401);
-            // });
         });
-        // it('Should reject requests with incorrect passwords', function () {
-        //     return chai
-        //         .request(app)
-        //         .post('/api/auth/login')
-        //         .send({
-        //             emailAddress: emailAddress,
-        //             password: 'wrongPassword'
-        //         })
-        //         .then((res) => {
-        //             expect(res).to.have.status(401);
-        //         })
-        //         .catch(err => {
-        //             if (err instanceof chai.AssertionError) {
-        //                 throw err;
-        //             }
-        //         });
+
         it('Should reject requests with incorrect passwords', function () {
             return chai
                 .request(app)
                 .post('/api/auth/login')
                 .send({
-                    emailAddress,
+                    username,
                     password: 'wrongPassword'
                 })
                 .then(() =>
@@ -128,7 +106,7 @@ describe('Auth endpoints', function () {
                 .request(app)
                 .post('/api/auth/login')
                 .send({
-                    emailAddress: emailAddress,
+                    username: username,
                     password: password
                 })
                 .then(res => {
@@ -136,18 +114,17 @@ describe('Auth endpoints', function () {
                     expect(res.body).to.be.an('object');
                     const token = res.body.authToken;
                     // const token = res.body.token;
-                    console.log(res.body);
+                    // console.log(res.body);
                     expect(token).to.be.a('string');
                     const payload = jwt.verify(token, JWT_SECRET, {
                         algorithm: ['HS256']
                     });
-                    expect(payload.employee).to.deep.equal({
-                        emailAddress,
+
+                    expect(payload.user).to.deep.equal({
+                        username,
                         firstName,
                         lastName
-                        // pointsGiven,
-                        // pointsReceived,
-                        // pointsRemaining
+
                     });
                 });
         });

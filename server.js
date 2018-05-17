@@ -30,7 +30,7 @@ const bodyParser = require('body-parser');
 app.use(bodyParser.json());
 const jsonParser = bodyParser.json();
 const {
-  employees
+  users
 } = require('./users');
 const {
   transactions
@@ -58,7 +58,7 @@ app.use(function (req, res, next) {
 passport.use(localStrategy);
 passport.use(jwtStrategy);
 
-app.use('/employees', usersRouter);
+app.use('/users', usersRouter);
 app.use('/transactions', transactionsRouter);
 app.use('/api/auth', authRouter);
 

@@ -5,10 +5,10 @@ const mongoose = require('mongoose');
 
 mongoose.Promise = global.Promise;
 
-const EmployeeSchema = mongoose.Schema({
+const UserSchema = mongoose.Schema({
   //(remember the login form has email and the signup form has emailAddress so we can use the hidden id=recipient input)
 
-  emailAddress: {
+  username: {
     type: String,
     required: true,
     unique: true
@@ -41,10 +41,10 @@ const EmployeeSchema = mongoose.Schema({
   }
 });
 //This schema doesn't include the password - only the parts we want
-EmployeeSchema.methods.serialize = function () {
+UserSchema.methods.serialize = function () {
   return {
     id: this._id,
-    emailAddress: this.emailAddress,
+    username: this.username,
     firstName: this.firstName,
     lastName: this.lastName,
     pointsGiven: this.pointsGiven,
@@ -53,17 +53,17 @@ EmployeeSchema.methods.serialize = function () {
   };
 };
 //validates the password
-EmployeeSchema.methods.validatePassword = function (password) {
+UserSchema.methods.validatePassword = function (password) {
   return bcrypt.compare(password, this.password);
 };
 
 //applies the hashes to the password
-EmployeeSchema.statics.hashPassword = function(password) {
+UserSchema.statics.hashPassword = function(password) {
   return bcrypt.hash(password, 10);
 };
 
-const Employee = mongoose.model('Employee', EmployeeSchema);
+const User = mongoose.model('User', UserSchema);
 
 module.exports = {
-  Employee
+  User
 };

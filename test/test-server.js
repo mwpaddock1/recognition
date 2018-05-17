@@ -8,7 +8,7 @@ const {
 } = require('../config');
 const faker = require('faker');
 const {
-  Employee
+  User
 } = require('../users');
 const {
   Transaction
@@ -46,15 +46,15 @@ function seedRecognitionData() {
     seedData.push({
       firstName: faker.name.firstName(),
       lastName: faker.name.lastName(),
-      emailAddress: faker.internet.email(),
+      username: faker.internet.email(),
       password: faker.internet.password()
     });
   }
   // this will return a promise
-  return Employee.insertMany(seedData);
+  return User.insertMany(seedData);
 }
 
-describe('employees API resource', function () {
+describe('users API resource', function () {
   afterEach(function () {
     // tear down database so we ensure no state from this test
     // effects any coming after.
@@ -74,127 +74,126 @@ describe('employees API resource', function () {
   after(function () {
     return closeServer();
   });
-  describe('employees POST endpoint', function () {
-    it('should add an employee on POST', function () {
-      // const newItem = {firstName: 'Joe', lastName: 'Schmoe', emailAddress: 'janeFonda@fizzbuzz.com', password: 'password1', pointsGiven: '0', pointsReceived: '0', pointsRemaining: '100'};
+  describe('users POST endpoint', function () {
+    it('should add a user on POST', function () {
       const newItem = {
         firstName: faker.name.firstName(),
         lastName: faker.name.lastName(),
-        emailAddress: faker.internet.email(),
+        username: faker.internet.email(),
         password: faker.internet.password()
       };
 
       return chai.request(app)
-        .post('/employees')
+        .post('/users')
         .send(newItem)
         .then(function (res) {
           expect(res).to.have.status(201);
           expect(res).to.be.json;
           expect(res.body).to.be.a('object');
-          expect(res.body).to.include.keys('id', 'firstName', 'lastName', 'emailAddress', 'pointsGiven', 'pointsReceived', 'pointsRemaining');
+          expect(res.body).to.include.keys('id', 'firstName', 'lastName', 'username', 'pointsGiven', 'pointsReceived', 'pointsRemaining');
           expect(res.body.id).to.not.equal(null);
         })
     });
   });
 
-  describe('employees GET endpoint', function () {
-    it('should return all employees', function () {
+  describe('users GET endpoint', function () {
+    it('should return all users', function () {
       let res;
       return chai.request(app)
-        .get('/employees')
+        .get('/users')
         .then(_res => {
           //so subsequent .then blocks can access the response object
           res = _res;
           res.should.have.status(200);
-          res.body.employees.should.have.length.of.at.least(1);
-          return Employee.count();
+          res.body.users.should.have.length.of.at.least(1);
+          return User.count();
         })
         .then(count => {
-          res.body.employees.should.have.lengthOf(count);
+          res.body.users.should.have.lengthOf(count);
 
 
         });
     });
   });
-  describe('single employee GET endpoint', function () {
-    it('should return a single employee', function () {
-      let testEmployee;
-      return Employee.findOne()
-        .then(employee => {
-          testEmployee = employee;
+  describe('single user GET endpoint', function () {
+    it('should return a single user', function () {
+      let testUser;
+      return User.findOne()
+        .then(user => {
+          testUser = user;
           return chai.request(app)
-            .get('/employees/' + employee.emailAddress)
+            .get('/users/' + user.username)
             .then(function (res) {
               res.should.have.status(200);
-              expect(res.body.emailAddress).to.equal(testEmployee.emailAddress);
+              expect(res.body.username).to.equal(testUser.username);
             })
         })
     })
   });
 
-  describe('employee PUT to Recipient endpoint', function () {
-    it('should update employee points received tally', function () {
+  describe('user PUT to Recipient endpoint', function () {
+    it('should update user points received tally', function () {
       let testUpdateData = {
         pointsReceived: '10',
       };
-      return Employee
+      return User
         .findOne()
-        .then(employee => {
-          testUpdateData.emailAddress = employee.emailAddress;
-          testUpdateData.id = employee.id;
+        .then(user => {
+          testUpdateData.username = user.username;
+          testUpdateData.id = user.id;
           return chai.request(app)
-            .put('/employees/PutPointsGivenToRecipient/' + employee.emailAddress)
+            .put('/users/PutPointsGivenToRecipient/' + user.username)
             .send(testUpdateData);
         })
 
         .then(res => {
-          let updatedEmployee = Employee.findById(testUpdateData.id);
+          let updatedUser = User.findById(testUpdateData.id);
           res.should.have.status(204);
-          expect(res.body.pointsReceived).to.equal(updatedEmployee.pointsReceived);
+          expect(res.body.pointsReceived).to.equal(updatedUser.pointsReceived);
         });
     });
   });
 
-  describe('employee PUT by Sender endpoint', function () {
-    it('should update employee points given/remaining tallies', function () {
+  describe('user PUT by Sender endpoint', function () {
+    it('should update user points given/remaining tallies', function () {
       let testUpdateData = {
         pointsGiven: '10',
         pointsRemaining: '90'
       };
-      return Employee
+      return User
         .findOne()
-        .then(employee => {
-          testUpdateData.emailAddress = employee.emailAddress;
-          testUpdateData.id = employee.id;
+        .then(user => {
+          testUpdateData.username = user.username;
+          testUpdateData.id = user.id;
           return chai.request(app)
-            .put('/employees/PutPointsSentBy/' + employee.emailAddress)
+            .put('/users/PutPointsSentBy/' + user.username)
             .send(testUpdateData);
         })
 
         .then(res => {
-          let updatedEmployee = Employee.findById(testUpdateData.id);
+          let updatedUser = User.findById(testUpdateData.id);
           res.should.have.status(204);
-          expect(res.body.pointsGiven).to.equal(updatedEmployee.pointsGiven);
-          expect(res.body.pointsRemaining).to.equal(updatedEmployee.pointsRemaining);
+          expect(res.body.pointsGiven).to.equal(updatedUser.pointsGiven);
+          expect(res.body.pointsRemaining).to.equal(updatedUser.pointsRemaining);
         });
     });
   });
 
-  describe('employee DELETE endpoint', function () {
-    it('should delete an employee on DELETE', function () {
-      let testEmployee;
-      return Employee
+  describe('user DELETE endpoint', function () {
+    it('should delete a user on DELETE', function () {
+      let testUser;
+      return User
         .findOne()
-        .then(_employee => {
-          testEmployee = _employee;
-          return chai.request(app).delete(`/employees/${testEmployee.emailAddress}`);
+        .then(_user => {
+          testUser = _user;
+          return chai.request(app).delete(`/users/${testUser.username}`);
         })
         .then(function (res) {
           res.should.have.status(204);
-          return Employee.findById(testEmployee.id);
+          return User.findById(testUser.id);
         })
-        .then(_testEmployee => {
-          expect(_testEmployee).to.be.null;
+        .then(_testUser => {
+          expect(_testUser).to.be.null;
         });
     });
   })
@@ -288,7 +287,7 @@ describe('transactions API resource', function () {
   });
 
   describe('GET a single transaction by senderEmailAddress', function () {
-    it('should return a transaction sent by a particular employee on GET', function () {
+    it('should return a transaction sent by a particular user on GET', function () {
       let testTransaction;
       return Transaction.findOne()
         .then(transaction => {
@@ -303,7 +302,7 @@ describe('transactions API resource', function () {
     });
   });
   describe('GET all transactions from a senderEmailAddress', function () {
-    it('should GET all of the transactions sent by a particular employee on GET', function () {
+    it('should GET all of the transactions sent by a particular user on GET', function () {
       let testTransaction;
       return Transaction.findOne()
         .then(transaction => {
@@ -319,7 +318,7 @@ describe('transactions API resource', function () {
   });
 
   describe('GET all transactions for a recipientEmailAddress', function () {
-    it('should return a list of all transactions received by a particular employee on GET', function () {
+    it('should return a list of all transactions received by a particular user on GET', function () {
       let testTransaction;
       return Transaction.findOne()
         .then(transaction => {

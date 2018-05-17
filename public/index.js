@@ -93,11 +93,7 @@ function loginEmployee(loggedInEmployeeEmail, loggedInEmployeePassword) {
             }
         }
         loggedInUser = getUser();
-        // resolve({
-        //     token,
-        //     loggedInUser
-            
-        // });
+        
     })
 }
 

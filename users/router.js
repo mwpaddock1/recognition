@@ -3,7 +3,7 @@ const express = require('express');
 const passport = require('passport');
 const bodyParser = require('body-parser');
 const {
-  Employee
+  User
 } = require('./models');
 const router = express.Router();
 const jsonParser = bodyParser.json();
@@ -22,7 +22,7 @@ const jsonParser = bodyParser.json();
 // Post to register a new employee
 router.post('/', jsonParser, (req, res) => {
   // console.log(req.body);
-  const requiredFields = ['emailAddress', 'password', 'lastName', 'firstName'];
+  const requiredFields = ['username', 'password', 'lastName', 'firstName'];
   const missingField = requiredFields.find(field => !(field in req.body));
   if (missingField) {
     return res.status(422).json({
@@ -34,7 +34,7 @@ router.post('/', jsonParser, (req, res) => {
     console.log('missingField');
   }
 
-  const stringFields = ['emailAddress', 'password', 'firstName', 'lastName'];
+  const stringFields = ['useername', 'password', 'firstName', 'lastName'];
   const nonStringField = stringFields.find(
     field => field in req.body && typeof req.body[field] !== 'string'
   );
@@ -56,7 +56,7 @@ router.post('/', jsonParser, (req, res) => {
   // trimming them and expecting the employee to understand.
   // We'll silently trim the other fields, because they aren't credentials used
   // to log in, so it's less of a problem.
-  const explicityTrimmedFields = ['emailAddress', 'password'];
+  const explicityTrimmedFields = ['username', 'password'];
   const nonTrimmedField = explicityTrimmedFields.find(
     field => req.body[field].trim() !== req.body[field]
   );
@@ -72,7 +72,7 @@ router.post('/', jsonParser, (req, res) => {
   }
 
   const sizedFields = {
-    emailAddress: {
+    username: {
       min: 7
     },
     password: {
@@ -115,7 +115,7 @@ router.post('/', jsonParser, (req, res) => {
   }
 
   let {
-    emailAddress,
+    username,
     password,
     firstName,
     lastName
@@ -124,10 +124,10 @@ router.post('/', jsonParser, (req, res) => {
   firstName = firstName.trim();
   lastName = lastName.trim();
 
-  return Employee.find({
+  return User.find({
         // emailAddress: emailAddress
-        emailAddress
-      }
+        username
+            }
       // ,
       // (err, employee) => {
       //   if (err) return res.status(500).send(err)}
@@ -141,25 +141,18 @@ router.post('/', jsonParser, (req, res) => {
           code: 422,
           reason: 'ValidationError',
           message: 'Email Address already taken',
-          location: 'emailAddress'
+          location: 'username'
         });
       }
       // If there is no existing employee, hash the password
       // console.log(password);
-      return Employee.hashPassword(password);
+      return User.hashPassword(password);
     })
     .then(hash => {
       console.log(hash);
-      // return Employee.create({
-      //   emailAddress: emailAddress,
-      //   password: hash,
-      //   firstName: firstName,
-      //   lastName: lastName,
-      //   pointsGiven: '0',
-      //   pointsReceived: '0',
-      //   pointsRemaining: '100'
-      return Employee.create({
-        emailAddress,
+      
+      return User.create({
+        username,
         password: hash,
         firstName,
         lastName,
@@ -168,9 +161,9 @@ router.post('/', jsonParser, (req, res) => {
         pointsRemaining: '100'
       });
     })
-    .then(employee => {
+    .then(user => {
       // console.log(employee);
-      return res.status(201).json(employee.serialize());
+      return res.status(201).json(User.serialize());
     })
     .catch(err => {
       // Forward validation errors on to the client, otherwise give a 500
@@ -186,12 +179,12 @@ router.post('/', jsonParser, (req, res) => {
 });
 //GET the list of employees
 router.get('/', (req, res) => {
-  Employee
+  User
     .find()
-    .then(employees => {
+    .then(users => {
       res.json({
-          employees: employees.map(
-            (employee => employee.serialize()))
+          users: users.map(
+            (user => user.serialize()))
         })
         .catch(err => {
           console.error(err);
@@ -203,13 +196,13 @@ router.get('/', (req, res) => {
 });
 
 //GET a specific employee
-router.get('/:emailAddress', (req, res) => {
-  Employee
+router.get('/:username', (req, res) => {
+  User
     .findOne({
-      emailAddress: req.params.emailAddress
+      username: req.params.username
     })
-    .then(employee => {
-      res.json(employee.serialize())
+    .then(user => {
+      res.json(user.serialize())
     })
     .catch(err => {
       console.error(err);
@@ -220,7 +213,7 @@ router.get('/:emailAddress', (req, res) => {
 });
 
 //PUT ENDPOINT -Points Given the only things that are updated are the score tallies which fall in the employees section- 
-router.put('/PutPointsSentBy/:emailAddress', (req, res) => {
+router.put('/PutPointsSentBy/:username', (req, res) => {
   const updated = {};
   const updateableFields = ['pointsGiven', 'pointsRemaining'];
 
@@ -229,22 +222,22 @@ router.put('/PutPointsSentBy/:emailAddress', (req, res) => {
       updated[field] = req.body[field];
     }
   });
-  Employee
-    .findOneAndUpdate(req.params.emailAddress, {
+  User
+    .findOneAndUpdate(req.params.username, {
       $set: updated
     }, {
       new: true
     })
 
-    .then(updatedEmployee => {
-      if (updatedEmployee != null)
-        return res.status(204).json(updatedEmployee.serialize())
+    .then(updatedUser => {
+      if (updatedUser != null)
+        return res.status(204).json(updatedUser.serialize())
     })
     .catch(err => res.status(500).json(err))
 })
 
 //PUT ENDPOINT -Points Received - the only things that are updated are the score tallies which fall in the employees section- 
-router.put('/PutPointsGivenToRecipient/:emailAddress', (req, res) => {
+router.put('/PutPointsGivenToRecipient/:username', (req, res) => {
   const updated = {};
   const updateableFields = ['pointsReceived'];
 
@@ -253,32 +246,32 @@ router.put('/PutPointsGivenToRecipient/:emailAddress', (req, res) => {
       updated[field] = req.body[field];
     }
   });
-  Employee
-    .findOneAndUpdate(req.params.emailAddress, {
+  User
+    .findOneAndUpdate(req.params.username, {
       $set: updated
     }, {
       new: true
     })
 
-    .then(updatedEmployee => {
-      if (updatedEmployee != null)
-        return res.status(204).json(updatedEmployee.serialize())
+    .then(updatedUser => {
+      if (updatedUser != null)
+        return res.status(204).json(updatedUser.serialize())
     })
     .catch(err => res.status(500).json(err))
 })
 
 //DELETE ENDPOINT an employee
-router.delete('/:emailAddress', (req, res) => {
-  Employee
+router.delete('/:username', (req, res) => {
+  User
     // .findById(req.params.id - but we want emailAddress)
     .findOne({
-      emailAddress: req.params.emailAddress
+      username: req.params.username
     })
-    .then(employee => {
-      Employee
-        .findByIdAndRemove(employee.id)
+    .then(user => {
+      User
+        .findByIdAndRemove(user.id)
         .then(() => {
-          console.log(`Deleted employee with id\`${employee.id}\``);
+          console.log(`Deleted employee with id\`${user.id}\``);
           res.status(204).json({
             message: 'success'
           });
