@@ -7,17 +7,6 @@ const {
 } = require('./models');
 const router = express.Router();
 const jsonParser = bodyParser.json();
-// const {
-//   router: authRouter,
-//   localStrategy,
-//   jwtStrategy
-// } = require('../auth');
-// const {
-//   jwtAuth
-// } = require('../auth/router');
-// passport.use(localStrategy);
-// passport.use(jwtStrategy);
-// const jwt = require('jsonwebtoken');
 
 // Post to register a new employee
 router.post('/', jsonParser, (req, res) => {
@@ -31,7 +20,6 @@ router.post('/', jsonParser, (req, res) => {
       message: 'Missing field',
       location: missingField
     });
-    console.log('missingField');
   }
 
   const stringFields = ['useername', 'password', 'firstName', 'lastName'];
@@ -46,7 +34,6 @@ router.post('/', jsonParser, (req, res) => {
       message: 'Incorrect field type: expected string',
       location: nonStringField
     });
-    console.log('not a string field')
   }
 
   // If the email address and password aren't trimmed we give an error.  Employees might
@@ -68,7 +55,6 @@ router.post('/', jsonParser, (req, res) => {
       message: 'Cannot start or end with whitespace',
       location: nonTrimmedField
     });
-    console.log('nontrimmed field');
   }
 
   const sizedFields = {
@@ -111,7 +97,6 @@ router.post('/', jsonParser, (req, res) => {
           .max} characters long`,
       location: tooSmallField || tooLargeField
     });
-    console.log('wrong size field');
   }
 
   let {
@@ -127,7 +112,7 @@ router.post('/', jsonParser, (req, res) => {
   return User.find({
         // emailAddress: emailAddress
         username
-            }
+      }
       // ,
       // (err, employee) => {
       //   if (err) return res.status(500).send(err)}
@@ -144,13 +129,12 @@ router.post('/', jsonParser, (req, res) => {
           location: 'username'
         });
       }
-      // If there is no existing employee, hash the password
-      // console.log(password);
+
       return User.hashPassword(password);
     })
     .then(hash => {
       console.log(hash);
-      
+
       return User.create({
         username,
         password: hash,
@@ -162,8 +146,10 @@ router.post('/', jsonParser, (req, res) => {
       });
     })
     .then(user => {
-      // console.log(employee);
-      return res.status(201).json(User.serialize());
+      console.log(user);
+      
+      return res.status(201).json(user.serialize());
+
     })
     .catch(err => {
       // Forward validation errors on to the client, otherwise give a 500

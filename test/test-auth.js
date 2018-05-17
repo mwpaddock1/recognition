@@ -32,6 +32,9 @@ describe('Auth endpoints', function () {
     const password = 'testPass';
     const firstName = 'testJohn';
     const lastName = 'testDoe';
+    const pointsGiven = '';
+    const pointsReceived = '';
+    const pointsRemaining =''
 
     before(function () {
         return runServer();
@@ -47,7 +50,10 @@ describe('Auth endpoints', function () {
                 username,
                 password,
                 firstName,
-                lastName
+                lastName,
+                pointsGiven,
+                pointsReceived,
+                pointsRemaining
             })
         );
     });
@@ -74,7 +80,7 @@ describe('Auth endpoints', function () {
                     }
 
                     const res = err.response;
-                    console.log(res);
+                    // console.log(res);
                     expect(res).to.have.status(401);
                 });
         });
@@ -105,10 +111,11 @@ describe('Auth endpoints', function () {
             return chai
                 .request(app)
                 .post('/api/auth/login')
-                .send({
-                    username: username,
-                    password: password
-                })
+                // .send({
+                //     username: username,
+                //     password: password
+                // })
+                .send({ username, password })
                 .then(res => {
                     expect(res).to.have.status(200);
                     expect(res.body).to.be.an('object');
@@ -121,10 +128,13 @@ describe('Auth endpoints', function () {
                     });
 
                     expect(payload.user).to.deep.equal({
+                        id: payload.user.id,
                         username,
                         firstName,
-                        lastName
-
+                        lastName,
+                        pointsGiven,
+                        pointsReceived,
+                        pointsRemaining
                     });
                 });
         });

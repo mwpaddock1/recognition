@@ -82,6 +82,7 @@ describe('users API resource', function () {
         username: faker.internet.email(),
         password: faker.internet.password()
       };
+      console.log(newItem);
 
       return chai.request(app)
         .post('/users')
@@ -89,7 +90,8 @@ describe('users API resource', function () {
         .then(function (res) {
           expect(res).to.have.status(201);
           expect(res).to.be.json;
-          expect(res.body).to.be.a('object');
+          console.log(res.body);
+          expect(res.body).to.be.an('object');
           expect(res.body).to.include.keys('id', 'firstName', 'lastName', 'username', 'pointsGiven', 'pointsReceived', 'pointsRemaining');
           expect(res.body.id).to.not.equal(null);
         })
