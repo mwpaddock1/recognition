@@ -25,7 +25,6 @@ router.use(bodyParser.json());
 
 // The employee provides an email address and password to login
 router.post('/login', localAuth, (req, res) => {
-  // console.log('user:::::',req.user);
   const authToken = createAuthToken(req.user.serialize());
   res.json({authToken});
 });
@@ -36,7 +35,6 @@ const jwtAuth = passport.authenticate('jwt', {
 
 // The employee exchanges a valid JWT for a new one with a later expiration
 router.post('/refresh', jwtAuth, (req, res) => {
-  // const authToken = createAuthToken(req.employee);
   const authToken = createAuthToken(req.user);
   res.json({
     authToken

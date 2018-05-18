@@ -10,7 +10,6 @@ const jsonParser = bodyParser.json();
 
 // Post to register a new employee
 router.post('/', jsonParser, (req, res) => {
-  // console.log(req.body);
   const requiredFields = ['username', 'password', 'lastName', 'firstName'];
   const missingField = requiredFields.find(field => !(field in req.body));
   if (missingField) {
@@ -22,7 +21,7 @@ router.post('/', jsonParser, (req, res) => {
     });
   }
 
-  const stringFields = ['useername', 'password', 'firstName', 'lastName'];
+  const stringFields = ['username', 'password', 'firstName', 'lastName'];
   const nonStringField = stringFields.find(
     field => field in req.body && typeof req.body[field] !== 'string'
   );

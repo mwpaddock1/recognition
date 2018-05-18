@@ -16,28 +16,23 @@ $("form[name=sign-up-form]").submit(function (event) {
     });
     const reducingFunction = (obj1, obj2) =>
         Object.assign(obj1, obj2);
-//**************************************************************************** */
-        //we put this newEmployee as an argumennt in the addNewEmployee function which also gives the new employee starting points -but it should really be the serialized employee with no password
+    //**************************************************************************** */
+    //we put this newEmployee as an argumennt in the addNewEmployee function which also gives the new employee starting points -but it should really be the serialized employee with no password
     let newEmployee = (reformattedArray.reduce(reducingFunction));
     console.log(newEmployee);
-   
+
     if (newEmployee.password !== newEmployee['retype-password']) {
         alert('Passwords must match!')
+    } else {
+        loggedInUser = newEmployee;
+        addNewEmployee(newEmployee);
+        globalEmployees = getAllEmployees();
+        displayEmployees(globalEmployees);
+        console.log(globalEmployees);
+        $('.demo-credentials').addClass('hidden');
+
+        $('.js-logged-in-employee').append(`You are logged in as ${loggedInUser.firstName} ${loggedInUser.lastName}`);
     }
-    else {
-    loggedInUser = newEmployee;
-
-    addNewEmployee(newEmployee)
-        .then(getAllEmployees)
-        .then((employeesGet) => {
-            globalEmployees = employeesGet;
-            return globalEmployees;
-        })
-        .then(displayEmployees)
-    $('.demo-credentials').addClass('hidden');
-
-    $('.js-logged-in-employee').append(`You are logged in as ${loggedInUser.firstName} ${loggedInUser.lastName}`);
-   }
     document.getElementById("js-sign-up-form").reset();
 });
 
@@ -65,17 +60,28 @@ $("form[name=login-form]").submit(function (event) {
 //****************************************
 //this has to be the employee that doesn't have the password in its schema.... */
 function addNewEmployee(employeeData) {
-    employeeData.pointsGiven = 0;
-    employeeData.pointsReceived = 0;
-    employeeData.pointsRemaining = 100;
+    // employeeData.pointsGiven = 0;
+    // employeeData.pointsReceived = 0;
+    // employeeData.pointsRemaining = 100;
+    console.log('inside add');
+    $.ajax({
+        method: 'POST',
+        url: '/users',
+        dataType: 'json',
+        data: JSON.stringify(employeeData),
+        contentType: 'application/json',
+        success: function (empData) {
+            console.log('employee added');
+        }
+    });
 
-    return new Promise((resolve, reject) => {
-        let MOCK_DATA = getMockData();
-        //also include the new employee
-        MOCK_DATA.employees.push(employeeData);
-        setMockData(MOCK_DATA);
-        resolve(employeeData);
-    })
+    // return new Promise((resolve, reject) => {
+    //     let MOCK_DATA = getMockData();
+    //     //also include the new employee
+    //     MOCK_DATA.employees.push(employeeData);
+    //     setMockData(MOCK_DATA);
+    //     resolve(employeeData);
+    // })
 }
 
 function loginEmployee(loggedInEmployeeEmail, loggedInEmployeePassword) {
@@ -93,7 +99,7 @@ function loginEmployee(loggedInEmployeeEmail, loggedInEmployeePassword) {
             }
         }
         loggedInUser = getUser();
-        
+
     })
 }
 
@@ -110,14 +116,26 @@ function setMockData(MOCK_DATA) {
 }
 
 function getAllEmployees() {
-    return new Promise((resolve, reject) => {
-        let MOCK_DATA = getMockData();
-        resolve(MOCK_DATA.employees);
-    })
+      
+    let emps = [];
+    $.ajax({
+        method: 'GET',
+        url: '/users',
+        dataType: 'json',
+        contentType: 'application/json',
+        success: function (empData) {
+                        emps = empData.users;
+                        // console.log('emps:')
+                        // console.log(emps);      
+        }        
+    });
+    
+    return emps;
 }
 
 function displayEmployees() {
-    for (let currentEmployee = 0; currentEmployee < globalEmployees.length; currentEmployee++) {
+    for (let currentEmployee = 0; currentEmployee < globalEmployees.length; currentEmployee++);
+    console.log(globalEmployees.length); {
         const empInfoHTML = (
             ` <div class = "current-employee" data-email="${globalEmployees[currentEmployee].emailAddress}">
                             <h2 class = "js-last-name employee-box"> ${globalEmployees[currentEmployee].lastName}</h2>
@@ -127,15 +145,16 @@ function displayEmployees() {
                             <h2 class = "js-points-remaining employee-box"> ${globalEmployees[currentEmployee].pointsRemaining}</h2>                    
                       </div>
                     `
-        )
+        );
+        console.log('should now have employee info');
         $('row.employee-boxes').append(empInfoHTML);
     }
 
     $('.current-employee').click(function (event) {
-        selectAndDisplayEmployee();    
-        displayEmployeeTransactions();    
+        selectAndDisplayEmployee();
+        displayEmployeeTransactions();
     });
-    
+
     function selectAndDisplayEmployee() {
         //get the selected employee and display his / her points
 
@@ -249,6 +268,7 @@ function displayEmployees() {
                 }
             });
     };
+
     function formatSenderInfo(sentTransactionInfo) {
         const sentInfoHTML = (
             `<section class ="points-given" role="region">                                
@@ -281,8 +301,8 @@ $("form[name=add-points-form]").submit(function (event) {
     const goal = corpGoal.val();
     const pointsDropdown = $('select[name=points]');
     const points = parseInt(pointsDropdown.val());
-//************************************************************************************** */
-//do I still use the loggedInUser?
+    //************************************************************************************** */
+    //do I still use the loggedInUser?
     let newTransaction = {
         senderFirstName: loggedInUser.firstName,
         senderLastName: loggedInUser.lastName,
