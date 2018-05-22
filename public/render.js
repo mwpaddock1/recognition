@@ -87,6 +87,7 @@ function renderEmployeeList() {
     $('.cancel-button').removeClass('hidden');
     $('.individual-recognition-summary').addClass('hidden');
     $('.individual-info-container').addClass('hidden');
+    $('.login-banner-button').addClass('hidden')
 };
 
 function renderIndividualEmployeeRecognition() {

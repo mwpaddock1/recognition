@@ -111,10 +111,6 @@ describe('Auth endpoints', function () {
             return chai
                 .request(app)
                 .post('/api/auth/login')
-                // .send({
-                //     username: username,
-                //     password: password
-                // })
                 .send({ username, password })
                 .then(res => {
                     expect(res).to.have.status(200);
