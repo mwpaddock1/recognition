@@ -22,7 +22,6 @@ const localAuth = passport.authenticate('local', {
 });
 router.use(bodyParser.json());
 
-
 // The employee provides an email address and password to login
 router.post('/login', localAuth, (req, res) => {
   const authToken = createAuthToken(req.user.serialize());

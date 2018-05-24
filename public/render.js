@@ -17,10 +17,7 @@ $('.logout-button').on('click', function (event) {
     renderRestart()
 });
 // $('delete-employee-button').on("click", function (event) {});
-$('.sign-in-button').on("click", function (event) {
-    renderEmployeeList();
-    console.log('going to Employee list page')
-});
+
 $('.employee-list-button').click(function (event) {
     renderEmployeeList()
 });

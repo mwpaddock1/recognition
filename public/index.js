@@ -17,7 +17,7 @@ $("form[name=sign-up-form]").submit(function (event) {
     const reducingFunction = (obj1, obj2) =>
         Object.assign(obj1, obj2);
     //**************************************************************************** */
-    //we put this newEmployee as an argumennt in the addNewEmployee function which also gives the new employee starting points -but it should really be the serialized employee with no password
+    //we put this newEmployee as an argument in the addNewEmployee function which also gives the new employee starting points -but it should really be the serialized employee with no password
     let newEmployee = (reformattedArray.reduce(reducingFunction));
     console.log(newEmployee);
 
@@ -27,47 +27,50 @@ $("form[name=sign-up-form]").submit(function (event) {
     } else {
         loggedInUser = newEmployee;
         addNewEmployee(newEmployee);
-        getAllEmployees();
         $('.demo-credentials').addClass('hidden');
         $('.js-logged-in-employee').append(`You are logged in as ${loggedInUser.firstName} ${loggedInUser.lastName}`);
     }
     document.getElementById("js-sign-up-form").reset();
 });
-// ****************************************
 
 $("form[name=login-form]").submit(function (event) {
     event.preventDefault();
     const usernameEmail = $('input[name=usernameEmail]');
-
     const loggedInUsername = usernameEmail.val();
-    console.log(usernameEmail.val());
-
+    console.log(loggedInUsername);
     const employeePassword = $('input[name=login-password]');
     const loggedInEmployeePassword = employeePassword.val();
     console.log(loggedInEmployeePassword);
+
+    // loggedInUser =  {username: loggedInUsername}
+    loggedInUser = globalEmployees.filter(globalEmployee => loggedInUsername === globalEmployees[i].username);
+    debugger  
+    // getUser();
+    
     loginEmployee(loggedInUsername, loggedInEmployeePassword);
-    getAllEmployees();
-    // get the specific user who is logged in
-    function getUser() {
-        $.ajax({
-            method: 'GET',
-            url: '/users/${loggedInUsername}',
-            dataType: 'json',
-           success: function getUser(empData) {
-                loggedInUsername = username
-                console.log(loggedInUsername);
-            }
-        });
-    };
-    loggedInUser = getUser();
-    console.log(loggedInUser);
-  
 
-    $('.js-logged-in-employee').append(`You are logged in as ${loggedInUser.firstName} ${loggedInUser.lastName}`);
     document.getElementById("js-login-form").reset();
-    // getAllEmployees();
-
+    
+    
 });
+//get the specific user who is logged in
+// function getUser() {
+//     console.log('inside getUser')
+//     $.ajax({
+//         method: 'GET',
+//         url: `/users/${loggedInUsername}`,
+//         dataType: 'json',
+//         success: function getUser(empData) {
+//             console.log(empData);
+//             $('.js-logged-in-employee').append(`You are logged in as ${empData.firstName} ${empData.lastName}`);
+//         }
+        // success: function getUser(empData) {
+        //     loggedInUser = (empData)
+        //     console.log(loggedInUser);
+        //     $('.js-logged-in-employee').append(`You are logged in as ${loggedInUser.firstName} ${loggedInuser.lastName}`);
+        // }
+//     });
+// };
 
 function addNewEmployee(employeeData) {
     console.log('inside add');
@@ -79,6 +82,8 @@ function addNewEmployee(employeeData) {
         contentType: 'application/json',
         success: function (empData) {
             console.log('employee added');
+            getAllEmployees();
+            renderEmployeeList();
         }
     });
 }
@@ -96,12 +101,17 @@ function loginEmployee(loggedInUsername, loggedInEmployeePassword) {
         contentType: 'application/json',
         success: function (empData) {
             console.log(empData);
+            getAllEmployees();
+            //getUser();
+            renderEmployeeList();
+        },
+        statusCode: {
+            401: function () {
+                alert('Incorrect Username or Password');
+            }
         }
     });
-
-
-    // $('.js-logged-in-employee').append(`You are logged in as ${loggedInUser.firstName} ${loggedInUser.lastName}`);
-    // document.getElementById("js-login-form").reset();
+    
 }
 
 function getMockData() {
@@ -132,7 +142,7 @@ function displayEmployees(workers) {
     globalEmployees = workers;
     for (let i = 0; i < globalEmployees.length; i++) {
         const empInfoHTML = (
-            ` <div class = "current-employee" data-email="${globalEmployees[i].emailAddress}">
+            ` <div class = "current-employee" data-username="${globalEmployees[i].username}">
                     <h2 class = "js-last-name employee-box"> ${globalEmployees[i].lastName}</h2>
                     <h2 class = "js-first-name employee-box"> ${globalEmployees[i].firstName}</h2>
                     <h2 class = "js-points-received employee-box"> ${globalEmployees[i].pointsReceived}</h2>
@@ -141,22 +151,25 @@ function displayEmployees(workers) {
               </div>
             `
         );
-        $('row.employee-boxes').append(empInfoHTML);
-    }
+     $('row.employee-boxes').append(empInfoHTML);     
+    }    
 }
-$('.current-employee').click(function (event) {
-    // $('.employee-boxes').click(function (event) {
+
+$('row.employee-boxes').click(function (event) {
+    console.log('employee clicked');    
     selectAndDisplayEmployee();
     displayEmployeeTransactions();
 });
 
 function selectAndDisplayEmployee() {
     //get the selected employee and display his / her points
+    // let selectedEmployeeUsername = ($(event.Target).data('username'));
+    // let selectedEmployeeUsername = ($(event.srcElement).data('username'));
 
-    let selectedEmployeeUsername = ($(event.currentTarget).data('username'));
     console.log(selectedEmployeeUsername);
     console.log("sending to individual-employee addpoints section");
     let selectedEmployee = globalEmployees.filter(globalEmployee => selectedUsername === globalEmployee.username);
+
     if (loggedInUser.pointsRemaining <= 0) {
         alert("You have used your alloted 100 points for this year. Please give your recognition verbally!")
     }
@@ -296,8 +309,7 @@ $("form[name=add-points-form]").submit(function (event) {
     const goal = corpGoal.val();
     const pointsDropdown = $('select[name=points]');
     const points = parseInt(pointsDropdown.val());
-    //************************************************************************************** */
-    //do I still use the loggedInUser?
+
     let newTransaction = {
         senderFirstName: loggedInUser.firstName,
         senderLastName: loggedInUser.lastName,
@@ -366,6 +378,20 @@ function addNewTranx(tranxData) {
         resolve(tranxData);
     })
 }
+
+// function addNewTranx(transactionData) {
+//     console.log('inside addNewTransaction');
+//     $.ajax({
+//         method: 'post',
+//         url: '/transactions',
+//         dataType: 'json',
+//         data: JSON.stringify(transactionData),
+//         contentType: 'application/json',
+//         success: function (tranxData) {
+//             console.log('transaction added');
+//         }
+//     });
+// }
 
 function getTranxData() {
     let TRANX_DATA_STRING = localStorage.getItem('TRANX_DATA');
