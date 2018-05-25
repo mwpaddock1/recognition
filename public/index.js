@@ -41,36 +41,16 @@ $("form[name=login-form]").submit(function (event) {
     const employeePassword = $('input[name=login-password]');
     const loggedInEmployeePassword = employeePassword.val();
     console.log(loggedInEmployeePassword);
-
-    // loggedInUser =  {username: loggedInUsername}
-    loggedInUser = globalEmployees.filter(globalEmployee => loggedInUsername === globalEmployees[i].username);
-    debugger  
-    // getUser();
-    
     loginEmployee(loggedInUsername, loggedInEmployeePassword);
 
     document.getElementById("js-login-form").reset();
-    
-    
 });
-//get the specific user who is logged in
-// function getUser() {
-//     console.log('inside getUser')
-//     $.ajax({
-//         method: 'GET',
-//         url: `/users/${loggedInUsername}`,
-//         dataType: 'json',
-//         success: function getUser(empData) {
-//             console.log(empData);
-//             $('.js-logged-in-employee').append(`You are logged in as ${empData.firstName} ${empData.lastName}`);
-//         }
-        // success: function getUser(empData) {
-        //     loggedInUser = (empData)
-        //     console.log(loggedInUser);
-        //     $('.js-logged-in-employee').append(`You are logged in as ${loggedInUser.firstName} ${loggedInuser.lastName}`);
-        // }
-//     });
-// };
+
+function parseJwt(token) {
+    var base64Url = token.split('.')[1];
+    var base64 = base64Url.replace('-', '+').replace('_', '/');
+    return JSON.parse(window.atob(base64));
+};
 
 function addNewEmployee(employeeData) {
     console.log('inside add');
@@ -102,7 +82,9 @@ function loginEmployee(loggedInUsername, loggedInEmployeePassword) {
         success: function (empData) {
             console.log(empData);
             getAllEmployees();
-            //getUser();
+            let tokenData = parseJwt(empData.authToken);
+            loggedInUser = tokenData.user;
+            $('.js-logged-in-employee').append(`You are logged in as ${loggedInUser.firstName} ${loggedInUser.lastName}`);
             renderEmployeeList();
         },
         statusCode: {
@@ -111,7 +93,6 @@ function loginEmployee(loggedInUsername, loggedInEmployeePassword) {
             }
         }
     });
-    
 }
 
 function getMockData() {
@@ -151,22 +132,19 @@ function displayEmployees(workers) {
               </div>
             `
         );
-     $('row.employee-boxes').append(empInfoHTML);     
-    }    
+        $('row.employee-boxes').append(empInfoHTML);
+    }
 }
 
-$('row.employee-boxes').click(function (event) {
-    console.log('employee clicked');    
-    selectAndDisplayEmployee();
+$('row.employee-boxes').on('click', '.current-employee', function (event) {
+    let selectedEmployeeUsername =$(this).data('username');
+    selectAndDisplayEmployee(selectedEmployeeUsername);
     displayEmployeeTransactions();
 });
 
-function selectAndDisplayEmployee() {
-    //get the selected employee and display his / her points
-    // let selectedEmployeeUsername = ($(event.Target).data('username'));
-    // let selectedEmployeeUsername = ($(event.srcElement).data('username'));
-
-    console.log(selectedEmployeeUsername);
+function selectAndDisplayEmployee(selectedUsername) {
+    //get the selected employee and display his / her points    
+   
     console.log("sending to individual-employee addpoints section");
     let selectedEmployee = globalEmployees.filter(globalEmployee => selectedUsername === globalEmployee.username);
 
@@ -351,47 +329,47 @@ function updateEmployeePoints(newTransaction) {
     sender.pointsRemaining = sender.pointsRemaining - newTransaction.points;
 }
 //this function has both MOCK_DATA and TRANX_DATA  *****************************************
-function addNewTranx(tranxData) {
-    return new Promise((resolve, reject) => {
-        let TRANX_DATA = getTranxData();
-        //also include the new employee
-        TRANX_DATA.transactions.push(tranxData);
-        setTranxData(TRANX_DATA);
+// function addNewTranx(tranxData) {
+//     return new Promise((resolve, reject) => {
+//         let TRANX_DATA = getTranxData();
+//         //also include the new employee
+//         TRANX_DATA.transactions.push(tranxData);
+//         setTranxData(TRANX_DATA);
 
-        let MOCK_DATA = getMockData();
+//         let MOCK_DATA = getMockData();
 
-        function findRecipient(employee) {
-            return employee.username === tranxData.recipientUsername;
-        }
-
-        let recipient = MOCK_DATA.employees.find(findRecipient);
-        recipient.pointsReceived = recipient.pointsReceived + tranxData.points
-
-        function findSender(employee) {
-            return employee.username === tranxData.senderUsername
-        }
-        let sender = MOCK_DATA.employees.find(findSender)
-        sender.pointsGiven = sender.pointsGiven + tranxData.points;
-
-        sender.pointsRemaining = sender.pointsRemaining - tranxData.points
-        setMockData(MOCK_DATA)
-        resolve(tranxData);
-    })
-}
-
-// function addNewTranx(transactionData) {
-//     console.log('inside addNewTransaction');
-//     $.ajax({
-//         method: 'post',
-//         url: '/transactions',
-//         dataType: 'json',
-//         data: JSON.stringify(transactionData),
-//         contentType: 'application/json',
-//         success: function (tranxData) {
-//             console.log('transaction added');
+//         function findRecipient(employee) {
+//             return employee.username === tranxData.recipientUsername;
 //         }
-//     });
+
+//         let recipient = MOCK_DATA.employees.find(findRecipient);
+//         recipient.pointsReceived = recipient.pointsReceived + tranxData.points
+
+//         function findSender(employee) {
+//             return employee.username === tranxData.senderUsername
+//         }
+//         let sender = MOCK_DATA.employees.find(findSender)
+//         sender.pointsGiven = sender.pointsGiven + tranxData.points;
+
+//         sender.pointsRemaining = sender.pointsRemaining - tranxData.points
+//         setMockData(MOCK_DATA)
+//         resolve(tranxData);
+//     })
 // }
+
+function addNewTranx(transactionData) {
+    console.log('inside addNewTransaction');
+    $.ajax({
+        method: 'post',
+        url: '/transactions',
+        dataType: 'json',
+        data: JSON.stringify(transactionData),
+        contentType: 'application/json',
+        success: function (transactionData) {
+            console.log('transaction added');
+        }
+    });
+}
 
 function getTranxData() {
     let TRANX_DATA_STRING = localStorage.getItem('TRANX_DATA');
