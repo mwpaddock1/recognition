@@ -17,11 +17,19 @@ const TransactionSchema = mongoose.Schema({
     type: String,
     required: true
   },
-  recipientEmailAddress: {
+  recipientUsername: {
     type: String,
     required: true,
   },
-  senderEmailAddress: {
+  senderUsername: {
+    type: String,
+    required: true,
+  },
+  senderFirstName: {
+    type: String,
+    required: true,
+  },
+  senderLastName: {
     type: String,
     required: true,
   }
@@ -33,8 +41,10 @@ TransactionSchema.methods.serialize = function () {
     action: this.action,
     goal: this.goal,
     points: this.points,
-    recipientEmailAddress: this.recipientEmailAddress,
-    senderEmailAddress: this.senderEmailAddress
+    recipientUsername: this.recipientUsername,
+    senderUsername: this.senderUsername,    
+    senderFirstName: this.senderFirstName,
+    senderLastName: this.senderLastName
   };
 };
 const Transaction = mongoose.model('Transaction', TransactionSchema);

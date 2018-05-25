@@ -19,23 +19,38 @@ const jsonParser = bodyParser.json();
 // passport.use(jwtStrategy);
 // const jwt = require('jsonwebtoken');
 //POST a new transaction
-router.post('/', (req, res) => {
+// router.post('/', (req, res) => {
+router.post('/', jsonParser, (req, res) => {
   const requiredFields = ['points', 'goal', 'action', 'recipientEmailAddress', 'senderEmailAddress'];
   let {
     points,
     goal,
     action,
-    recipientEmailAddress,
-    senderEmailAddress
+    recipientUsername,
+    senderUsername,
+    senderFirstName,
+    senderLastName
   } = req.body;
+  // return Transaction.create({
+  //     points: points,
+  //     goal: goal,
+  //     action: action,
+  //     recipientEmailAddress: recipientEmailAddress,
+  //     senderEmailAddress: senderEmailAddress
+  //   })
   return Transaction.create({
-      points: points,
-      goal: goal,
-      action: action,
-      recipientEmailAddress: recipientEmailAddress,
-      senderEmailAddress: senderEmailAddress
+      points,
+      goal,
+      action,
+      recipientUsername,
+      senderUsername,
+      senderFirstName,
+      senderLastName
     })
-    .then(transaction => res.status(201).json(transaction.serialize()));
+    .then(transaction => {
+      console.log(transaction);
+      return res.status(201).json(transaction.serialize());
+    });
 });
 //GET the list of transactions
 router.get('/', (req, res) => {

@@ -109,7 +109,6 @@ router.post('/', jsonParser, (req, res) => {
   lastName = lastName.trim();
 
   return User.find({
-        // emailAddress: emailAddress
         username
       }
       // ,
@@ -145,10 +144,8 @@ router.post('/', jsonParser, (req, res) => {
       });
     })
     .then(user => {
-      console.log(user);
-      
+      console.log(user);      
       return res.status(201).json(user.serialize());
-
     })
     .catch(err => {
       // Forward validation errors on to the client, otherwise give a 500
