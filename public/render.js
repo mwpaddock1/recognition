@@ -21,6 +21,9 @@ $('.logout-button').on('click', function (event) {
 $('.employee-list-button').click(function (event) {
     renderEmployeeList()
 });
+$('.add-points-button').click(function (event) {
+    renderEmployeeList()
+});
 
 $('.give-points-button').click(function (event) {
     $('.individual-info-container').removeClass('hidden');
