@@ -10,7 +10,6 @@ $("form[name=sign-up-form]").submit(function (event) {
         $(event.currentTarget).serializeArray();
     let reformattedArray = inputArray.map(item => {
         let rObj = {};
-        console.log(item);
         rObj[item.name] = item.value;
         return rObj;
     });
@@ -40,7 +39,6 @@ $("form[name=login-form]").submit(function (event) {
     console.log(loggedInUsername);
     const employeePassword = $('input[name=login-password]');
     const loggedInEmployeePassword = employeePassword.val();
-    console.log(loggedInEmployeePassword);
     loginEmployee(loggedInUsername, loggedInEmployeePassword);
 
     document.getElementById("js-login-form").reset();
@@ -53,7 +51,7 @@ function parseJwt(token) {
 };
 
 function addNewEmployee(employeeData) {
-    console.log('inside add');
+    console.log('inside addNewEmployee');
     $.ajax({
         method: 'POST',
         url: '/users',
@@ -107,7 +105,7 @@ function setMockData(MOCK_DATA) {
 }
 
 function getAllEmployees() {
-    console.log('inside getAll');
+    console.log('inside getAllEmployees');
     $.ajax({
         method: 'GET',
         url: '/users',
@@ -120,6 +118,7 @@ function getAllEmployees() {
 }
 
 function displayEmployees(workers) {
+    console.log('inside display Employees');
     globalEmployees = workers;
     for (let i = 0; i < globalEmployees.length; i++) {
         const empInfoHTML = (
@@ -146,8 +145,6 @@ $('row.employee-boxes').on('click', '.current-employee', function (event) {
 // function selectAndDisplayEmployee(selectedUsername) {
 function selectAndDisplayEmployee(selectedEmployeeUsername) {
     //get the selected employee and display his / her points    
-
-    console.log("sending to individual-employee addpoints section");
     let selectedEmployee = globalEmployees.filter(globalEmployee =>
         selectedEmployeeUsername === globalEmployee.username);
     if (loggedInUser.pointsRemaining <= 0) {
@@ -167,7 +164,6 @@ function selectAndDisplayEmployee(selectedEmployeeUsername) {
         $('.employee-page-title').append(`Recognition for ${selectedIndividual.firstName} ${ selectedIndividual.lastName}`);
         return selectedIndividual
     }
-
 }
 
 //get and sort the transactions for the selected employee
@@ -175,12 +171,9 @@ function selectAndDisplayEmployee(selectedEmployeeUsername) {
 function displayEmployeeTransactions(awards) {
     console.log('inside displayEmployeeTransactions');
     globalTransactions = awards;
-    for (let i = 0; i < globalTransactions.length; i++) {
-        console.log(globalTransactions[i].senderFirstName);
-    }
+    for (let i = 0; i < globalTransactions.length; i++) {}
     //sent 
     let highlightedEmployeeSenderInfo = globalTransactions.filter(globalTransaction => (globalTransaction.senderUsername === selectedIndividual.username));
-    console.log(highlightedEmployeeSenderInfo.length);
 
     //then pick out the transactions related to the highlighted employee
     let sortedSentTransactions = highlightedEmployeeSenderInfo.reduce(function (allSentTransactions, transaction) {
@@ -236,7 +229,7 @@ function displayEmployeeTransactions(awards) {
             return allReceivedTransactions;
         }
     }, {});
-    for (let i in sortedRecipientTransactions) {        
+    for (let i in sortedRecipientTransactions) {
         for (let j = 0; j < sortedRecipientTransactions[i].length; j++) {
             function findSortedRecipientSender(sortedEmployee) {
                 return sortedEmployee.username === sortedRecipientTransactions[i][j].senderUsername
@@ -254,9 +247,8 @@ function displayEmployeeTransactions(awards) {
             //break the transactions out by corporate goal
             if (j === 0) {
                 const goalTitle = recipientTransactionInfo.goal;
-
-                const recipientCategoryInfoHTML = 
-                (`<section class="points-received">
+                const recipientCategoryInfoHTML =
+                    (`<section class="points-received">
                   <p class="ellipse ellipse-display ${goalTitle}-ellipse">${goalTitle}</p>
                 </section>`);
                 $("row.points-received-box").append(recipientCategoryInfoHTML);
@@ -285,7 +277,6 @@ function formatRecipientInfo(recipientTransactionInfo) {
     return recipientInfoHTML;
 };
 
-
 $("form[name=add-points-form]").submit(function (event) {
     event.preventDefault();
     $('.employee-boxes').empty();
@@ -307,35 +298,47 @@ $("form[name=add-points-form]").submit(function (event) {
         action: action,
         recipientUsername: $("#recipient").val()
     }
-    console.log(action);
-    console.log(goal);
-    console.log(points);
+    console.log(newTransaction);
 
-    addNewTransaction(newTransaction)
-        .then(updateEmployeePoints)
-        .then(getAllEmployees)
-    // .then(displayEmployees);
-    renderEmployeeList();
+    addNewTransaction(newTransaction);
+
     document.getElementById("js-add-points-form").reset();
 });
 
-function updateEmployeePoints(newTransaction) {
-    console.log('inside updateEmployeePoints');
+function updateSender(user) {
+    console.log(`inside updateSender ${user.username}`);
+    $.ajax({
+        method: 'PUT',
+        url: `/users/PutPointsSentBy/${user.username}`,
+        dataType: 'json',
+        data: JSON.stringify({
+            pointsGiven: user.pointsGiven,
+            pointsRemaining: user.pointsRemaining
+        }),
+        contentType: 'application/json',
+        success: function () {
 
-    function findRecipient(employee) {
-        return employee.username === newTransaction.recipientUsername;
-    }
-    let recipient = globalEmployees.find(findRecipient);
-    recipient.pointsReceived = (recipient.pointsReceived + newTransaction.points);
-
-    function findSender(employee) {
-        return employee.username === newTransaction.senderUsername;
-    }
-    let sender = globalEmployees.find(findSender);
-    sender.pointsGiven = sender.pointsGiven + newTransaction.points;
-    sender.pointsRemaining = sender.pointsRemaining - newTransaction.points;
+            console.log('sender updated');
+        }
+    });
 }
-//this function has both MOCK_DATA and TRANX_DATA  *****************************************
+
+function updateRecipient(user) {
+    console.log(`inside updateRecipient ${user.username}`);
+    $.ajax({
+        method: 'PUT',
+        url: `/users/PutPointsGivenToRecipient/${user.username}`,
+        dataType: 'json',
+        data: JSON.stringify({
+            pointsReceived: user.pointsReceived
+        }),
+        contentType: 'application/json',
+        success: function () {
+            console.log('recipient updated');
+        }
+    });
+}
+
 function addNewTransaction(transactionData) {
     console.log('inside addNewTransaction');
     $.ajax({
@@ -346,9 +349,33 @@ function addNewTransaction(transactionData) {
         contentType: 'application/json',
         success: function (transData) {
             console.log('transaction added');
-            // getAllTransactions();
+
+            for (let i = 0; i < globalEmployees.length; i++) {
+                if (globalEmployees[i].username === transactionData.recipientUsername) {
+                    let awardee = globalEmployees[i];
+                    awardee.pointsReceived = (parseInt(awardee.pointsReceived) + transactionData.points);
+
+                    updateRecipient(awardee);
+                }
+            }
+            let sender = globalEmployees.filter(globalEmployee =>
+                transactionData.senderUsername === globalEmployee.username);
+
+            sender[0].pointsGiven = sender[0].pointsGiven + transactionData.points;
+            // sender.pointsGiven = sender.pointsGiven + transactionData.points;
+            sender[0].pointsRemaining = sender[0].pointsRemaining - transactionData.points;
+            // sender.pointsRemaining = sender.pointsRemaining - transactionData.points;
+            console.log(sender[0]);
+            updateSender(sender[0]);
+
+            getAllEmployees();
+            console.log('getAllEmployees line 365');
+            renderEmployeeList();
+
         }
+
     });
+
 }
 
 function getTranxData() {
@@ -371,6 +398,19 @@ function getAllTransactions() {
         contentType: 'application/json',
         success: function (transData) {
             displayEmployeeTransactions(transData.transactions);
+        }
+    });
+}
+//DELETE
+function deleteEmployee(selectedIndividual) {
+    console.log('inside deleteEmployee');
+    $.ajax({
+        method: 'DELETE',
+        url: '/users',
+        success: function () {
+            console.log('employee deleted');
+            getAllEmployees();
+            renderEmployeeList();
         }
     });
 }

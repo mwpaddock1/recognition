@@ -144,7 +144,7 @@ router.post('/', jsonParser, (req, res) => {
       });
     })
     .then(user => {
-      console.log(user);      
+      console.log(user);
       return res.status(201).json(user.serialize());
     })
     .catch(err => {
@@ -228,16 +228,20 @@ router.put('/PutPointsGivenToRecipient/:username', (req, res) => {
       updated[field] = req.body[field];
     }
   });
+  let query = {
+    username: req.params.username
+  }
   User
-    .findOneAndUpdate(req.params.username, {
+    .findOneAndUpdate(query, {
       $set: updated
     }, {
-      new: true
+      returnNewDocument: true
     })
-
     .then(updatedUser => {
-      if (updatedUser != null)
-        return res.status(204).json(updatedUser.serialize())
+      console.log(updatedUser);
+      if (updatedUser != null) {
+        return res.status(204).end();
+      }
     })
     .catch(err => res.status(500).json(err))
 })
