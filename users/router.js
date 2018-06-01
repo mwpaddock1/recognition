@@ -110,10 +110,10 @@ router.post('/', jsonParser, (req, res) => {
 
   return User.find({
         username
+      },
+      (err, employee) => {
+        if (err) return res.status(500).send(err)
       }
-      // ,
-      // (err, employee) => {
-      //   if (err) return res.status(500).send(err)}
     )
     .count()
     .then(count => {
@@ -165,16 +165,16 @@ router.get('/', (req, res) => {
     .find()
     .then(users => {
       res.json({
-          users: users.map(
-            (user => user.serialize()))
-        })
-        .catch(err => {
-          console.error(err);
-          res.status(500).json({
-            message: 'Internal Server Error'
-          })
-        });
+        users: users.map(
+          (user => user.serialize()))
+      });
+    })
+  .catch(err => {
+    console.error(err);
+    res.status(500).json({
+      message: 'Internal Server Error'
     });
+  });
 });
 
 //GET a specific employee
@@ -194,7 +194,7 @@ router.get('/:username', (req, res) => {
     });
 });
 
-//PUT ENDPOINT -Points Given the only things that are updated are the score tallies which fall in the employees section- 
+//PUT ENDPOINT -Points Given 
 router.put('/PutPointsSentBy/:username', (req, res) => {
   const updated = {};
   const updateableFields = ['pointsGiven', 'pointsRemaining'];
@@ -204,21 +204,24 @@ router.put('/PutPointsSentBy/:username', (req, res) => {
       updated[field] = req.body[field];
     }
   });
+  let query = {
+    username: req.params.username
+  }
   User
-    .findOneAndUpdate(req.params.username, {
+    .findOneAndUpdate(query, {
       $set: updated
     }, {
-      new: true
+      returnNewDocument: true
     })
 
     .then(updatedUser => {
       if (updatedUser != null)
-        return res.status(204).json(updatedUser.serialize())
+        return res.status(204).end();
     })
     .catch(err => res.status(500).json(err))
 })
 
-//PUT ENDPOINT -Points Received - the only things that are updated are the score tallies which fall in the employees section- 
+//PUT ENDPOINT -Points Received 
 router.put('/PutPointsGivenToRecipient/:username', (req, res) => {
   const updated = {};
   const updateableFields = ['pointsReceived'];
@@ -247,30 +250,20 @@ router.put('/PutPointsGivenToRecipient/:username', (req, res) => {
 })
 
 //DELETE ENDPOINT an employee
-router.delete('/:username', (req, res) => {
+router.delete('/:id', (req, res) => {
   User
-    // .findById(req.params.id - but we want emailAddress)
-    .findOne({
-      username: req.params.username
-    })
-    .then(user => {
-      User
-        .findByIdAndRemove(user.id)
-        .then(() => {
-          console.log(`Deleted employee with id\`${user.id}\``);
-          res.status(204).json({
-            message: 'success'
-          });
-        })
-    })
-    .catch(err => {
-      console.error(err);
-      res.status(500).json({
-        error: 'something went terribly wrong'
-      });
+    .findByIdAndRemove(req.params.id)
+    .then(() => {
+      console.log(`Deleted employee with id \`${req.params.id}\``);
+      res.status(204).end();
     });
 });
-//There is no PUT for Transactions as they are not changed
+//  User.deleteOne({id: req.params.id})
+//  .catch(err => console.log(err));
+// console.log(`Deleted employee with id \`${req.params.id}\``);
+// res.status(204).end();
+//});
+
 module.exports = {
   router
 };

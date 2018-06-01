@@ -7,19 +7,8 @@ const {
 } = require('./models');
 const router = express.Router();
 const jsonParser = bodyParser.json();
-// const {
-//   router: authRouter,
-//   localStrategy,
-//   jwtStrategy
-// } = require('../auth');
-// const {
-//   jwtAuth
-// } = require('../auth/router');
-// passport.use(localStrategy);
-// passport.use(jwtStrategy);
-// const jwt = require('jsonwebtoken');
+
 //POST a new transaction
-// router.post('/', (req, res) => {
 router.post('/', jsonParser, (req, res) => {
   const requiredFields = ['points', 'goal', 'action', 'recipientEmailAddress', 'senderEmailAddress'];
   let {
@@ -31,13 +20,7 @@ router.post('/', jsonParser, (req, res) => {
     senderFirstName,
     senderLastName
   } = req.body;
-  // return Transaction.create({
-  //     points: points,
-  //     goal: goal,
-  //     action: action,
-  //     recipientEmailAddress: recipientEmailAddress,
-  //     senderEmailAddress: senderEmailAddress
-  //   })
+  
   return Transaction.create({
       points,
       goal,
@@ -66,14 +49,11 @@ router.get('/', (req, res) => {
           res.status(500).json({
             message: 'Internal Server Error'
           })
-
         });
-      // console.log(`this is a ${transaction}`);
     });
 });
 
-//GET a transaction sent from a specific
-// 
+//GET a transaction sent from a specific employee
 router.get('/:senderEmailAddress', (req, res) => {
   Transaction
     .findOne({
@@ -108,7 +88,7 @@ router.get('/GetBySender/:senderEmailAddress', (req, res) => {
     });
 });
 
-//GET all the transactions for a recipient
+//GET all the transactions given to a recipient
 router.get('/GetByRecipient/:recipientEmailAddress', (req, res) => {
   Transaction
     .find({

@@ -15,8 +15,7 @@ $("form[name=sign-up-form]").submit(function (event) {
     });
     const reducingFunction = (obj1, obj2) =>
         Object.assign(obj1, obj2);
-    //**************************************************************************** */
-    //we put this newEmployee as an argument in the addNewEmployee function which also gives the new employee starting points -but it should really be the serialized employee with no password
+
     let newEmployee = (reformattedArray.reduce(reducingFunction));
     console.log(newEmployee);
 
@@ -93,16 +92,16 @@ function loginEmployee(loggedInUsername, loggedInEmployeePassword) {
     });
 }
 
-function getMockData() {
-    let MOCK_DATA_STRING = localStorage.getItem('MOCK_DATA');
-    let MOCK_DATA = JSON.parse(MOCK_DATA_STRING);
-    return MOCK_DATA;
-}
+// function getMockData() {
+//     let MOCK_DATA_STRING = localStorage.getItem('MOCK_DATA');
+//     let MOCK_DATA = JSON.parse(MOCK_DATA_STRING);
+//     return MOCK_DATA;
+//}
 
-function setMockData(MOCK_DATA) {
-    let MOCK_DATA_STRING = JSON.stringify(MOCK_DATA);
-    localStorage.setItem('MOCK_DATA', MOCK_DATA_STRING);
-}
+// function setMockData(MOCK_DATA) {
+//     let MOCK_DATA_STRING = JSON.stringify(MOCK_DATA);
+//     localStorage.setItem('MOCK_DATA', MOCK_DATA_STRING);
+// }
 
 function getAllEmployees() {
     console.log('inside getAllEmployees');
@@ -127,7 +126,7 @@ function displayEmployees(workers) {
                     <h2 class = "js-first-name employee-box"> ${globalEmployees[i].firstName}</h2>
                     <h2 class = "js-points-received employee-box"> ${globalEmployees[i].pointsReceived}</h2>
                     <h2 class = "js-points-given employee-box"> ${globalEmployees[i].pointsGiven}</h2>
-                    <h2 class = "js-points-remaining employee-box"> ${globalEmployees[i].pointsRemaining}</h2>                    
+                    <h2 class = "js-points-remaining employee-box"> ${globalEmployees[i].pointsRemaining}</h2>                   
               </div>
             `
         );
@@ -142,13 +141,16 @@ $('row.employee-boxes').on('click', '.current-employee', function (event) {
     getAllTransactions();
 });
 
-// function selectAndDisplayEmployee(selectedUsername) {
 function selectAndDisplayEmployee(selectedEmployeeUsername) {
     //get the selected employee and display his / her points    
     let selectedEmployee = globalEmployees.filter(globalEmployee =>
         selectedEmployeeUsername === globalEmployee.username);
+    if (loggedInUser.username === 'hr@fizzbuzz.com') {
+        $('.delete-employee-button').removeClass('hidden');
+    }
     if (loggedInUser.pointsRemaining <= 0) {
-        alert("You have used your alloted 100 points for this year. Please give your recognition verbally!")
+        alert("You have used your alloted 100 points for this year. Please request additional points from Human Resources (hr@fizzbuzz.com) or give your recognition verbally!");
+        renderEmployeeList();
     }
     if (selectedEmployee.username === loggedInUser.username) {
         alert("You may not give points to yourself!")
@@ -162,6 +164,10 @@ function selectAndDisplayEmployee(selectedEmployeeUsername) {
         let recipientUsernameInput = $("#recipient");
         recipientUsernameInput.val(selectedIndividual.username);
         $('.employee-page-title').append(`Recognition for ${selectedIndividual.firstName} ${ selectedIndividual.lastName}`);
+        $('.delete-employee-button').on("click", function (event) {
+            console.log('delete button clicked');
+            deleteEmployee(selectedIndividual.username)
+        });
         return selectedIndividual
     }
 }
@@ -192,12 +198,17 @@ function displayEmployeeTransactions(awards) {
             function findSortedSenderRecipient(sortedEmp) {
                 return sortedEmp.username === sortedSentTransactions[i][j].recipientUsername
             }
+
             let sortedSender = globalEmployees.find(findSortedSenderRecipient);
+
+            // maybe have to get this from the transactions -let sortedTransaction = globalTransactions.find etcc...
             sentTransactionInfo = {
                 goal: sortedSentTransactions[i][j].goal,
                 points: sortedSentTransactions[i][j].points,
                 action: sortedSentTransactions[i][j].action,
                 recipientUsername: sortedSentTransactions[i][j].recipientUsername,
+                // senderFirstName: sortedSentTransactions[i][j].senderFirstName,
+                // senderLastName: sortedSentTransactions[i][j].senderLastName,
                 senderFirstName: sortedSender.firstName,
                 senderLastName: sortedSender.lastName,
             }
@@ -241,8 +252,8 @@ function displayEmployeeTransactions(awards) {
                 points: sortedRecipientTransactions[i][j].points,
                 action: sortedRecipientTransactions[i][j].action,
                 senderUsername: sortedRecipientTransactions[i][j].senderUsername,
-                recipientFirstName: sortedRecipient.firstName,
-                recipientLastName: sortedRecipient.lastName
+                // recipientFirstName: sortedRecipient.firstName,
+                // recipientLastName: sortedRecipient.lastName
             }
             //break the transactions out by corporate goal
             if (j === 0) {
@@ -262,7 +273,8 @@ function displayEmployeeTransactions(awards) {
 
 function formatSenderInfo(sentTransactionInfo) {
     const sentInfoHTML = (
-        `<section class ="points-given" role="region">                              <h2> ${sentTransactionInfo.points} points to ${sentTransactionInfo.senderFirstName} ${sentTransactionInfo.senderLastName} for:<br><i>${sentTransactionInfo.action}</i><h2> 
+        `<section class ="points-given" role="region">                             
+         <h2> ${sentTransactionInfo.points} points to ${sentTransactionInfo.senderFirstName} ${sentTransactionInfo.senderLastName} for:<br><i>${sentTransactionInfo.action}</i><h2> 
         </section>`
     );
     $("row.points-given-box").append(sentInfoHTML);
@@ -271,7 +283,9 @@ function formatSenderInfo(sentTransactionInfo) {
 
 function formatRecipientInfo(recipientTransactionInfo) {
     const recipientInfoHTML = (
-        `<section class ="points-received" role="region">                            <h2> ${recipientTransactionInfo.points} points from ${recipientTransactionInfo.recipientFirstName} ${recipientTransactionInfo.recipientLastName} for:<br><i>${recipientTransactionInfo.action}</i><h2>                                  </section>`
+        `<section class ="points-received" role="region">                           
+        <h2> ${recipientTransactionInfo.points} points from ${recipientTransactionInfo.recipientFirstName} ${recipientTransactionInfo.recipientLastName} for:<br><i>${recipientTransactionInfo.action}</i><h2>                                  
+        </section>`
     );
     $("row.points-received-box").append(recipientInfoHTML);
     return recipientInfoHTML;
@@ -317,7 +331,6 @@ function updateSender(user) {
         }),
         contentType: 'application/json',
         success: function () {
-
             console.log('sender updated');
         }
     });
@@ -349,31 +362,27 @@ function addNewTransaction(transactionData) {
         contentType: 'application/json',
         success: function (transData) {
             console.log('transaction added');
-
             for (let i = 0; i < globalEmployees.length; i++) {
                 if (globalEmployees[i].username === transactionData.recipientUsername) {
                     let awardee = globalEmployees[i];
                     awardee.pointsReceived = (parseInt(awardee.pointsReceived) + transactionData.points);
-
                     updateRecipient(awardee);
                 }
             }
-            let sender = globalEmployees.filter(globalEmployee =>
-                transactionData.senderUsername === globalEmployee.username);
+            for (let i = 0; i < globalEmployees.length; i++) {
+                if (globalEmployees[i].username === transactionData.senderUsername) {
+                    let sender = globalEmployees[i];
 
-            sender[0].pointsGiven = sender[0].pointsGiven + transactionData.points;
-            // sender.pointsGiven = sender.pointsGiven + transactionData.points;
-            sender[0].pointsRemaining = sender[0].pointsRemaining - transactionData.points;
-            // sender.pointsRemaining = sender.pointsRemaining - transactionData.points;
-            console.log(sender[0]);
-            updateSender(sender[0]);
+                    sender.pointsGiven = (parseInt(sender.pointsGiven) + transactionData.points);
 
+                    sender.pointsRemaining = (parseInt(sender.pointsRemaining) - transactionData.points);
+                    console.log(sender);
+                    updateSender(sender);
+                }
+            }
             getAllEmployees();
-            console.log('getAllEmployees line 365');
             renderEmployeeList();
-
         }
-
     });
 
 }
@@ -395,6 +404,7 @@ function getAllTransactions() {
         method: 'GET',
         url: '/transactions',
         dataType: 'json',
+
         contentType: 'application/json',
         success: function (transData) {
             displayEmployeeTransactions(transData.transactions);
@@ -402,11 +412,13 @@ function getAllTransactions() {
     });
 }
 //DELETE
-function deleteEmployee(selectedIndividual) {
+function deleteEmployee(username) {
+    let selectedEmployee = globalEmployees.filter(globalEmployee =>
+        username === globalEmployee.username);
     console.log('inside deleteEmployee');
     $.ajax({
         method: 'DELETE',
-        url: '/users',
+        url: '/users/' + selectedEmployee[0].id,
         success: function () {
             console.log('employee deleted');
             getAllEmployees();

@@ -16,18 +16,15 @@ $('.cancel-button').on("click", function (event) {
 $('.logout-button').on('click', function (event) {
     renderRestart()
 });
-$('delete-employee-button').on("click", function (event) {
-    deleteEmployee()
-});
+// $('delete-employee-button').on("click", function (event) {
+//     deleteEmployee(selectedIndividual)
+// });
 
 $('.employee-list-button').click(function (event) {
     renderEmployeeList()
 });
 $('.add-points-button').click(function (event) {
     renderEmployeeList();
-    // if (loggedInUser.emailAddress === 'hr@fizzbuzz.com') {
-    //     $('.delete-employee-button').removeClass('hidden')
-    // }
 });
 
 $('.give-points-button').click(function (event) {
@@ -101,5 +98,5 @@ function renderIndividualEmployeeRecognition() {
     $('.employee-list-button').removeClass('hidden');
     $('.cancel-button').addClass('hidden');
     $('.individual-recognition-summary').removeClass('hidden');
-    
+
 }
