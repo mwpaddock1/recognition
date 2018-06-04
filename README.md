@@ -23,6 +23,12 @@ The corporate goals for which recognition can be awarded are clearly outlined.
 
 <img src="https://user-images.githubusercontent.com/26368079/38955839-cac1ddd6-4323-11e8-8bf7-d67bd071415d.png" width="40%"></img> 
 
+<img src="https://user-images.githubusercontent.com/26368079/40921288-0ba086da-67dd-11e8-86e6-7a72d39d142b.PNG" width="45%"></img>
+
+<img src="https://user-images.githubusercontent.com/26368079/40921302-12114a86-67dd-11e8-8821-636779133866.PNG" width="45%"></img>
+
+<img src="https://user-images.githubusercontent.com/26368079/40921307-16640416-67dd-11e8-9468-fc97d32c1310.PNG" width="45%"></img> 
+
 Technology
 Front End
 •	HTML
