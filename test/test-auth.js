@@ -15,16 +15,10 @@ const {
 } = require('../users');
 const {
     JWT_SECRET
-    //,
-    // TEST_DATABASE_URL,
-    // PORT
 } = require('../config');
 
 const expect = chai.expect;
 
-// This let's us make HTTP requests
-// in our tests.
-// see: https://github.com/chaijs/chai-http
 chai.use(chaiHttp);
 
 describe('Auth endpoints', function () {
@@ -106,7 +100,6 @@ describe('Auth endpoints', function () {
                 });
         });
 
-
         it('Should return a valid auth token', function () {
             return chai
                 .request(app)
@@ -116,8 +109,6 @@ describe('Auth endpoints', function () {
                     expect(res).to.have.status(200);
                     expect(res.body).to.be.an('object');
                     const token = res.body.authToken;
-                    // const token = res.body.token;
-                    // console.log(res.body);
                     expect(token).to.be.a('string');
                     const payload = jwt.verify(token, JWT_SECRET, {
                         algorithm: ['HS256']
@@ -135,6 +126,4 @@ describe('Auth endpoints', function () {
                 });
         });
     });
-
-
 });

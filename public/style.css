@@ -243,7 +243,10 @@ p {
 .points-given {
     font-size: 26px;
 }
-
+.points-received-box h2,
+.points-given-box h2 {
+    font-size: 24px;
+}
 .points-given-box h1,
 .points-received-box h1 {
     font-size: 32px;
@@ -389,7 +392,7 @@ h2.js-last-name.employee-box:hover {
 
 section.points-received h2,
 section.points-given h2 {
-    font-size: 20px;
+    font-size: 24px;
 }
 
 .title-box {
@@ -413,7 +416,7 @@ section.points-given h2 {
 .employee-box {
     box-sizing: border-box;
     display: inline-block;
-    width: 63px;
+    width: 55px;
     padding-top: 5px;
     padding-bottom: 5px;
     font-size: 12px;

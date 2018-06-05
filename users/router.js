@@ -35,13 +35,6 @@ router.post('/', jsonParser, (req, res) => {
     });
   }
 
-  // If the email address and password aren't trimmed we give an error.  Employees might
-  // expect that these will work without trimming (i.e. they want the password
-  // "foobar ", including the space at the end).  We need to reject such values
-  // explicitly so the employees know what's happening, rather than silently
-  // trimming them and expecting the employee to understand.
-  // We'll silently trim the other fields, because they aren't credentials used
-  // to log in, so it's less of a problem.
   const explicityTrimmedFields = ['username', 'password'];
   const nonTrimmedField = explicityTrimmedFields.find(
     field => req.body[field].trim() !== req.body[field]
@@ -62,8 +55,6 @@ router.post('/', jsonParser, (req, res) => {
     },
     password: {
       min: 8,
-      // bcrypt truncates after 72 characters, so let's not give the illusion
-      // of security by storing extra (unused) info
       max: 72
     },
     lastName: {
@@ -119,7 +110,6 @@ router.post('/', jsonParser, (req, res) => {
     .then(count => {
       console.log(count);
       if (count > 0) {
-        // There is an existing employee with the same email address
         return Promise.reject({
           code: 422,
           reason: 'ValidationError',
@@ -148,8 +138,6 @@ router.post('/', jsonParser, (req, res) => {
       return res.status(201).json(user.serialize());
     })
     .catch(err => {
-      // Forward validation errors on to the client, otherwise give a 500
-      // error because something unexpected has happened
       if (err.reason === 'ValidationError') {
         return res.status(err.code).json(err);
       }
@@ -169,12 +157,12 @@ router.get('/', (req, res) => {
           (user => user.serialize()))
       });
     })
-  .catch(err => {
-    console.error(err);
-    res.status(500).json({
-      message: 'Internal Server Error'
+    .catch(err => {
+      console.error(err);
+      res.status(500).json({
+        message: 'Internal Server Error'
+      });
     });
-  });
 });
 
 //GET a specific employee
@@ -258,11 +246,6 @@ router.delete('/:id', (req, res) => {
       res.status(204).end();
     });
 });
-//  User.deleteOne({id: req.params.id})
-//  .catch(err => console.log(err));
-// console.log(`Deleted employee with id \`${req.params.id}\``);
-// res.status(204).end();
-//});
 
 module.exports = {
   router

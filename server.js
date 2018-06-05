@@ -11,9 +11,6 @@ app.use(express.static('public'));
 const mongoose = require('mongoose');
 const passport = require('passport');
 
-// Here we use destructuring assignment with renaming so the three variables
-// called router (from ./users, ./transactions and ./auth) have different names
-
 const {
   router: usersRouter
 } = require('./users');
@@ -45,7 +42,6 @@ const {
 app.use(express.json());
 
 //CORS
-
 app.use(function (req, res, next) {
   res.header('Access-Control-Allow-Origin', '*');
   res.header('Access-Control-Allow-Headers', 'Content-Type');
@@ -79,8 +75,6 @@ app.use('*', (req, res) => {
   });
 });
 
-// Referenced by both runServer and closeServer. closeServer
-// assumes runServer has run and set `server` to a server object
 let server;
 //starts express server and connects to the db
 function runServer() {

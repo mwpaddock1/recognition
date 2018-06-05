@@ -6,7 +6,6 @@ const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
 
 const UserSchema = mongoose.Schema({
-  //(remember the login form has email and the signup form has emailAddress so we can use the hidden id=recipient input)
 
   username: {
     type: String,
@@ -19,12 +18,10 @@ const UserSchema = mongoose.Schema({
   },
   firstName: {
     type: String,
-    // required: true
     default: ''
   },
   lastName: {
     type: String,
-    // required: true
     default: ''
   },
   pointsGiven: {

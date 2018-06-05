@@ -16,9 +16,6 @@ $('.cancel-button').on("click", function (event) {
 $('.logout-button').on('click', function (event) {
     renderRestart()
 });
-// $('delete-employee-button').on("click", function (event) {
-//     deleteEmployee(selectedIndividual)
-// });
 
 $('.employee-list-button').click(function (event) {
     renderEmployeeList()
@@ -36,7 +33,7 @@ function renderSignUpForm() {
     $('.thumbs-up').addClass('hidden');
     $('#js-sign-up-form').removeClass('hidden');
     $('.cancel-button').removeClass('hidden');
-    $('.sign-up-button').removeClass('hidden');
+    $('.sign-in-button').removeClass('hidden');
     $('.login-button').addClass('hidden');
     $('.login-opening-button').addClass('hidden');
     $('.sign-up-opening-button').addClass('hidden');

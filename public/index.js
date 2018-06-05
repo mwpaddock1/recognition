@@ -77,7 +77,7 @@ function loginEmployee(loggedInUsername, loggedInEmployeePassword) {
         data: JSON.stringify(employeeData),
         contentType: 'application/json',
         success: function (empData) {
-            console.log(empData);
+            // console.log(empData);
             getAllEmployees();
             let tokenData = parseJwt(empData.authToken);
             loggedInUser = tokenData.user;
@@ -91,17 +91,6 @@ function loginEmployee(loggedInUsername, loggedInEmployeePassword) {
         }
     });
 }
-
-// function getMockData() {
-//     let MOCK_DATA_STRING = localStorage.getItem('MOCK_DATA');
-//     let MOCK_DATA = JSON.parse(MOCK_DATA_STRING);
-//     return MOCK_DATA;
-//}
-
-// function setMockData(MOCK_DATA) {
-//     let MOCK_DATA_STRING = JSON.stringify(MOCK_DATA);
-//     localStorage.setItem('MOCK_DATA', MOCK_DATA_STRING);
-// }
 
 function getAllEmployees() {
     console.log('inside getAllEmployees');
@@ -152,7 +141,7 @@ function selectAndDisplayEmployee(selectedEmployeeUsername) {
         alert("You have used your alloted 100 points for this year. Please request additional points from Human Resources (hr@fizzbuzz.com) or give your recognition verbally!");
         renderEmployeeList();
     }
-    if (selectedEmployee.username === loggedInUser.username) {
+    if (selectedEmployee[0].username === loggedInUser.username) {
         alert("You may not give points to yourself!")
     } else {
         selectedIndividual = {
@@ -170,7 +159,8 @@ function selectAndDisplayEmployee(selectedEmployeeUsername) {
         });
         return selectedIndividual
     }
-}
+
+};
 
 //get and sort the transactions for the selected employee
 
@@ -180,7 +170,6 @@ function displayEmployeeTransactions(awards) {
     for (let i = 0; i < globalTransactions.length; i++) {}
     //sent 
     let highlightedEmployeeSenderInfo = globalTransactions.filter(globalTransaction => (globalTransaction.senderUsername === selectedIndividual.username));
-
     //then pick out the transactions related to the highlighted employee
     let sortedSentTransactions = highlightedEmployeeSenderInfo.reduce(function (allSentTransactions, transaction) {
         if (transaction.goal in allSentTransactions) {
@@ -192,6 +181,7 @@ function displayEmployeeTransactions(awards) {
             return allSentTransactions;
         }
     }, {});
+
     //then break out the sent recognition and display it
     for (i in sortedSentTransactions) {
         for (let j = 0; j < sortedSentTransactions[i].length; j++) {
@@ -201,16 +191,13 @@ function displayEmployeeTransactions(awards) {
 
             let sortedSender = globalEmployees.find(findSortedSenderRecipient);
 
-            // maybe have to get this from the transactions -let sortedTransaction = globalTransactions.find etcc...
             sentTransactionInfo = {
                 goal: sortedSentTransactions[i][j].goal,
                 points: sortedSentTransactions[i][j].points,
                 action: sortedSentTransactions[i][j].action,
                 recipientUsername: sortedSentTransactions[i][j].recipientUsername,
-                // senderFirstName: sortedSentTransactions[i][j].senderFirstName,
-                // senderLastName: sortedSentTransactions[i][j].senderLastName,
                 senderFirstName: sortedSender.firstName,
-                senderLastName: sortedSender.lastName,
+                senderLastName: sortedSender.lastName
             }
             //break the sent transactions out by corporate goal
             if (j === 0) {
@@ -219,24 +206,32 @@ function displayEmployeeTransactions(awards) {
                     `<section class="points-given"><p class="ellipse ellipse-display ${goalTitle}-ellipse">${goalTitle}</p>
                     </section>`);
                 $("row.points-given-box").append(sentCategoryInfoHTML);
-
-            } else {
-                console.log('not a goal title');
             }
             let senderHTMLResults = formatSenderInfo(sentTransactionInfo);
         }
     };
+
     //then break out the received recognition and display it
     let highlightedEmployeeRecipientInfo = globalTransactions.filter(globalTransaction =>
         (globalTransaction.recipientUsername === selectedIndividual.username)
     )
-    //received
+    console.log(highlightedEmployeeRecipientInfo.length);
+    // if (highlightedEmployeeRecipientInfo.length === 0) {
+    //     console.log(highlightedEmployeeRecipientInfo);
+    //     $("row.points-given-box").append(`<h2><i>No points given</i></h2>`)
+    // } else 
     let sortedRecipientTransactions = highlightedEmployeeRecipientInfo.reduce(function (allReceivedTransactions, transaction) {
         if (transaction.goal in allReceivedTransactions) {
             allReceivedTransactions[transaction.goal].push(transaction);
+            // if (allReceivedTransactions.length === 0) {
+            //     debugger
+            //     $("row.points-received-box").append(`<h2><i>No points received</i></h2>`)
+            // }
+            console.log(allReceivedTransactions);
             return allReceivedTransactions;
         } else {
             allReceivedTransactions[transaction.goal] = [transaction];
+
             return allReceivedTransactions;
         }
     }, {});
@@ -252,8 +247,8 @@ function displayEmployeeTransactions(awards) {
                 points: sortedRecipientTransactions[i][j].points,
                 action: sortedRecipientTransactions[i][j].action,
                 senderUsername: sortedRecipientTransactions[i][j].senderUsername,
-                // recipientFirstName: sortedRecipient.firstName,
-                // recipientLastName: sortedRecipient.lastName
+                recipientFirstName: sortedRecipient.firstName,
+                recipientLastName: sortedRecipient.lastName
             }
             //break the transactions out by corporate goal
             if (j === 0) {
@@ -263,8 +258,6 @@ function displayEmployeeTransactions(awards) {
                   <p class="ellipse ellipse-display ${goalTitle}-ellipse">${goalTitle}</p>
                 </section>`);
                 $("row.points-received-box").append(recipientCategoryInfoHTML);
-            } else {
-                console.log('not a goal title');
             }
             let recipientHTMLResults = formatRecipientInfo(recipientTransactionInfo);
         }
@@ -312,8 +305,6 @@ $("form[name=add-points-form]").submit(function (event) {
         action: action,
         recipientUsername: $("#recipient").val()
     }
-    console.log(newTransaction);
-
     addNewTransaction(newTransaction);
 
     document.getElementById("js-add-points-form").reset();

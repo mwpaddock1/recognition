@@ -10,7 +10,7 @@ const jsonParser = bodyParser.json();
 
 //POST a new transaction
 router.post('/', jsonParser, (req, res) => {
-  const requiredFields = ['points', 'goal', 'action', 'recipientEmailAddress', 'senderEmailAddress'];
+  const requiredFields = ['points', 'goal', 'action', 'recipientUsername', 'senderUsername'];
   let {
     points,
     goal,
@@ -43,7 +43,8 @@ router.get('/', (req, res) => {
       res.json({
           transactions: transactions.map(
             (transaction => transaction.serialize()))
-        })
+        });
+      })
         .catch(err => {
           console.error(err);
           res.status(500).json({
@@ -51,13 +52,12 @@ router.get('/', (req, res) => {
           })
         });
     });
-});
 
 //GET a transaction sent from a specific employee
-router.get('/:senderEmailAddress', (req, res) => {
+router.get('/:senderUsername', (req, res) => {
   Transaction
     .findOne({
-      senderEmailAddress: req.params.senderEmailAddress
+      senderUsername: req.params.senderUsername
     })
     .then(transaction => {
       res.json(transaction.serialize());
@@ -70,10 +70,10 @@ router.get('/:senderEmailAddress', (req, res) => {
 });
 //GET all the transactions from a specific sender
 // 
-router.get('/GetBySender/:senderEmailAddress', (req, res) => {
+router.get('/GetBySender/:senderUsername', (req, res) => {
   Transaction
     .find({
-      senderEmailAddress: req.params.senderEmailAddress
+      senderUsername: req.params.senderUsername
     })
     .then(transactions => {
       res.json(transactions.map(transaction => {
@@ -89,10 +89,10 @@ router.get('/GetBySender/:senderEmailAddress', (req, res) => {
 });
 
 //GET all the transactions given to a recipient
-router.get('/GetByRecipient/:recipientEmailAddress', (req, res) => {
+router.get('/GetByRecipient/:recipientUsername', (req, res) => {
   Transaction
     .find({
-      recipientEmailAddress: req.params.recipientEmailAddress
+      recipientUsername: req.params.recipientUsername
     })
     .then(transactions => {
       res.json(transactions.map(transaction => {

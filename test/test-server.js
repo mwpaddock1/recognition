@@ -1,5 +1,4 @@
-// 'use strict';
-//DATABASE_URL=mongodb://legal:staffer@ds111188.mlab.com:11188/recognitiondb
+'use strict';
 const chai = require('chai');
 const chaiHttp = require('chai-http');
 const jwt = require('jsonwebtoken');
@@ -34,11 +33,6 @@ function tearDownDb() {
   });
 }
 
-// used to put randomish documents in db
-// so we have data to work with and assert about.
-// we use the Faker library to automatically
-// generate placeholder values for author, title, content
-// and then we insert that data into mongo
 function seedRecognitionData() {
   console.info('seeding recognition data');
   const seedData = [];
@@ -56,8 +50,6 @@ function seedRecognitionData() {
 
 describe('users API resource', function () {
   afterEach(function () {
-    // tear down database so we ensure no state from this test
-    // effects any coming after.
     return tearDownDb();
   });
   before(function () {
@@ -67,10 +59,6 @@ describe('users API resource', function () {
     return seedRecognitionData()
   });
 
-  // Close server after these tests run in case
-  // we have other test modules that need to 
-  // call `runServer`. If server is already running,
-  // `runServer` will error out.
   after(function () {
     return closeServer();
   });
@@ -82,7 +70,6 @@ describe('users API resource', function () {
         username: faker.internet.email(),
         password: faker.internet.password()
       };
-      console.log(newItem);
 
       return chai.request(app)
         .post('/users')
@@ -90,7 +77,6 @@ describe('users API resource', function () {
         .then(function (res) {
           expect(res).to.have.status(201);
           expect(res).to.be.json;
-          console.log(res.body);
           expect(res.body).to.be.an('object');
           expect(res.body).to.include.keys('id', 'firstName', 'lastName', 'username', 'pointsGiven', 'pointsReceived', 'pointsRemaining');
           expect(res.body.id).to.not.equal(null);
@@ -112,11 +98,10 @@ describe('users API resource', function () {
         })
         .then(count => {
           res.body.users.should.have.lengthOf(count);
-
-
         });
     });
   });
+
   describe('single user GET endpoint', function () {
     it('should return a single user', function () {
       let testUser;
@@ -147,7 +132,6 @@ describe('users API resource', function () {
             .put('/users/PutPointsGivenToRecipient/' + user.username)
             .send(testUpdateData);
         })
-
         .then(res => {
           let updatedUser = User.findById(testUpdateData.id);
           res.should.have.status(204);
@@ -188,7 +172,7 @@ describe('users API resource', function () {
         .findOne()
         .then(_user => {
           testUser = _user;
-          return chai.request(app).delete(`/users/${testUser.username}`);
+          return chai.request(app).delete(`/users/${testUser.id}`);
         })
         .then(function (res) {
           res.should.have.status(204);
@@ -202,7 +186,6 @@ describe('users API resource', function () {
 })
 
 function seedTransactionData() {
-  console.info('seeding transaction data');
   const seedTrxData = [];
   for (let i = 1; i <= 10; i++) {
     seedTrxData.push({
@@ -212,18 +195,18 @@ function seedTransactionData() {
         min: 5,
         max: 10
       }),
-      senderEmailAddress: faker.internet.email(),
-      recipientEmailAddress: faker.internet.email()
+      senderUsername: faker.internet.email(),
+      senderLastName: faker.lorem.words(),
+      senderFirstName: faker.lorem.words(),
+      recipientUsername: faker.internet.email()
     });
 
   }
-  // this will return a promise
   return Transaction.insertMany(seedTrxData);
 }
+
 describe('transactions API resource', function () {
   afterEach(function () {
-    // tear down database so we ensure no state from this test
-    // effects any coming after.
     return tearDownDb();
   });
   before(function () {
@@ -232,30 +215,21 @@ describe('transactions API resource', function () {
   beforeEach(function () {
     return seedTransactionData()
   });
-  // Close server after these tests run in case
-  // we have other test modules that need to 
-  // call `runServer`. If server is already running,
-  // `runServer` will error out.
+
   after(function () {
     return closeServer();
   });
 
-  //POST requests to /transactions.
   describe('transactions POST endpoint', function () {
     it('should add a transaction on POST', function () {
-      // const newTrans = {
-      //   action: 'helping',
-      //   goal: 'Sales',
-      //   points: '10',
-      //   recipientEmailAddress: 'tperkins@fizzbuzz.com',
-      //   senderEmailAddress: 'janechmoe@fizzbuzz.com'
-      // };
       const newTrans = {
         action: faker.lorem.words(),
         goal: faker.lorem.words(),
         points: faker.lorem.words(),
-        senderEmailAddress: faker.internet.email(),
-        recipientEmailAddress: faker.internet.email()
+        senderUsername: faker.internet.email(),
+        senderLastName: faker.lorem.words(),
+        senderFirstName: faker.lorem.words(),
+        recipientUsername: faker.internet.email()
       };
 
       return chai.request(app)
@@ -265,18 +239,18 @@ describe('transactions API resource', function () {
           expect(res).to.have.status(201);
           expect(res).to.be.json;
           expect(res.body).to.be.a('object');
-          expect(res.body).to.include.keys('id', 'action', 'goal', 'points', 'senderEmailAddress', 'recipientEmailAddress');
+          expect(res.body).to.include.keys('id', 'action', 'goal', 'points', 'senderUsername', 'senderLastName', 'senderFirstName', 'recipientUsername');
           expect(res.body.id).to.not.equal(null);
         })
     });
   });
+
   describe('transactions GET endpoint', function () {
     it('should return all transactions', function () {
       let res;
       return chai.request(app)
         .get('/transactions')
         .then(_res => {
-          //so subsequent .then blocks can access the response object
           res = _res;
           res.should.have.status(200);
           res.body.transactions.should.have.length.of.at.least(1);
@@ -288,50 +262,51 @@ describe('transactions API resource', function () {
     });
   });
 
-  describe('GET a single transaction by senderEmailAddress', function () {
+  describe('GET a single transaction by senderUsername', function () {
     it('should return a transaction sent by a particular user on GET', function () {
       let testTransaction;
       return Transaction.findOne()
         .then(transaction => {
           testTransaction = transaction;
           return chai.request(app)
-            .get('/transactions/' + transaction.senderEmailAddress)
+            .get('/transactions/' + transaction.senderUsername)
             .then(function (res) {
               res.should.have.status(200);
-              expect(res.body.senderEmailAddress).to.equal(testTransaction.senderEmailAddress)
+              expect(res.body.senderUsername).to.equal(testTransaction.senderUsername)
             })
         });
     });
   });
-  describe('GET all transactions from a senderEmailAddress', function () {
+
+  describe('GET all transactions from a senderUsername', function () {
     it('should GET all of the transactions sent by a particular user on GET', function () {
       let testTransaction;
       return Transaction.findOne()
         .then(transaction => {
           testTransaction = transaction;
           return chai.request(app)
-            .get('/transactions/GetBySender/' + testTransaction.senderEmailAddress)
+            .get('/transactions/GetBySender/' + testTransaction.senderUsername)
             .then(function (res) {
               res.should.have.status(200);
-              expect(res.body[0].senderEmailAddress).to.equal(testTransaction.senderEmailAddress)
+              expect(res.body[0].senderUsername).to.equal(testTransaction.senderUsername)
             })
         });
     });
   });
 
-  describe('GET all transactions for a recipientEmailAddress', function () {
+  describe('GET all transactions for a recipientUsername', function () {
     it('should return a list of all transactions received by a particular user on GET', function () {
       let testTransaction;
       return Transaction.findOne()
         .then(transaction => {
           testTransaction = transaction;
           return chai.request(app)
-            .get('/transactions/GetByRecipient/' + testTransaction.recipientEmailAddress)
+            .get('/transactions/GetByRecipient/' + testTransaction.recipientUsername)
             .then(function (res) {
               res.should.have.status(200);
-              expect(res.body[0].recipientEmailAddress).to.equal(testTransaction.recipientEmailAddress)
-            })
-        })
+              expect(res.body[0].recipientUsername).to.equal(testTransaction.recipientUsername)
+            });
+        });
     })
   })
 });
