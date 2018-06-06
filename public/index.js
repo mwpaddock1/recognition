@@ -17,7 +17,6 @@ $("form[name=sign-up-form]").submit(function (event) {
         Object.assign(obj1, obj2);
 
     let newEmployee = (reformattedArray.reduce(reducingFunction));
-    console.log(newEmployee);
 
     if (newEmployee.password !== newEmployee['retype-password']) {
         alert('Passwords must match!')
@@ -35,7 +34,6 @@ $("form[name=login-form]").submit(function (event) {
     event.preventDefault();
     const usernameEmail = $('input[name=usernameEmail]');
     const loggedInUsername = usernameEmail.val();
-    console.log(loggedInUsername);
     const employeePassword = $('input[name=login-password]');
     const loggedInEmployeePassword = employeePassword.val();
     loginEmployee(loggedInUsername, loggedInEmployeePassword);
@@ -48,7 +46,7 @@ function parseJwt(token) {
     var base64 = base64Url.replace('-', '+').replace('_', '/');
     return JSON.parse(window.atob(base64));
 };
-
+    //POST a new Employee
 function addNewEmployee(employeeData) {
     console.log('inside addNewEmployee');
     $.ajax({
@@ -70,6 +68,7 @@ function loginEmployee(loggedInUsername, loggedInEmployeePassword) {
         'username': loggedInUsername,
         'password': loggedInEmployeePassword
     }
+
     $.ajax({
         type: 'POST',
         url: '/api/auth/login',
@@ -77,7 +76,6 @@ function loginEmployee(loggedInUsername, loggedInEmployeePassword) {
         data: JSON.stringify(employeeData),
         contentType: 'application/json',
         success: function (empData) {
-            // console.log(empData);
             getAllEmployees();
             let tokenData = parseJwt(empData.authToken);
             loggedInUser = tokenData.user;
@@ -91,7 +89,7 @@ function loginEmployee(loggedInUsername, loggedInEmployeePassword) {
         }
     });
 }
-
+//GET Employees
 function getAllEmployees() {
     console.log('inside getAllEmployees');
     $.ajax({
@@ -215,19 +213,9 @@ function displayEmployeeTransactions(awards) {
     let highlightedEmployeeRecipientInfo = globalTransactions.filter(globalTransaction =>
         (globalTransaction.recipientUsername === selectedIndividual.username)
     )
-    console.log(highlightedEmployeeRecipientInfo.length);
-    // if (highlightedEmployeeRecipientInfo.length === 0) {
-    //     console.log(highlightedEmployeeRecipientInfo);
-    //     $("row.points-given-box").append(`<h2><i>No points given</i></h2>`)
-    // } else 
     let sortedRecipientTransactions = highlightedEmployeeRecipientInfo.reduce(function (allReceivedTransactions, transaction) {
         if (transaction.goal in allReceivedTransactions) {
             allReceivedTransactions[transaction.goal].push(transaction);
-            // if (allReceivedTransactions.length === 0) {
-            //     debugger
-            //     $("row.points-received-box").append(`<h2><i>No points received</i></h2>`)
-            // }
-            console.log(allReceivedTransactions);
             return allReceivedTransactions;
         } else {
             allReceivedTransactions[transaction.goal] = [transaction];
@@ -309,7 +297,7 @@ $("form[name=add-points-form]").submit(function (event) {
 
     document.getElementById("js-add-points-form").reset();
 });
-
+//PUT -update Employee info
 function updateSender(user) {
     console.log(`inside updateSender ${user.username}`);
     $.ajax({
@@ -342,7 +330,7 @@ function updateRecipient(user) {
         }
     });
 }
-
+//POST a new transaction
 function addNewTransaction(transactionData) {
     console.log('inside addNewTransaction');
     $.ajax({
@@ -367,7 +355,6 @@ function addNewTransaction(transactionData) {
                     sender.pointsGiven = (parseInt(sender.pointsGiven) + transactionData.points);
 
                     sender.pointsRemaining = (parseInt(sender.pointsRemaining) - transactionData.points);
-                    console.log(sender);
                     updateSender(sender);
                 }
             }
@@ -377,18 +364,7 @@ function addNewTransaction(transactionData) {
     });
 
 }
-
-function getTranxData() {
-    let TRANX_DATA_STRING = localStorage.getItem('TRANX_DATA');
-    let TRANX_DATA = JSON.parse(TRANX_DATA_STRING);
-    return TRANX_DATA;
-}
-
-function setTranxData(TRANX_DATA) {
-    let TRANX_DATA_STRING = JSON.stringify(TRANX_DATA);
-    localStorage.setItem('TRANX_DATA', TRANX_DATA_STRING);
-}
-
+//GET Transactions
 function getAllTransactions() {
     console.log('inside getAllTransactions');
     $.ajax({
@@ -402,7 +378,7 @@ function getAllTransactions() {
         }
     });
 }
-//DELETE
+//DELETE Employee
 function deleteEmployee(username) {
     let selectedEmployee = globalEmployees.filter(globalEmployee =>
         username === globalEmployee.username);

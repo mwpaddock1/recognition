@@ -1,6 +1,7 @@
 'use strict';
 //dotenv loads environment variables from a .env file into the process
 require('dotenv').config();
+const { PORT, DATABASE_URL } = require('./config');
 const express = require('express');
 const morgan = require('morgan');
 const app = express();
@@ -33,11 +34,6 @@ const {
   transactions
 } = require('./transactions');
 mongoose.Promise = global.Promise;
-//get the PORT and the database from config
-const {
-  PORT,
-  DATABASE_URL
-} = require('./config');
 
 app.use(express.json());
 
@@ -77,16 +73,16 @@ app.use('*', (req, res) => {
 
 let server;
 //starts express server and connects to the db
-function runServer() {
+function runServer(databaseUrl = DATABASE_URL, port = PORT) {
   return new Promise((resolve, reject) => {
-    mongoose.connect(DATABASE_URL,
+    mongoose.connect(databaseUrl,
       err => {
         if (err) {
           return reject(err);
         }
         server = app
-          .listen(PORT, () => {
-            console.log(`Your app is listening on port ${PORT}`);
+          .listen(port, () => {
+            console.log(`Your app is listening on port ${port}`);
             resolve();
           })
           .on('error', err => {

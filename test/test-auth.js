@@ -1,6 +1,7 @@
 'use strict';
 //DATABASE_URL=mongodb://legal:staffer@ds111188.mlab.com:11188/recognitiondb
 // global.DATABASE_URL = 'mongodb://localhost/recognitiondb';
+const { TEST_DATABASE_URL } = require('../config');
 const chai = require('chai');
 const chaiHttp = require('chai-http');
 const jwt = require('jsonwebtoken');

@@ -35,6 +35,7 @@ router.post('/', jsonParser, (req, res) => {
       return res.status(201).json(transaction.serialize());
     });
 });
+
 //GET the list of transactions
 router.get('/', (req, res) => {
   Transaction
@@ -68,8 +69,7 @@ router.get('/:senderUsername', (req, res) => {
       })
     });
 });
-//GET all the transactions from a specific sender
-// 
+//GET all the transactions from a specific sender 
 router.get('/GetBySender/:senderUsername', (req, res) => {
   Transaction
     .find({
