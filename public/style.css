@@ -63,7 +63,6 @@ button.sign-up-button,
 button.sign-in-button,
 button.cancel-button,
 button.add-points-button {
-    /* height: 80px; */
     align-items: center;
 }
 
@@ -181,8 +180,6 @@ img.thumbs-up {
 .employee-boxes {
     width: 100%;
     overflow: auto;
-    /* white-space: nowrap; */
-    /* height: 147px; */
     box-sizing: border-box;
 }
 
@@ -243,10 +240,12 @@ p {
 .points-given {
     font-size: 26px;
 }
+
 .points-received-box h2,
 .points-given-box h2 {
     font-size: 24px;
 }
+
 .points-given-box h1,
 .points-received-box h1 {
     font-size: 32px;
@@ -398,19 +397,16 @@ section.points-given h2 {
 .title-box {
     background-color: #FFF9AD;
     min-height: 105px;
-    /* padding: 8px; */
 }
 
 .title-box h2 {
     display: flex;
     box-sizing: border-box;
-    /* font-size: 15px; */
-    
-  }
+}
 
 .employee-box {
     background-color: #F2f2f2;
-   }
+}
 
 .title-box,
 .employee-box {
@@ -434,7 +430,6 @@ section.points-given h2 {
         flex-direction: column;
         align-content: center;
         justify-content: top;
-        /* justify-content: space-around; */
     }
     .ellipse {
         padding: 2% 2%;
@@ -448,7 +443,6 @@ section.points-given h2 {
     .logo-text {
         font-size: 2rem;
     }
-    
     .program-name {
         font-size: 2.5rem;
     }
@@ -466,22 +460,15 @@ section.points-given h2 {
     }
     .goal {
         display: inline-flex;
-        /* justify-content: space-between; */
     }
     .goals {
         width: 95%;
         margin-bottom: 50px;
         justify-content: space-between;
-        /* display: flex; */
     }
     .goal-container {
         width: 50%;
-        /* display: flex; */
-        /* align-content: center; */
         margin: auto;
-        /* justify-content: space-around; */
-        /* flex-direction: column; */
-        /* justify-content: space-around; */
     }
     .employee-container,
     .individual-info-container {
@@ -498,11 +485,14 @@ section.points-given h2 {
         padding-left: 10px;
     }
 }
+
 @media only screen and (min-width: 1200px) {
-    .title-boxes, .employee-boxes {
+    .title-boxes,
+    .employee-boxes {
         width: 100%;
     }
-    .employee-box, .title-box {
+    .employee-box,
+    .title-box {
         width: 145px;
     }
 }
