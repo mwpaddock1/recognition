@@ -1,8 +1,0 @@
-{"lastName": "Foo", "firstName": "Joseph", "emailAddress":"jfoo@fizzbuzz.com", "pointsGiven": 0, "pointsReceived": 0}
-{"lastName":"Bar", "firstName": "Mary","emailAddress": "mbar@fizzbuzz.com", "pointsGiven": 0, "pointsReceived": 0}
-{"lastName":"Staff", "firstName": "John","emailAddress": "jstaff@fizzbuzz.com", "pointsGiven": 0, "pointsReceived": 0}
-{"lastName":"Worker", "firstName": "John","emailAddress": "jworker@fizzbuzz.com", "pointsGiven": 0, "pointsReceived": 0}
-{"lastName":"Jolly", "firstName": "Emily","emailAddress": "ejolly@fizzbuzz.com", "pointsGiven": 0, "pointsReceived": 0}
-{"lastName":"Downer", "firstName": "Deborah","emailAddress": "ddowner@fizzbuzz.com", "pointsGiven": 0, "pointsReceived": 0}
-{"lastName":"Lucky", "firstName": "Susan","emailAddress": "slucky@fizzbuzz.com", "pointsGiven": 0, "pointsReceived": 0}
-{"lastName":"Foo", "firstName": "May","emailAddress": "mfoo@fizzbuzz.com", "pointsGiven": 0, "pointsReceived": 0}

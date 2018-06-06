@@ -1,3 +1,508 @@
+body {
+    font-size: 8px;
+    background-image: url("./images/white-934556_1920.jpg");
+    box-sizing: border-box;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
+
+.logo-banner {
+    display: flex;
+    justify-content: space-between;
+    align-content: center;
+    align-items: center;
+}
+
+img.logo {
+    width: 150px;
+    padding-top: 5px;
+    padding-left: 2rem;
+    padding-right: 0.5%;
+    display: inline-flex;
+    justify-content: space-between;
+}
+
+h1 {
+    color: #0B7FBF;
+}
+
+.hidden {
+    display: none;
+}
+
+.employee {
+    font-size: 30px;
+}
+
+.logged-in-employee {
+    text-align: center;
+    color: #0B7FBF;
+    font-size: 20px;
+}
+
+.banner-button {
+    margin-right: 25px;
+}
+
+header {
+    background-color: #0B7FBF;
+    width: 100%;
+    height: 125px;
+}
+
+button.delete-employee-button button.logout-button,
+button.login-banner-button button.employee-list-button,
+button.login-opening-button,
+button.sign-up-opening-button,
+button.employee-list-button,
+button.give-points-button,
+button.banner-button,
+button.login-button,
+button.sign-up-button,
+button.sign-in-button,
+button.cancel-button,
+button.add-points-button {
+    /* height: 80px; */
+    align-items: center;
+}
+
+.program-name {
+    color: #0B7FBF;
+    font-size: 1.5rem;
+    font-weight: bold;
+    text-align: center;
+    padding-left: 5%;
+    padding-right: 5%;
+}
+
+.demo-credentials {
+    text-align: center;
+}
+
+form {
+    border: 2px solid #0B7FBF;
+}
+
+fieldset {
+    margin: 0 auto;
+    padding-left: 10px;
+    text-align: left;
+    font-size: 16px;
+}
+
+fieldset h2 {
+    font-size: 16px;
+}
+
+input {
+    width: 75%;
+    height: 50px;
+    margin: 0 0 7px 35px;
+    font-size: 16px;
+    padding-left: 10px;
+}
+
+select.goal-dropdown,
+select.points-dropdown {
+    font-size: 16px;
+}
+
+input.employee-action,
+input.goal-support {
+    width: 95%;
+    height: 35px;
+    margin: auto;
+}
+
+.add-points-section {
+    width: 100%;
+}
+
+.input-label {
+    font-size: 16px;
+    padding: 0 0 75px 5px;
+    /* margin-left: 35px; */
+}
+
+::placeholder {
+    font-size: 16px;
+    padding-left: 16px;
+}
+
+.employee-action::placeholder {
+    padding-left: 3px;
+}
+
+.goal-support::placeholder {
+    padding-left: 3px;
+}
+
+.program-description {
+    color: #0B7FBF;
+    font-size: 1rem;
+    margin: 5%;
+    padding: 2%;
+    text-align: center;
+}
+
+.sign-up h1 {
+    text-align: center;
+    color: #0B7FBF;
+}
+
+legend {
+    margin: 0 auto;
+    font-size: 16px;
+}
+
+img.thumbs-up {
+    width: 20%;
+    margin: 40px;
+    box-sizing: border-box;
+}
+
+.thumbs-up-image {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.employee-list {
+    background-color: #E0E0E0;
+    width: 100%;
+    text-align: center;
+    padding: 5px;
+    margin: auto;
+    border: 5px solid #f2f2f2;
+}
+
+.title-boxes,
+.employee-boxes {
+    width: 100%;
+    overflow: auto;
+    /* white-space: nowrap; */
+    /* height: 147px; */
+    box-sizing: border-box;
+}
+
+.employee-boxes {
+    white-space: nowrap;
+}
+
 p {
-    color: red;
+    font-size: 18px;
+}
+
+.goals,
+.employee-list,
+.individual-info,
+.individual-recognition-summary {
+    text-align: center;
+    margin: auto;
+}
+
+.goals h1,
+.employee-container h1 {
+    font-size: 2rem;
+    text-align: center;
+}
+
+.goals,
+.individual-info,
+.individual-recognition-summary {
+    background-color: #F2F2F2;
+    border: 5px solid #E0E0E0;
+}
+
+.goal {
+    display: flex;
+    margin-bottom: 12px;
+}
+
+.ellipse {
+    border: 1px solid #4BA66A;
+    border-radius: 50%;
+    text-align: center;
+    font-weight: bold;
+    color: black;
+    font-size: 12px;
+    width: 100px;
+    flex-grow: 0;
+    flex-shrink: 0;
+    padding: 5% 0;
+    width: 100px;
+}
+
+.ellipse-display {
+    width: 150px;
+    display: inline-block;
+}
+
+.points-received,
+.points-given {
+    font-size: 26px;
+}
+.points-received-box h2,
+.points-given-box h2 {
+    font-size: 24px;
+}
+.points-given-box h1,
+.points-received-box h1 {
+    font-size: 32px;
+    padding-bottom: 5px;
+    padding-top: 50px;
+    border: 2px solid #e0e0e0;
+}
+
+.goal-detail {
+    border: 1px solid #4BA66A;
+    padding: 5px;
+    margin: 2px 2px 2px 1px;
+    border-radius: 4px;
+    max-width: 300px;
+    font-size: 12px;
+}
+
+.Ideas-ellipse,
+.ideas-detail {
+    background-color: #E6F1C8;
+}
+
+.Sales-ellipse,
+.sales-detail {
+    background-color: #0B7FBF;
+}
+
+.Costs-ellipse,
+.costs-detail {
+    background-color: #FFF9AD;
+}
+
+.Service-ellipse,
+.service-detail {
+    background-color: #4BA66A;
+}
+
+.description {
+    padding-left: 25px;
+    font-size: 16px;
+}
+
+.employee-page-title {
+    font-size: 32px;
+    padding-bottom: 5px;
+}
+
+#goal-dropdown,
+#points-dropdown {
+    font-size: 20px;
+}
+
+.points {
+    display: flex;
+    padding-bottom: 20px;
+    padding-left: 10%;
+}
+
+.points-received,
+.points-given {
+    margin: auto;
+    display: inline;
+}
+
+form.add-points-form {
+    width: 100%;
+    display: block;
+}
+
+.points-section {
+    border: 5px solid #e0e0e0;
+    padding-bottom: 20px;
+    font-size: 10px;
+    Background-color: #E0E0E0;
+    display: block;
+    margin: auto;
+    width: 75%;
+    padding: 0 35px;
+    color: #0c91F0;
+}
+
+.points-section h2 {
+    font-size: 24px;
+    text-align: center;
+    color: #0B7FBF;
+}
+
+button {
+    box-sizing: border-box;
+    background-color: #4BA66A;
+    color: black;
+    font-weight: bold;
+    font-size: 16px;
+    margin: 16px;
+    padding: 10px 16px 16px 16px;
+    text-align: center;
+    border-radius: 7px;
+    cursor: pointer;
+    transition-duration: 0.4s;
+}
+
+.transaction-log {
+    text-align: left;
+    padding-left: 50px;
+}
+
+button:hover {
+    background-color: #FFF9AD;
+    color: black;
+}
+
+.buttons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.form-container {
+    max-width: 600px;
+    background-color: #FFF9AD;
+    border-radius: 3px;
+    margin: auto;
+}
+
+.employee-container {
+    padding-left: 25px;
+}
+
+.current-employee h2 {
+    display: fixed;
+}
+
+.current-employee {
+    width: 100%;
+}
+
+h2.js-last-name.employee-box:hover {
+    background-color: #E6F1C8;
+    cursor: pointer;
+}
+
+section.points-received h2,
+section.points-given h2 {
+    font-size: 24px;
+}
+
+.title-box {
+    background-color: #FFF9AD;
+    min-height: 105px;
+    /* padding: 8px; */
+}
+
+.title-box h2 {
+    display: flex;
+    box-sizing: border-box;
+    /* font-size: 15px; */
+    
+  }
+
+.employee-box {
+    background-color: #F2f2f2;
+   }
+
+.title-box,
+.employee-box {
+    box-sizing: border-box;
+    display: inline-block;
+    width: 55px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    font-size: 12px;
+}
+
+/*For non-mobile devices*/
+
+@media only screen and (min-width: 640px) {
+    img.logo {
+        padding-left: 5rem;
+    }
+    .main {
+        display: flex;
+        align-items: flex-start;
+        flex-direction: column;
+        align-content: center;
+        justify-content: top;
+        /* justify-content: space-around; */
+    }
+    .ellipse {
+        padding: 2% 2%;
+        font-size: 16px;
+    }
+    .program-description {
+        padding: 0;
+        margin: 50px;
+        font-size: 1.5rem;
+    }
+    .logo-text {
+        font-size: 2rem;
+    }
+    
+    .program-name {
+        font-size: 2.5rem;
+    }
+    .employee-list,
+    .goals,
+    .individual-info,
+    .individual-recognition-summary {
+        width: 70%;
+        padding: 20px;
+    }
+    .employee-list {
+        font-size: 16px;
+        font-weight: bold;
+        padding-bottom: 50px;
+    }
+    .goal {
+        display: inline-flex;
+        /* justify-content: space-between; */
+    }
+    .goals {
+        width: 95%;
+        margin-bottom: 50px;
+        justify-content: space-between;
+        /* display: flex; */
+    }
+    .goal-container {
+        width: 50%;
+        /* display: flex; */
+        /* align-content: center; */
+        margin: auto;
+        /* justify-content: space-around; */
+        /* flex-direction: column; */
+        /* justify-content: space-around; */
+    }
+    .employee-container,
+    .individual-info-container {
+        width: 75%;
+        background-color: #E0E0E0;
+        border: 5px solid #F2f2f2;
+    }
+    fieldset {
+        width: 60%;
+    }
+    .employee-box,
+    .title-box {
+        width: 95px;
+        padding-left: 10px;
+    }
+}
+@media only screen and (min-width: 1200px) {
+    .title-boxes, .employee-boxes {
+        width: 100%;
+    }
+    .employee-box, .title-box {
+        width: 145px;
+    }
 }

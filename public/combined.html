@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang='en'>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Combined html</title>
+    <meta name="author" content="name">
+    <meta name="description" content="Sign Up Form">
+    <meta name="keywords" content="Sign Up">
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+        crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.css">
+    <link rel="stylesheet" href="./style.css" type="text/css">
+</head>
+
+<body>
+    <header>
+        <div class="logo-banner">
+            <img class="logo" src=./images/FizzBuzzSVG.svg alt="FizzBuzz logo">
+
+            <section class="buttons" role="region">
+                <button class="login-banner-button banner-button">Log In</button>
+                <button class="cancel-button banner-button hidden">Cancel</button>
+                <button class="logout-button banner-button hidden">Log Out</button>
+                <button class="employee-list-button hidden">Employee List</button>
+            </section>
+        </div>
+    </header>
+    <section class="opening-screen" role="region">
+        <h2 class="program-name">Fizz Buzz Employee-to-Employee Recognition Program</h2>
+        <p class="program-description">The program where employees send and receive peer recognition for actions that promote the company's goals</p>
+        <section class="buttons" role="region">
+            <button class="sign-up-opening-button">Sign Up</button>
+            <button class="login-opening-button">Log In</button>
+        </section>
+        <section class="demo-credentials" role="region">
+            <h1>Demo Login Credentials:</h1>
+            <h1> email: duser@fizzbuzz.com, password: demo1234</h1>
+        </section>
+        <section class="thumbs-up-image" role="region">
+            <img class="thumbs-up" src=./images/multi-color-thumbs-up.png alt="multi-colored thumbs-up image">
+            <img class="thumbs-up" src=./images/multi-color-thumbs-up-flip.png alt="mirror image of multi-colored thumbs-up image">
+            <br>
+        </section>
+    </section>
+    <section class="js-form-container form-container" role="region">
+        <form name="sign-up-form" id="js-sign-up-form" class="hidden">
+            <fieldset class="fieldset-form">
+                <legend class=sign-up>
+                    <h1>Sign Up</h1>
+                </legend>
+                <section class="employee-info" role="region">
+                    <label for="lastName" class="input-label">Last Name</label>
+                    <br>
+                    <input type="text" name="lastName" class="js-last-name" placeholder="Demo" title="lastName" required/>
+                    <br>
+                    <label for="firstName" class="input-label">First Name</label>
+                    <br>
+                    <input type="text" name="firstName" class="js-first-name" placeholder="Joseph" title="firstName" required/>
+                </section>
+                <section class="login-info" role="region">
+                    <label for="username" class="input-label">Email</label>
+                    <br>
+                    <input type="text" name="username" class="js-username" placeholder="jdemo@fizzbuzz.com" title="username" required/>
+                    <br>
+                    <label for="password" class="input-label">Create Password</label>
+                    <br>
+                    <input type="password" name="password" class="js-password" placeholder="secretstring!123" title="password" required/>
+                    <br>
+                    <label for="retype-password" class="input-label">Retype Password</label>
+                    <br>
+                    <input type="password" name="retype-password" class="js-retype-password" placeholder="secretstring!123" title="retype-password"
+                        required/>
+                </section>
+            </fieldset>
+            <div class="buttons">
+                <button type="submit" class="sign-in-button">Sign Up</button>
+            </div>
+        </form>
+    </section>
+    <section class="js-form-container form-container" role="region">
+        <form name="login-form" id="js-login-form" class="hidden">
+            <fieldset>
+                <legend>
+                    <h1>Log In</h1>
+                </legend>
+                <section class="login-info" role="region">
+                    <input type="text" name="usernameEmail" class="js-usernameEmail" placeholder="jdemo@fizzbuzz.com" title="usernameEmail" required/>
+                    <br>
+                    <label for="usernameEmail" class="input-label">Email</label>
+                    <br>
+                    <br>
+                    <input type="password" name="login-password" class="js-login-password" placeholder="secretstring!123" title="login-password"
+                        required/>
+                    <br>
+                    <label for="login-password" class="input-label">Password</label>
+                </section>
+            </fieldset>
+            <section class="buttons" role="region">
+                <button type="submit" class="sign-in-button">Log In</button>
+            </section>
+        </form>
+    </section>
+    <section class="main" role="main">
+        <section class="goal-container" role="region">
+            <section class="goals hidden" role="region">
+                <h1>Fizz Buzz 2018 Corporate Goals</h1>
+                <div class="ideas goal">
+                    <div class="ellipse Ideas-ellipse">
+                        <h2>Ideas</h2>
+                    </div>
+                    <div class="goal-detail ideas-detail">
+                        <h2>Increase profitability by $1MM through internal innovation</h2>
+                    </div>
+                </div>
+                <div class="sales goal">
+                    <div class="ellipse Sales-ellipse">
+                        <h2>Sales</h2>
+                    </div>
+                    <div class="goal-detail sales-detail">
+                        <h2>Increase revenue by $1.5MM due to increased sales</h2>
+                    </div>
+                </div>
+                <div class="service goal">
+                    <div class="ellipse Service-ellipse">
+                        <h2>Service</h2>
+                    </div>
+                    <div class="goal-detail service-detail">
+                        <h2>Every employee donate 2 hours per week to community service</h2>
+                    </div>
+                </div>
+                <div class="costs goal">
+                    <div class="ellipse Costs-ellipse">
+                        <h2>Costs</h2>
+                    </div>
+                    <div class="goal-detail costs-detail">
+                        <h2>Decrease costs by $250,000 through vendor sourcing</h2>
+                    </div>
+                </div>
+            </section>
+        </section>
+        <section class="employee-list hidden" role="region">
+            <h1>Employee Peer-to-Peer Recognition!</h1>
+            <p>Every employee begins with 100 Points-to-Give to peers throughout the year.</p>
+            <p>Points-Received can be redeemed in increments of 25 by reaching out to hr@fizzbuzz.com</p>
+            <p>Click on an employee's last name to send points or view previously received recognition</p>
+            <p class="logged-in-employee js-logged-in-employee"></p>
+            <row class="title-boxes">
+                <div class="title-box">
+                    <h2>Last Name</h2>
+                </div>
+                <div class="title-box">
+                    <h2>First Name</h2>
+                </div>
+                <div class="title-box">
+                    <h2>Pts Rec'd</h2>
+                </div>
+                <div class="title-box">
+                    <h2>Pts Given</h2>
+                </div>
+                <div class="title-box">
+                    <h2>Pts to Give</h2>
+                </div>
+            </row>
+            <row class="employee-boxes">
+            </row>
+        </section>
+        <section class="js-individual-info-container individual-recognition-summary hidden" role="region">
+            <h1 role="presentation" class="employee-page-title"></h1>
+            <row class="points-status">
+                <row class="points-received-box">
+                    <h1>Points Received</h1>
+                </row>
+                <row class="points-given-box">
+                    <h1>Points Given</h1>
+                </row>
+            </row>
+            <div class="points-section hidden" role="region">
+                <h2>Give additional points to this employee for supporting the corporate goals!</h>
+                    <button class="give-points-button">Give points!</button>
+                    <button class="delete-employee-button button hidden">Delete Employee</button>
+        </section>
+        <section class="individual-info-container individual-info hidden">
+            <h1 role="presentation" class="employee-page-title" aria-live="assertive"></h1>
+            <section class="add-points-section" role="region">
+                <form name="add-points-form" id="js-add-points-form" class="add-points-form">
+                    <fieldset>
+                        <legend>
+                            <h1>Give Points!</h1>
+                        </legend>
+                        <input type="hidden" name="recipientUsername" id="recipient" title="recipientUsername">
+                        <h2>For what action would you like to award points?</h2>
+
+                        <input type="text" name="employee-action" class="employee-action js-employee-action" placeholder="ex. sourced a new paper vendor"
+                            title="employee-action" aria-label="employee-action" required>
+                        <label for="employee-action" class="input-label action js-action">Employee Action</label>
+                        <h2>Which Fizz Buzz corporate goal was supported?</h2>
+                        <select name="goal" class="goal-dropdown" title="goal">
+                            <option value=""></option>
+                            <option value="Ideas">Ideas</option>
+                            <option value="Sales">Sales</option>
+                            <option value="Service">Service</option>
+                            <option value="Costs">Costs</option>
+                        </select>
+                        <label for="goal-dropdown" class="input-label required">
+                            Goal
+                        </label>
+                        <h2>How many points would you like to give for this action?</h2>
+                        <select name="points" class="points-dropdown required" title="points">
+                            <option value=""></option>
+                            <option value=5>5</option>
+                            <option value=10>10</option>
+                            <option value=15>15</option>
+                            <option value=20>20</option>
+                            <option value=25>25</option>
+                        </select>
+                        <label for="points-dropdown" class="input-label">Points</label>
+                        <br>
+                    </fieldset>
+                    <button type="submit" class="js-add-points-button add-points-button">Add the points!</button>
+                </form>
+            </section>
+        </section>
+    </section>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    <script src="/index.js"></script>
+    <script src="/render.js"></script>
+</body>
+
+</html>
