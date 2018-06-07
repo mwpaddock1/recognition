@@ -1,7 +1,7 @@
 'use strict';
 
 require('dotenv').config();
-const { PORT, TEST_DATABASE_URL } = require('./config');
+const { PORT, DATABASE_URL } = require('./config');
 const express = require('express');
 const morgan = require('morgan');
 const app = express();
