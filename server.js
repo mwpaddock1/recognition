@@ -1,14 +1,13 @@
 'use strict';
-//dotenv loads environment variables from a .env file into the process
+
 require('dotenv').config();
-const { PORT, DATABASE_URL } = require('./config');
+const { PORT, TEST_DATABASE_URL } = require('./config');
 const express = require('express');
 const morgan = require('morgan');
 const app = express();
 app.use(morgan('common'));
 app.use(express.static('public'));
 
-//using Mongoose to connect to the server
 const mongoose = require('mongoose');
 const passport = require('passport');
 
@@ -57,11 +56,10 @@ app.use('/api/auth', authRouter);
 const jwtAuth = passport.authenticate('jwt', {
   session: false
 });
-// A protected endpoint which needs a valid JWT to access it
-// app.get('api/protected', jwtAuth, (req, res) => {
+
 app.get('/protected', jwtAuth, (req, res) => {
   return res.json({
-    data: 'successfulAuth' //'rosebud'
+    data: 'successfulAuth' 
   });
 });
 
@@ -72,7 +70,7 @@ app.use('*', (req, res) => {
 });
 
 let server;
-//starts express server and connects to the db
+
 function runServer(databaseUrl = DATABASE_URL, port = PORT) {
   return new Promise((resolve, reject) => {
     mongoose.connect(databaseUrl,
