@@ -181,23 +181,22 @@
                             </legend>
                             <input type="hidden" name="recipientUsername" id="recipient" title="recipientUsername">
                             <h2>For what action would you like to award points?</h2>
-
                             <input type="text" name="employee-action" class="employee-action js-employee-action" placeholder="ex. sourced a new paper vendor"
                                 title="employee-action" aria-label="employee-action" required>
                             <label for="employee-action" class="input-label action js-action">Employee Action</label>
                             <h2>Which Fizz Buzz corporate goal was supported?</h2>
-                            <select name="goal-dropdown" id="goal-dropdown" title="goal-dropdown">
+                            <select name="goal-dropdown" id="goal-dropdown" title="goal-dropdown" class="goal-dropdown required">
                                 <option value=""></option>
                                 <option value="Ideas">Ideas</option>
                                 <option value="Sales">Sales</option>
                                 <option value="Service">Service</option>
                                 <option value="Costs">Costs</option>
                             </select>
-                            <label for="goal-dropdown" class="input-label required">
+                            <label for="goal-dropdown" class="input-label">
                                 Goal
                             </label>
                             <h2>How many points would you like to give for this action?</h2>
-                            <select name="points-dropdown" id="points-dropdown required" title="points-dropdown">
+                            <select name="points-dropdown" id="points-dropdown" class="points-dropdown required" title="points-dropdown">
                                 <option value=""></option>
                                 <option value=5>5</option>
                                 <option value=10>10</option>
