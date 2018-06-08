@@ -50,19 +50,19 @@
                         <h1>Sign Up</h1>
                     </legend>
                     <section class="employee-info" role="region">
-                        <input type="text" name="lastName" class="js-last-name last-name" placeholder="Demo" title="lastName" required/>
+                        <input type="text" name="lastName" id="lastName"class="js-last-name last-name" placeholder="Demo" title="lastName" required/>
                         <label for="lastName" class="input-label">Last Name</label>
-                        <input type="text" name="firstName" class="js-first-name first-name" placeholder="Joseph" title="firstName" required/>
+                        <input type="text" name="firstName" id="firstName" class="js-first-name first-name" placeholder="Joseph" title="firstName" required/>
                         <label for="first-name" class="input-label">First Name</label>
                     </section>
                     <section class="login-info" role="region">
-                        <input type="text" name="username" class="js-username username" placeholder="jdemo@fizzbuzz.com" title="username" required/>
+                        <input type="text" name="username"id="username" class="js-username username" placeholder="jdemo@fizzbuzz.com" title="username" required/>
                         <label for="username" class="input-label">Email</label>
 
-                        <input type="password" name="password" class="js-password password" placeholder="secretstring!123" title="password" required/>
-                        <label for="password" class="input-label">Create Password</label>
+                        <input type="password" name="password" id="password" class="js-password password" placeholder="secretstring!123" title="password" required/>
+                        <label for="password" id="password" class="input-label">Create Password</label>
 
-                        <input type="password" name="retype-password" class="js-retype-password retype-password" placeholder="secretstring!123" title="retype-password"
+                        <input type="password" name="retype-password" id="retype-password" class="js-retype-password retype-password" placeholder="secretstring!123" title="retype-password"
                             required/>
                         <label for="retype-password" class="input-label">Retype Password</label>
                     </section>
@@ -79,10 +79,10 @@
                         <h1>Log In</h1>
                     </legend>
                     <section class="login-info" role="region">
-                        <input type="text" name="usernameEmail" class="js-usernameEmail usernameEmail" placeholder="jdemo@fizzbuzz.com" title="usernameEmail"
+                        <input type="text" name="usernameEmail" id="usernameEmail" class="js-usernameEmail usernameEmail" placeholder="jdemo@fizzbuzz.com" title="usernameEmail"
                             required/>
                         <label for="usernameEmail" class="input-label">Email</label>
-                        <input type="password" name="login-password" class="js-login-password login-password" placeholder="secretstring!123" title="login-password"
+                        <input type="password" name="login-password" id="login-password" class="js-login-password login-password" placeholder="secretstring!123" title="login-password"
                             required/>
                         <label for="login-password" class="input-label">Password</label>
                     </section>
@@ -186,18 +186,18 @@
                                 title="employee-action" aria-label="employee-action" required>
                             <label for="employee-action" class="input-label action js-action">Employee Action</label>
                             <h2>Which Fizz Buzz corporate goal was supported?</h2>
-                            <select name="goal" class="goal-dropdown" title="goal">
+                            <select name="goal-dropdown" id="goal-dropdown" title="goal-dropdown">
                                 <option value=""></option>
                                 <option value="Ideas">Ideas</option>
                                 <option value="Sales">Sales</option>
                                 <option value="Service">Service</option>
                                 <option value="Costs">Costs</option>
                             </select>
-                            <label for="goal" class="input-label required">
+                            <label for="goal-dropdown" class="input-label required">
                                 Goal
                             </label>
                             <h2>How many points would you like to give for this action?</h2>
-                            <select name="points" class="points-dropdown required" title="points">
+                            <select name="points-dropdown" id="points-dropdown required" title="points-dropdown">
                                 <option value=""></option>
                                 <option value=5>5</option>
                                 <option value=10>10</option>
@@ -205,7 +205,7 @@
                                 <option value=20>20</option>
                                 <option value=25>25</option>
                             </select>
-                            <label for="points" class="input-label">Points</label>
+                            <label for="points-dropdown" class="input-label">Points</label>
                             <br>
                         </fieldset>
                         <button type="submit" class="js-add-points-button add-points-button">Add the points!</button>
