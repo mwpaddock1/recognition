@@ -3,11 +3,11 @@ Recognition
 
 The Employee to Employee Recognition Program
 
+Link to App:  https://agile-depths-57496.herokuapp.com/
+
 Aligning employee interests with corporate goals can help further those goals. This is an application where employees give recognition to their peers for actions that support the corporate goals. This application can be customized to reflect the goals of any corporation.
 
 Future iterations could include a method for employees to redeem recognition points for gift cards or swag.
-
-Link to App:  https://agile-depths-57496.herokuapp.com/
 
 Demo Credentials:
 Email: demo@fizzbuzz.com
@@ -36,6 +36,7 @@ Front End
 •	Javascript
 •	jQuery
 •	AJAX
+
 Back End
 •	node.js
 •	express
@@ -45,6 +46,7 @@ Back End
 •	passport
 •	chai
 •	jsonwebtoken
+
 Third Party Resources
 •	mlab
 •	Travis CI
