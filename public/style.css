@@ -120,8 +120,7 @@ input.goal-support {
 
 .input-label {
     font-size: 16px;
-    padding: 0 0 75px 5px;
-    /* margin-left: 35px; */
+    padding: 0 75px 5px;    
 }
 
 ::placeholder {

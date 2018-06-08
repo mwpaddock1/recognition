@@ -50,27 +50,21 @@
                         <h1>Sign Up</h1>
                     </legend>
                     <section class="employee-info" role="region">
+                        <input type="text" name="lastName" class="js-last-name last-name" placeholder="Demo" title="lastName" required/>
                         <label for="lastName" class="input-label">Last Name</label>
-
-                        <input type="text" name="lastName" class="js-last-name" placeholder="Demo" title="lastName" required/>
-
-                        <label for="firstName" class="input-label">First Name</label>
-
-                        <input type="text" name="firstName" class="js-first-name" placeholder="Joseph" title="firstName" required/>
+                        <input type="text" name="firstName" class="js-first-name first-name" placeholder="Joseph" title="firstName" required/>
+                        <label for="first-name" class="input-label">First Name</label>
                     </section>
                     <section class="login-info" role="region">
+                        <input type="text" name="username" class="js-username username" placeholder="jdemo@fizzbuzz.com" title="username" required/>
                         <label for="username" class="input-label">Email</label>
 
-                        <input type="text" name="username" class="js-username" placeholder="jdemo@fizzbuzz.com" title="username" required/>
-
+                        <input type="password" name="password" class="js-password password" placeholder="secretstring!123" title="password" required/>
                         <label for="password" class="input-label">Create Password</label>
 
-                        <input type="password" name="password" class="js-password" placeholder="secretstring!123" title="password" required/>
-
-                        <label for="retype-password" class="input-label">Retype Password</label>
-
-                        <input type="password" name="retype-password" class="js-retype-password" placeholder="secretstring!123" title="retype-password"
+                        <input type="password" name="retype-password" class="js-retype-password retype-password" placeholder="secretstring!123" title="retype-password"
                             required/>
+                        <label for="retype-password" class="input-label">Retype Password</label>
                     </section>
                 </fieldset>
                 <div class="buttons">
@@ -85,10 +79,10 @@
                         <h1>Log In</h1>
                     </legend>
                     <section class="login-info" role="region">
-                        <input type="text" name="usernameEmail" class="js-usernameEmail" placeholder="jdemo@fizzbuzz.com" title="usernameEmail" required/>
+                        <input type="text" name="usernameEmail" class="js-usernameEmail usernameEmail" placeholder="jdemo@fizzbuzz.com" title="usernameEmail"
+                            required/>
                         <label for="usernameEmail" class="input-label">Email</label>
-                        <br>
-                        <input type="password" name="login-password" class="js-login-password" placeholder="secretstring!123" title="login-password"
+                        <input type="password" name="login-password" class="js-login-password login-password" placeholder="secretstring!123" title="login-password"
                             required/>
                         <label for="login-password" class="input-label">Password</label>
                     </section>
