@@ -299,6 +299,7 @@ $("form[name=add-points-form]").submit(function (event) {
         recipientUsername: $("#recipient").val()
     }
     addNewTransaction(newTransaction);
+    renderEmployeeList();
 
     document.getElementById("js-add-points-form").reset();
 });
