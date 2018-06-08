@@ -46,7 +46,7 @@ function parseJwt(token) {
     var base64 = base64Url.replace('-', '+').replace('_', '/');
     return JSON.parse(window.atob(base64));
 };
-    //POST a new Employee
+//POST a new Employee
 function addNewEmployee(employeeData) {
     console.log('inside addNewEmployee');
     $.ajax({
@@ -168,7 +168,7 @@ function displayEmployeeTransactions(awards) {
     for (let i = 0; i < globalTransactions.length; i++) {}
     //sent 
     let highlightedEmployeeSenderInfo = globalTransactions.filter(globalTransaction => (globalTransaction.senderUsername === selectedIndividual.username));
-    debugger
+
     //then pick out the transactions related to the highlighted employee
     let sortedSentTransactions = highlightedEmployeeSenderInfo.reduce(function (allSentTransactions, transaction) {
         if (transaction.goal in allSentTransactions) {
@@ -183,7 +183,6 @@ function displayEmployeeTransactions(awards) {
 
     //then break out the sent recognition and display it
     for (i in sortedSentTransactions) {
-        debugger
         for (let j = 0; j < sortedSentTransactions[i].length; j++) {
             function findSortedSenderRecipient(sortedEmp) {
                 return sortedEmp.username === sortedSentTransactions[i][j].recipientUsername
@@ -201,7 +200,6 @@ function displayEmployeeTransactions(awards) {
             }
             //break the sent transactions out by corporate goal
             if (j === 0) {
-                debugger
                 const goalTitle = sentTransactionInfo.goal;
                 const sentCategoryInfoHTML = (
                     `<section class="points-given"><p class="ellipse ellipse-display ${goalTitle}-ellipse">${goalTitle}</p>
@@ -257,9 +255,10 @@ function displayEmployeeTransactions(awards) {
 
 function formatSenderInfo(sentTransactionInfo) {
     const sentInfoHTML = (
-        `<section class ="points-given" role="region">                               <br>
+        `<section class ="points-given" role="region">                               
+        <br>
            ${sentTransactionInfo.points} points to ${sentTransactionInfo.senderFirstName} ${sentTransactionInfo.senderLastName} for:<br><i>${sentTransactionInfo.action}</i> 
-           <br>
+        <br>
         </section>`
     );
     $("row.points-given-box").append(sentInfoHTML);
@@ -268,7 +267,7 @@ function formatSenderInfo(sentTransactionInfo) {
 
 function formatRecipientInfo(recipientTransactionInfo) {
     const recipientInfoHTML = (
-        
+
         `<section class ="points-received" role="region">                            <br>
            ${recipientTransactionInfo.points} points from ${recipientTransactionInfo.recipientFirstName} ${recipientTransactionInfo.recipientLastName} for:<br><i>${recipientTransactionInfo.action}</i>
            <br>                                  
